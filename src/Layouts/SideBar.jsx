@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { LuChevronRight, LuX, LuLayoutDashboard, LuTicket, LuUsers, LuSettings, LuLogOut } from 'react-icons/lu';
+import { LuChevronRight, LuLayoutDashboard, LuTicket } from 'react-icons/lu';
 import MainContent from './MainContent';
 
 export default function SideBar() {

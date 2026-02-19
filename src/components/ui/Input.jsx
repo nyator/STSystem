@@ -1,9 +1,56 @@
-import React from 'react'
+import { LuSearch, LuTextSelect, LuTextCursorInput } from 'react-icons/lu'
+import useDebounce from '../../hooks/useDebounce'
 
-function Input() {
+const baseInputClasses = "w-full p-2 pl-8 capitalize font-medium text-xs bg-gray-50 border-2 border-gray-100 h-10 rounded-lg focus:outline-none focus:bg-gray-100 transition-colors duration-300"
+
+function SearchInput({ register, error, ...props }) {
+
     return (
-        <div>Input</div>
+        <div className="relative">
+            <input
+                {...register("search")}
+                type='search'
+                placeholder='Search Tickets'
+                className={baseInputClasses}
+                {...props}
+            />
+            <LuSearch className="absolute left-3 top-3 text-gray-500" size={15} />
+            {error && <span className="text-red-500 text-xs mt-1">{error.message}</span>}
+        </div>
     )
 }
 
-export default Input
+
+function FormInput({ register, name, placeholder, error, type = "text", icon, ...props }) {
+    return (
+        <div className="relative mb-2">
+            <input
+                {...register(name)}
+                type={type}
+                placeholder={placeholder}
+                className={baseInputClasses}
+                {...props}
+            />
+            {icon ? icon : <LuTextSelect className="absolute left-3 top-3 text-gray-500" size={15} />}
+            {error && <span className="text-red-500 text-xs mt-1 block">{error.message}</span>}
+        </div>
+    )
+}
+
+function FormTextArea({ register, name, placeholder, error, type = "text", ...props }) {
+    return (
+        <div className="relative mb-2">
+            <textarea
+                {...register(name)}
+                type={type}
+                placeholder={placeholder}
+                className="w-full p-2 pl-8 font-medium text-xs bg-gray-50 border-2 border-gray-100 min-h-20 max-h-32 rounded-lg focus:outline-none focus:bg-gray-100 transition-colors duration-300"
+                {...props}
+            />
+            <LuTextCursorInput className="absolute left-3 top-3 text-gray-500" size={15} />
+            {error && <span className="text-red-500 text-xs mt-1 block">{error.message}</span>}
+        </div>
+    )
+}
+
+export { SearchInput as default, FormInput, FormTextArea }

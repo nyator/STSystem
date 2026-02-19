@@ -1,22 +1,15 @@
 import { LuLayoutDashboard, LuPlus } from 'react-icons/lu';
-import Button from '../components/ui/Button';
+import Header from '../components/dashboard/Header';
 
 function Dashboard() {
     return (
         <div>
             <div className='sticky top-0 z-10 bg-white p-4 w-full'>
-                <div className='flex items-end justify-between'>
-                <div className='hidden sm:block'>
-                    <div className='flex justify-start w-full items-center'>
-                        <LuLayoutDashboard size={20} className="inline mr-2" />
-                        <h1 className='text-xl font-medium'>Dashboard</h1>
-                    </div>
-                    <p className='text-gray-400 text-xs'>Overview of tickets and system performance.</p>
-                </div>
-                <div>
-                    <Button variant="primary"><LuPlus size={16} className="inline mr-2 group-hover:animate-wiggle" />New Ticket</Button>
-                </div>
-            </div>
+                <Header
+                    icon={<LuLayoutDashboard size={20} className="inline mr-2" />}
+                    title="Dashboard"
+                    description="Overview of tickets and system performance."
+                />
             </div>
 
             <div>
