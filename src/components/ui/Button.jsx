@@ -2,7 +2,7 @@ import React from 'react'
 import { LuChevronDown } from 'react-icons/lu';
 
 function MainButton({ variant = "default", children, type }) {
-  const baseClasses = "group border-2  p-2 rounded-lg font-medium text-xs transition-all ease-in-out duration-200 ";
+  const baseClasses = "group border-2 text-nowrap p-2 rounded-lg font-medium text-xs transition-all ease-in-out duration-200 ";
   const variantClasses = {
     default: "bg-gray-100 text-gray-800 hover:bg-gray-200 border-gray-200",
     primary: "bg-blue-500 text-white hover:bg-blue-600 border-blue-500",

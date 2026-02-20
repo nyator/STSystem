@@ -7,8 +7,10 @@ function Header({ icon, title, description }) {
         <div>
             <div className='flex items-end justify-between'>
                 <div className='hidden sm:block'>
-                    <div className='flex justify-start w-full items-center'>
-                        {icon}
+                    <div className='flex justify-start w-full items-end '>
+                        <div className="rounded-lg bg-blue-50 p-1 w-fit text-blue-500">
+                            {icon}
+                        </div>
                         <h1 className='text-xl font-medium'>{title}</h1>
                     </div>
                     <p className='text-gray-400 text-xs'>{description}</p>

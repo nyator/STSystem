@@ -7,6 +7,10 @@ import { LuCalendarArrowDown, LuCircleCheck, LuShieldCheck } from "react-icons/l
 import { useForm } from 'react-hook-form';
 import Table from '../components/ui/Table';
 
+import Actions from '../components/ticket/Actions';
+import StatusBadge from '../components/ui/StatusBadge';
+import PriorityBadge from '../components/ui/PriorityBadge';
+
 function Ticket() {
     const { register, handleSubmit, formState: { errors } } = useForm()
 
@@ -14,7 +18,7 @@ function Ticket() {
         <div>
             <div className='sticky top-0 z-10 bg-white p-4 w-full'>
                 <Header
-                    icon={<LuTicket size={20} className="inline mr-2" />}
+                    icon={<LuTicket size={20} className="inline" />}
                     title="Tickets"
                     description="Manage tickets and track performance."
                 />
@@ -40,25 +44,51 @@ function Ticket() {
                     </div>
                 </div>
 
-                <div className='flex flex-col rounded-lg border-2 border-gray-200 items-center w-full '>
-                    <Table
-                        columns={[
-                            { key: 'id', title: 'ID', render: (r) => `#${r.id}` },
-                            { key: 'title', title: 'Title' },
-                            { key: 'customer', title: 'Customer' },
-                            { key: 'priority', title: 'Priority' },
-                            { key: 'status', title: 'Status' },
-                            { key: 'createdAt', title: 'Created At' },
-                        ]}
-                        data={[
-                            { id: 12345, title: 'Issue with product', customer: 'John Doe', priority: 'High', status: 'Open', createdAt: '2024-01-01' },
-                            { id: 12346, title: 'Payment issue', customer: 'Jane Smith', priority: 'Medium', status: 'In Progress', createdAt: '2024-01-02' },
-                        ]}
-                    />
-                </div>
+                <Table
+                    columns={[
+                        { key: 'id', title: 'ID', render: (r) => `${r.id}` },
+                        { key: 'title', title: 'Title' },
+                        { key: 'customer', title: 'Customer' },
+                        { key: 'priority', title: 'Priority' },
+                        { key: 'status', title: 'Status' },
+                        { key: 'createdAt', title: 'Created At' },
+                        { key: 'actions', title: 'Actions' },
 
-
+                    ]}
+                    data={[
+                        {
+                            id: "TK001",
+                            title: 'Issue with product',
+                            customer: 'Sarah Kenedy',
+                            description: "Users report that the login page takes too long to load or doesn't load at all.",
+                            priority: <PriorityBadge priority="High" />,
+                            status: <StatusBadge status="Open" />,
+                            createdAt: '2024-01-01',
+                            actions: <Actions />
+                        },
+                        {
+                            id: "TK002",
+                            title: 'Payment issue',
+                            customer: 'Jane Smith',
+                            priority: <PriorityBadge priority="Medium" />,
+                            status: <StatusBadge status="In-Progress" />,
+                            createdAt: '2024-01-02',
+                            actions: <Actions />
+                        },
+                        {
+                            id: "TK003",
+                            title: 'Payment issue',
+                            customer: 'Jane Smith',
+                            priority: <PriorityBadge priority="Low" />,
+                            status: <StatusBadge status="Paused" />,
+                            createdAt: '2024-01-02',
+                            actions: <Actions />
+                        },
+                    ]}
+                />
             </div>
+
+
         </div>
     )
 }
