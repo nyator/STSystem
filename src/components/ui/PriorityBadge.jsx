@@ -9,14 +9,14 @@ function PriorityBadge({ priority = "Low" }) {
         High: "bg-red-100 text-red-700",
     }
 
-    const baseClass = "max-w-sm w-fit rounded-md py-1 px-2 mx-auto font-medium flex items-center justify-center text-xs  cursor-pointer"
+    const baseClass = "max-w-sm w-fit rounded-md py-1 px-2 mx-auto font-medium flex items-center justify-center text-xs"
     const classes = varaintColors[priority] ?? "gray";
 
     return (
         <div className="flex items-center justify-start w-fit">
             <div className={`${baseClass} ${classes} `}>
                 {priority}
-                <LuChevronDown size={12} className="ml-1" />
+                {/* <LuChevronDown size={12} className="ml-1" /> */}
             </div>
         </div>
     )

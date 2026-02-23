@@ -1,28 +1,103 @@
-import React from 'react'
-import { LuTrash2, LuPencil } from 'react-icons/lu'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { LuTrash2, LuPencil, LuPlus, LuMail } from 'react-icons/lu'
+import { FormInput, FormTextArea } from '../ui/Input'
+import TicketModal from './TicketModal'
+import useTicket from '../../Hooks/useTicket'
+import useDeleteTicket from "../../Hooks/useDeleteTicket"
+import useEditTicket from "../../Hooks/useEditTicket"
+import { OptionButton } from '../ui/Button'
 
-const EditAction = () => {
-    return (
-        <div className="text-blue-500 bg-blue-50 hover:bg-blue-200 p-1.5 rounded-md transition-all ease-in-out duration-300">
-            <LuPencil size={15} />
-            <span className=" hidden group-hover:flex">Edit</span>
-        </div>
-    )
-}
+const EditAction = ({ setOpenModal }) => (
+    <button
+        onClick={() => setOpenModal(true)}
+        className="text-blue-500 bg-blue-50 hover:bg-blue-200 p-1.5 rounded-md transition-all ease-in-out duration-300"
+    >
+        <LuPencil size={15} />
+    </button>
+)
 
-const DeleteAction = () => {
+
+const DeleteAction = ({ ticketId }) => {
+    const { mutate: deleteTicket } = useDeleteTicket()
     return (
-        <div className="text-red-500 bg-red-50 hover:bg-red-200 p-1.5 rounded-md transition-all ease-in-out duration-300">
+        <button
+            onClick={() => deleteTicket(ticketId)}
+            className="text-red-500 bg-red-50 hover:bg-red-200 p-1.5 rounded-md transition-all ease-in-out duration-300"
+        >
             <LuTrash2 size={15} />
-        </div>
+        </button>
     )
 }
 
-export default function Actions() {
+export default function Actions({ ticketId }) {
+    const [openModal, setOpenModal] = useState(false)
+
+    const { data: ticket } = useTicket(ticketId)
+    // console.log(ticket)
+    const { mutate: updateTicket } = useEditTicket()
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: {
+            title: ticket?.title || "",
+            email: ticket?.customerEmail || "",
+            description: ticket?.description || "",
+        }
+    })
+
+    const priorityOptions = [
+        { label: "Low", value: "low", onClick: () => { } },
+        { label: "Medium", value: "medium", onClick: () => { } },
+        { label: "High", value: "high", onClick: () => { } },
+    ]
+
+    const onSubmit = (data) => {
+        updateTicket({ ticketId, ...data })
+        setOpenModal(false)
+    }
+
     return (
-        <div className='flex gap-2'>
-            <EditAction />
-            <DeleteAction />
-        </div>
+        <>
+            <div className='flex gap-2'>
+                <EditAction setOpenModal={setOpenModal} />
+                <DeleteAction ticketId={ticketId} />
+            </div>
+
+            <TicketModal
+                isOpen={openModal}
+                onClose={() => setOpenModal(false)}
+                title="Edit Ticket"
+                LAction="Cancel"
+                RAction="Update Ticket"
+            // RIcon={<LuPlus size={15} />}
+            >
+                <form id="edit-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                    <FormInput
+                        name="title"
+                        placeholder="Enter Ticket Title"
+                        register={register}
+                        formfields={{ required: "Title is required" }}
+                        error={errors.title}
+                    />
+                    <FormInput
+                        name="email"
+                        placeholder="Enter customer email"
+                        icon={<LuMail className="absolute left-3 top-3 text-gray-500" size={15} />}
+                        register={register}
+                        formfields={{ required: "Email is required" }}
+                        error={errors.email}
+                    />
+                    <FormTextArea
+                        name="description"
+                        placeholder="Enter Ticket Description"
+                        register={register}
+                        formfields={{ required: "Description is required" }}
+                        error={errors.description}
+                    />
+                    <div className='flex space-x-2'>
+                        <OptionButton options={priorityOptions}>Priority</OptionButton>
+                    </div>
+                </form>
+            </TicketModal>
+        </>
     )
 }

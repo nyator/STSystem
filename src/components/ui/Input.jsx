@@ -1,14 +1,13 @@
 import { LuSearch, LuTextSelect, LuTextCursorInput } from 'react-icons/lu'
 import useDebounce from '../../hooks/useDebounce'
 
-const baseInputClasses = "w-full p-2 pl-8 capitalize font-medium text-xs bg-gray-50 border-2 border-gray-100 h-10 rounded-lg focus:outline-none focus:bg-gray-100 transition-colors duration-300"
+const baseInputClasses = "w-full p-2 pl-8  font-medium text-xs bg-gray-50 border-2 border-gray-100 h-10 rounded-lg focus:outline-none focus:bg-gray-100 transition-colors duration-300"
 
-function SearchInput({ register, error, ...props }) {
-
+function SearchInput({ register, error, formfields, ...props }) {
     return (
         <div className="relative">
             <input
-                {...register("search")}
+                {...register("search",  formfields )}
                 type='search'
                 placeholder='Search Tickets'
                 className={baseInputClasses}
@@ -21,12 +20,12 @@ function SearchInput({ register, error, ...props }) {
 }
 
 
-function FormInput({ register, name, placeholder, error, type = "text", icon, ...props }) {
+function FormInput({ register, name, placeholder, error, formfields, icon, ...props }) {
     return (
         <div className="relative mb-2">
             <input
-                {...register(name)}
-                type={type}
+                {...register(name, formfields )}
+                // type={type}
                 placeholder={placeholder}
                 className={baseInputClasses}
                 {...props}
@@ -37,12 +36,11 @@ function FormInput({ register, name, placeholder, error, type = "text", icon, ..
     )
 }
 
-function FormTextArea({ register, name, placeholder, error, type = "text", ...props }) {
+function FormTextArea({ register, name, placeholder, formfields, error, ...props }) {
     return (
         <div className="relative mb-2">
             <textarea
-                {...register(name)}
-                type={type}
+                {...register(name,  formfields )}
                 placeholder={placeholder}
                 className="w-full p-2 pl-8 font-medium text-xs bg-gray-50 border-2 border-gray-100 min-h-20 max-h-32 rounded-lg focus:outline-none focus:bg-gray-100 transition-colors duration-300"
                 {...props}

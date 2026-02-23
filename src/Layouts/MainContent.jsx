@@ -6,14 +6,14 @@ import { FormInput, FormTextArea } from '../components/ui/Input'
 
 import { LuMail } from 'react-icons/lu'
 
-import { useForm } from 'react-hook-form'
+// import { useForm } from 'react-hook-form'
 import Button, { OptionButton } from '../components/ui/Button'
 
 
 
 function MainContent({ selectedMenu }) {
   
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    // const { register, handleSubmit, formState: { errors } } = useForm()
 
 
     return (

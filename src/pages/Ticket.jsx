@@ -1,18 +1,27 @@
-import { LuTicket } from 'react-icons/lu';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { LuTicket, LuCalendarArrowDown, LuCircleCheck, LuShieldCheck } from "react-icons/lu"
+
 import Input from '../components/ui/Input';
 import Header from '../components/dashboard/Header';
 import FilterButton from '../components/ui/FilterButton';
-import { LuCalendarArrowDown, LuCircleCheck, LuShieldCheck } from "react-icons/lu"
-
-import { useForm } from 'react-hook-form';
 import Table from '../components/ui/Table';
-
 import Actions from '../components/ticket/Actions';
 import StatusBadge from '../components/ui/StatusBadge';
 import PriorityBadge from '../components/ui/PriorityBadge';
 
+import useTickets from '../Hooks/useTickets';
+
+
 function Ticket() {
     const { register, handleSubmit, formState: { errors } } = useForm()
+    const { data, error, isLoading } = useTickets()
+
+    // useEffect(() => {
+    //     const results = data
+    //     console.log(results)
+    // }, [activeMenu])
 
     return (
         <div>
@@ -26,7 +35,7 @@ function Ticket() {
 
 
             <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] min-h-screen mt-5 m-2 rounded-2xl'>
-                <div className='flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 pb-4 mb-4'>
+                <div className='sticky top-20 bg-white flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 pb-4 mb-4'>
                     <Input register={register} error={errors.search} />
                     <div className='flex items-center gap-2'>
                         <FilterButton
@@ -43,7 +52,6 @@ function Ticket() {
                         />
                     </div>
                 </div>
-
                 <Table
                     columns={[
                         { key: 'id', title: 'ID', render: (r) => `${r.id}` },
@@ -55,40 +63,29 @@ function Ticket() {
                         { key: 'actions', title: 'Actions' },
 
                     ]}
-                    data={[
-                        {
-                            id: "TK001",
-                            title: 'Issue with product',
-                            customer: 'Sarah Kenedy',
-                            description: "Users report that the login page takes too long to load or doesn't load at all.",
-                            priority: <PriorityBadge priority="High" />,
-                            status: <StatusBadge status="Open" />,
-                            createdAt: '2024-01-01',
-                            actions: <Actions />
-                        },
-                        {
-                            id: "TK002",
-                            title: 'Payment issue',
-                            customer: 'Jane Smith',
-                            priority: <PriorityBadge priority="Medium" />,
-                            status: <StatusBadge status="In-Progress" />,
-                            createdAt: '2024-01-02',
-                            actions: <Actions />
-                        },
-                        {
-                            id: "TK003",
-                            title: 'Payment issue',
-                            customer: 'Jane Smith',
-                            priority: <PriorityBadge priority="Low" />,
-                            status: <StatusBadge status="Paused" />,
-                            createdAt: '2024-01-02',
-                            actions: <Actions />
-                        },
-                    ]}
+                    data={
+                        (data || []).map((t, i) => {
+                            const fmt = (s) => {
+                                if (!s) return ''
+                                // replace dashes and ensure first letter uppercase
+                                const replaced = String(s).replace(/-/g, ' ')
+                                return replaced.charAt(0).toUpperCase() + replaced.slice(1)
+                            }
+
+                            return {
+                                id: t.id,
+                                title: t.title,
+                                customer: t.customerEmail || '',
+                                description: t.description || '',
+                                priority: <PriorityBadge priority={fmt(t.priority) || 'Low'} />,
+                                status: <StatusBadge status={fmt(t.status) || 'Open'} />,
+                                createdAt: t.createdAt ? new Date(t.createdAt).toLocaleString() : '',
+                                actions: <Actions ticketId={t.id} />
+                            }
+                        })
+                    }
                 />
             </div>
-
-
         </div>
     )
 }

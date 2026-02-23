@@ -11,7 +11,7 @@ function FilterButton({ title, icon }) {
                 <span className="font-medium">{title}</span>
             </button>
             {isOpen && (
-                <div className="absolute top-full mt-2 w-40 bg-white border-2 border-gray-100 rounded-lg shadow-lg p-2 z-20">
+                <div className="absolute right-0 top-full mt-2 w-40 bg-white border-2 border-gray-100 rounded-lg shadow-lg p-2 z-20">
                     <SelectMenu />
                 </div>
             )}

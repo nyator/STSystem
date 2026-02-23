@@ -1,4 +1,3 @@
-
 export const getTickets = () => {
     const data = localStorage.getItem("tickets")
     return data ? JSON.parse(data) : []
@@ -8,20 +7,35 @@ export const getTicket = (ticketId) => {
     return getTickets().find((item) => item.id === ticketId) || null
 }
 
-// export const deleteTicket = (ticketId) => {
-//     return getTickets().find((item) => )
-// }
+export const deleteTicket = (ticketId) => {
+    const tickets = getTickets()
 
-export const saveTicket = () => {
+    const updated = tickets.filter((item) => item.id !== ticketId)
+
+    localStorage.setItem("tickets", JSON.stringify(updated))
+    return ticketId
+}
+
+export const editTicket = (ticketId, ticketData) => {
+    const tickets = getTickets()
+
+    const updated = tickets.map((item) =>
+        item.id === ticketId ? { ...item, ...ticketData } : item
+    )
+
+    localStorage.setItem("tickets", JSON.stringify(updated))
+    return updated.find((item) => item.id === ticketId)
+}
+
+export const saveTicket = async (ticketData) => {
     const tickets = getTickets()
 
     const newTicket = {
-        ...tickets,
-        id: `TKT-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-        title: ticketData.title,
-        description: ticketData.description,
-        customerEmail: ticketData.email,
-        priority: ticketData.priority,
+        id: `T-${Math.floor(Math.random() * 900) + 100}`,
+        title: ticketData.title || "Untitled",
+        description: ticketData.description || "",
+        customerEmail: ticketData.email || "",
+        priority: ticketData.priority || "low",
         status: "open",
         createdAt: new Date().toISOString(),
     };
