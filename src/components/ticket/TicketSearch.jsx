@@ -22,7 +22,7 @@ function TicketSearch({ onResults }) {
         ticket.id.toLowerCase().includes(debouncedValue.toLowerCase())
     )
     onResults?.(filteredTickets)
-    console.log(filteredTickets)
+    // console.log(filteredTickets)
 
     return (
         <Input

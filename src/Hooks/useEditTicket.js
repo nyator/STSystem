@@ -1,10 +1,12 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTicket } from "../utils/TicketService"
 
 function useEditTicket() {
 
+    const queryClient = useQueryClient()
+
     const mutation = useMutation({
-        mutationFn: editTicket,
+        mutationFn: ({ ticketId, ...ticketData }) => editTicket(ticketId, ticketData),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["tickets"] })
         }

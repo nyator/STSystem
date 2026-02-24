@@ -15,7 +15,7 @@ function StatusBadge({ status = "Open" }) {
     return (
         <div className="flex items-center justify-start w-fit">
             <div className={`${baseClass} ${classes}`}>
-                <LuDot size={20} className="ml-1" />
+                <LuDot size={20} />
                 {status}
             </div>
         </div>

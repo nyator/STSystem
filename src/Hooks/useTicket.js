@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query"
 import { getTicket } from "../utils/TicketService"
 
-function useTicket() {
+function useTicket(ticketId) {
     const { data, error, isLoading } = useQuery({
-        queryKey: ['ticket'],
-        queryFn: getTicket,
+        queryKey: ['ticket', ticketId],
+        queryFn: () => getTicket(ticketId),
+        enabled: !!ticketId,
     })
-    return { data, error, isLoading }
+    return { ticket: data, error, isLoading }
 }
 
 export default useTicket

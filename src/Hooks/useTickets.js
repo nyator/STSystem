@@ -5,6 +5,7 @@ function useTickets() {
     const { data, error, isLoading } = useQuery({
         queryKey: ['tickets'],
         queryFn: getTickets,
+        
     })
     return { data, error, isLoading }
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '../ui/Button'
 import { LuX } from 'react-icons/lu'
 
-function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submit, LIcon, RIcon }) {
+function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submit, LIcon, RIcon, ticketId }) {
     const handleContentClick = (e) => {
         e.stopPropagation()
     }
@@ -26,7 +26,9 @@ function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submi
                             <LuX className='group-hover:rotate-90 text-sm group-transition-transform duration-300 ease-in-out group-hover:text-gray-600 text-gray-400' />
                         </button>
                         <div className='flex justify-center items-center mb-4 p-2 '>
-                            <h2 className='text-xl text-center font-semibold'>{title}</h2>
+                            <h2 className='flex flex-col text-3xl text-center font-semibold'>{title} {" "}
+                                <span className='font-bold text-3xl'>{ticketId}</span>
+                            </h2>
                         </div>
 
                         <div className='text-gray-600'>

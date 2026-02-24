@@ -1,6 +1,7 @@
 export const getTickets = () => {
     const data = localStorage.getItem("tickets")
-    return data ? JSON.parse(data) : []
+    const tickets = data ? JSON.parse(data) : []
+    return tickets.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 }
 
 export const getTicket = (ticketId) => {

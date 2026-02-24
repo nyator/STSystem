@@ -9,11 +9,9 @@ import PriorityBadge from '../components/ui/PriorityBadge';
 
 import useTickets from '../Hooks/useTickets';
 import TicketSearch from '../components/ticket/TicketSearch';
-import { useState } from "react";
 
 function Ticket() {
     const { data, error, isLoading } = useTickets()
-    // const results = useState()
 
 
     return (
@@ -58,27 +56,27 @@ function Ticket() {
 
                     ]}
 
-                data={
-                    (data || []).map((t, i) => {
-                        const fmt = (s) => {
-                            if (!s) return ''
+                    data={
+                        (data || []).map((t, i) => {
+                            const fmt = (s) => {
+                                if (!s) return ''
 
-                            const replaced = String(s).replace(/-/g, ' ')
-                            return replaced.charAt(0).toUpperCase() + replaced.slice(1)
-                        }
+                                const replaced = String(s).replace(/-/g, ' ')
+                                return replaced.charAt(0).toUpperCase() + replaced.slice(1)
+                            }
 
-                        return {
-                            id: t.id,
-                            title: t.title,
-                            customer: t.customerEmail || '',
-                            description: t.description || '',
-                            priority: <PriorityBadge priority={fmt(t.priority) || 'Low'} />,
-                            status: <StatusBadge status={fmt(t.status) || 'Open'} />,
-                            createdAt: t.createdAt ? new Date(t.createdAt).toLocaleString() : '',
-                            actions: <Actions ticketId={t.id} />
-                        }
-                    })
-                }
+                            return {
+                                id: t.id,
+                                title: t.title,
+                                customer: t.customerEmail || '',
+                                description: t.description || '',
+                                priority: <PriorityBadge priority={fmt(t.priority) || 'Low'} />,
+                                status: <StatusBadge status={fmt(t.status) || 'Open'} />,
+                                createdAt: t.createdAt ? new Date(t.createdAt).toLocaleDateString() : '',
+                                actions: <Actions ticketId={t.id} />
+                            }
+                        })
+                    }
                 />
             </div>
         </div>

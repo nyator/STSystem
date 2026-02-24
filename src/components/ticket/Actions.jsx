@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { LuTrash2, LuSquarePen, LuPlus, LuMail } from 'react-icons/lu'
 import { FormInput, FormTextArea } from '../ui/Input'
@@ -22,37 +22,42 @@ const DeleteAction = ({ ticketId }) => {
     const { deleteTicket } = useDeleteTicket()
 
     return (
-        <>
-            <button
-                onClick={() => {
-                    deleteTicket(ticketId)
-                }}
-                className="text-red-500 bg-red-50 hover:bg-red-200 p-1.5 rounded-md transition-all ease-in-out duration-300"
-            >
-                <LuTrash2 size={15} />
-            </button>
-        </>
+        <button
+            onClick={() => {
+                deleteTicket(ticketId)
+            }}
+            className="text-red-500 bg-red-50 hover:bg-red-200 p-1.5 rounded-md transition-all ease-in-out duration-300"
+        >
+            <LuTrash2 size={15} />
+        </button>
     )
 }
 
 
 
-
-
-
 export default function Actions({ ticketId }) {
     const [openModal, setOpenModal] = useState(false)
+    const { updateTicket } = useEditTicket()
 
-    // const { data } = useTicket(ticketId)
-    const { updateTicket } = useEditTicket(ticketId)
+    const { ticket } = useTicket(ticketId)
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
         defaultValues: {
-            title: updateTicket?.title || "",
-            email: updateTicket?.customerEmail || "",
-            description: updateTicket?.description || "",
+            title: "",
+            email: "",
+            description: "",
         }
     })
+
+    useEffect(() => {
+        if (ticket) {
+            reset({
+                title: ticket.title || "",
+                email: ticket.customerEmail || "",
+                description: ticket.description || "",
+            })
+        }
+    }, [ticket, reset])
 
     const priorityOptions = [
         { label: "Low", value: "low", onClick: () => { } },
@@ -68,16 +73,18 @@ export default function Actions({ ticketId }) {
     return (
         <>
             <div className='flex gap-2'>
-                <EditAction setOpenModal={setOpenModal} />
+                <EditAction ticketId={ticketId} setOpenModal={setOpenModal} />
                 <DeleteAction ticketId={ticketId} />
             </div>
 
             <TicketModal
                 isOpen={openModal}
                 onClose={() => setOpenModal(false)}
-                title="Edit Ticket"
+                // title="Edit Ticket"
                 LAction="Cancel"
                 RAction="Update Ticket"
+                ticketId={ticketId}
+                submit={handleSubmit(onSubmit)}
             >
                 <form id="edit-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <FormInput
@@ -104,6 +111,7 @@ export default function Actions({ ticketId }) {
                     />
                     <div className='flex space-x-2'>
                         <OptionButton options={priorityOptions}>Priority</OptionButton>
+                        <OptionButton options={priorityOptions}>status</OptionButton>
                     </div>
                 </form>
             </TicketModal>

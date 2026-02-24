@@ -13,6 +13,7 @@ body {
 
 @theme {
   --animate-wiggle: wiggle 1s ease-in-out infinite;
+  --color-mblack : #333333,
 
 
   @keyframes wiggle {
