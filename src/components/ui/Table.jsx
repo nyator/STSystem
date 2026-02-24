@@ -9,7 +9,7 @@ function Table({ columns, title, data = [] }) {
         <>
             <h1 className="">{title}</h1>
             <div className='flex flex-col rounded-xl border border-gray-200 items-center w-full'>
-                <div className="w-full overflow-x-auto rounded-t-xl">
+                <div className="w-full overflow-x-auto [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:bg-gray-400 [&::-webkit-scrollbar-thumb]:rounded-sm rounded-t-xl">
                     <table className="w-full">
                         <thead className="border-b border-gray-200 bg-gray-50 text-xs font-medium text-nowrap">
                             <tr className="w-full">

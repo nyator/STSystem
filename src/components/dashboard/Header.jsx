@@ -36,9 +36,9 @@ function Header({ icon, title, description }) {
 
     return (
         <div>
-            <div className='flex items-end justify-between'>
+            <div className='flex items-end justify-center sm:justify-between'>
                 <div className='hidden sm:block'>
-                    <div className='flex justify-start w-full items-end'>
+                    <div className='flex justify-start  w-full items-end'>
                         <div className="rounded-lg bg-blue-50 p-1 w-fit text-blue-500">
                             {icon}
                         </div>

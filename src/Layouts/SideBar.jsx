@@ -23,7 +23,7 @@ export default function SideBar() {
     ];
 
     return (
-        <div className="flex h-screen max-w-400">
+        <div className="flex h-screen max-w-360">
             <div
                 className={`${isOpen ? 'w-44' : 'w-20'
                     } bg-white transition-all duration-300 h-full flex flex-col border-r border-gray-200 overflow-hidden`}>
@@ -55,7 +55,7 @@ export default function SideBar() {
                 </nav>
             </div>
 
-            <div className="flex-1 overflow-auto h-full">
+            <div className="flex-1 overflow-auto h-full [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-gray-500 [&::-webkit-scrollbar-thumb]:rounded-sm">
                 <MainContent selectedMenu={activeMenu} />
             </div>
         </div>
