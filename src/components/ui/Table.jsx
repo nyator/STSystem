@@ -11,7 +11,7 @@ function Table({ columns, title, data = [] }) {
             <div className='flex flex-col rounded-xl border border-gray-200 items-center w-full'>
                 <div className="w-full overflow-x-auto rounded-t-xl">
                     <table className="w-full">
-                        <thead className="border-b border-gray-200 bg-gray-50 text-xs font-medium">
+                        <thead className="border-b border-gray-200 bg-gray-50 text-xs font-medium text-nowrap">
                             <tr className="w-full">
                                 {cols.map((col, index) => (
                                     <th
@@ -29,7 +29,7 @@ function Table({ columns, title, data = [] }) {
                                     <td colSpan={cols.length} className="p-3 text-center">No data</td>
                                 </tr>
                             ) : data.map((row, idx) => (
-                                <tr key={idx} className={` border-gray-200 text-nowrap ${idx === data.length - 1 ? 'border-b-0' : ' border-b'}`}>
+                                <tr key={idx}  className={` border-gray-200 text-nowrap  ${idx === data.length - 1 ? 'border-b-0' : ' border-b'}`}>
                                     {cols.map((col, index) => (
                                         <td
                                             key={col.key}

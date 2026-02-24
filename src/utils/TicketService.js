@@ -1,3 +1,5 @@
+import { getLocalStorage } from "../Hooks/useLocalStorage"
+
 export const getTickets = () => {
     const data = localStorage.getItem("tickets")
     const tickets = data ? JSON.parse(data) : []

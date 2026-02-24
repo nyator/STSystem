@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 import { LuChevronRight, LuLayoutDashboard, LuTicket } from 'react-icons/lu';
 import MainContent from './MainContent';
+import { getLocalStorage, setLocalStorage } from "../Hooks/useLocalStorage"
 
 export default function SideBar() {
     const [isOpen, setIsOpen] = useState(true);
 
 
     const [activeMenu, setActiveMenu] = useState(() => {
-        const savedMenu = localStorage.getItem('activeMenu');
-        return savedMenu ? JSON.parse(savedMenu) : 'Dashboard';
+        const saved = getLocalStorage('activeMenu')
+        return saved || 'Dashboard'
     });
 
     useEffect(() => {
-        localStorage.setItem('activeMenu', JSON.stringify(activeMenu));
+        setLocalStorage('activeMenu', activeMenu)
+        setLocalStorage("news", 'kwodqnnwq')
     }, [activeMenu]);
 
     const menuItems = [
@@ -21,7 +23,7 @@ export default function SideBar() {
     ];
 
     return (
-        <div className="flex h-screen">
+        <div className="flex h-screen max-w-400">
             <div
                 className={`${isOpen ? 'w-44' : 'w-20'
                     } bg-white transition-all duration-300 h-full flex flex-col border-r border-gray-200 overflow-hidden`}>

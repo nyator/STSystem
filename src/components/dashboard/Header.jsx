@@ -13,6 +13,12 @@ function Header({ icon, title, description }) {
 
     const { createTicket, isLoading } = useCreateTicket();
 
+    const priorityOptions = [
+        { label: "Low", value: "low", onClick: () => { } },
+        { label: "Medium", value: "medium", onClick: () => { } },
+        { label: "High", value: "high", onClick: () => { } },
+    ]
+
     const onSubmit = (data) => {
         createTicket(data, {
             onSuccess: () => {
@@ -20,9 +26,9 @@ function Header({ icon, title, description }) {
                 reset()
                 setOpenModal(false)
             },
-            onError: () => {
-                // setToast({ message: "Something went wrong", type: "error" })
-            }
+            // onError: () => {
+            //     // setToast({ message: "Something went wrong", type: "error" })
+            // }
         })
 
     }
@@ -52,9 +58,8 @@ function Header({ icon, title, description }) {
                 onClose={() => setOpenModal(false)}
                 title="New Ticket"
                 LAction="Cancel"
-                RAction={"Create Ticket"}
-                RIcon={<LuPlus size={16} className="inline mr-2 group-hover:animate-wiggle" />
-                }
+                RAction="Create Ticket"
+                RIcon={<LuPlus size={16} className="inline mr-2 group-hover:animate-wiggle" />}
                 submit={handleSubmit(onSubmit)}
             >
                 <form className="space-y-4">
@@ -62,7 +67,7 @@ function Header({ icon, title, description }) {
                         name="title"
                         placeholder="Enter Ticket Title"
                         register={register}
-                        formfields={{ required: true }}
+                        formfields={{ required: "Title is required" }}
                         error={errors.title}
                     />
                     <FormInput
@@ -70,20 +75,20 @@ function Header({ icon, title, description }) {
                         placeholder="Enter customer email"
                         icon={<LuMail className="absolute left-3 top-3 text-gray-500" size={15} />}
                         register={register}
-                        formfields={{ required: true }}
+                        formfields={{ required: "Email is required" }}
                         error={errors.email}
                     />
                     <FormTextArea
                         name="description"
                         placeholder="Enter Ticket Description"
                         register={register}
-                        formfields={{ required: true }}
+                        formfields={{ required: "Description is required" }}
                         error={errors.description}
                     />
-
-                    {/* <div className='flex space-x-2'>
+                    <div className='flex space-x-2'>
                         <OptionButton options={priorityOptions}>Priority</OptionButton>
-                    </div> */}
+
+                    </div>
                 </form>
             </TicketModal>
         </div>

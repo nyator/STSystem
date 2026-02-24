@@ -1,4 +1,4 @@
-import { LuTicket, LuCalendarArrowDown, LuCircleCheck, LuShieldCheck } from "react-icons/lu"
+import { LuTicket, LuCalendarArrowDown, LuCircleCheck, LuShieldCheck, LuSlidersHorizontal } from "react-icons/lu"
 
 import Header from '../components/dashboard/Header';
 import FilterButton from '../components/ui/FilterButton';
@@ -25,11 +25,11 @@ function Ticket() {
             </div>
 
 
-            <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] min-h-screen mt-5 m-2 rounded-2xl'>
+            <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] min-h-screen m-2 rounded-2xl'>
                 <div className=' bg-white flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 mb-5 py-4'>
                     <TicketSearch />
 
-                    <div className='flex items-center gap-2'>
+                    <div className='hidden md:flex items-center gap-2'>
                         <FilterButton
                             title="Date"
                             icon={<LuCalendarArrowDown size={15} />}
@@ -42,6 +42,9 @@ function Ticket() {
                             title="Status"
                             icon={<LuCircleCheck size={15} />}
                         />
+                    </div>
+                    <div className='flex md:hidden items-center gap-2 text-xs text-gray-600 bg-gray-50 border-2 border-gray-100 h-10 px-3 rounded-lg hover:bg-gray-200 transition-all ease-in-out duration-300 focus:outline-none'>
+                        <LuSlidersHorizontal />
                     </div>
                 </div>
                 <Table
