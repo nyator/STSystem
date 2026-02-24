@@ -9,6 +9,10 @@ function useEditTicket() {
             queryClient.invalidateQueries({ queryKey: ["tickets"] })
         }
     })
-    return mutation
+    return {
+        updateTicket: mutation.mutate,
+        isLoading: mutation.isLoading,
+        error: mutation.error,
+    }
 }
 export default useEditTicket

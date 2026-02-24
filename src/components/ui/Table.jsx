@@ -3,7 +3,7 @@ function Table({ columns, title, data = [] }) {
     const cols = (columns && columns.length) ? columns : (data.length ? Object.keys(data[0]).map(key => ({ key, title: key })) : []);
 
     const stickyHeaderClass = "sticky left-0 z-0 bg-gray-50 rounded-tl-xl";
-    const stickyClass = "sticky left-0 z-0 bg-white rounded-bl-xl";
+    const stickyClass = "sticky left-0 z-0 bg-white rounded-bl-xl text-nowrap";
 
     return (
         <>

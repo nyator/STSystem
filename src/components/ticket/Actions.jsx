@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { LuTrash2, LuPencil, LuPlus, LuMail } from 'react-icons/lu'
+import { LuTrash2, LuSquarePen, LuPlus, LuMail } from 'react-icons/lu'
 import { FormInput, FormTextArea } from '../ui/Input'
 import TicketModal from './TicketModal'
 import useTicket from '../../Hooks/useTicket'
@@ -13,34 +13,44 @@ const EditAction = ({ setOpenModal }) => (
         onClick={() => setOpenModal(true)}
         className="text-blue-500 bg-blue-50 hover:bg-blue-200 p-1.5 rounded-md transition-all ease-in-out duration-300"
     >
-        <LuPencil size={15} />
+        <LuSquarePen size={15} />
     </button>
 )
 
 
 const DeleteAction = ({ ticketId }) => {
-    const { mutate: deleteTicket } = useDeleteTicket()
+    const { deleteTicket } = useDeleteTicket()
+
     return (
-        <button
-            onClick={() => deleteTicket(ticketId)}
-            className="text-red-500 bg-red-50 hover:bg-red-200 p-1.5 rounded-md transition-all ease-in-out duration-300"
-        >
-            <LuTrash2 size={15} />
-        </button>
+        <>
+            <button
+                onClick={() => {
+                    deleteTicket(ticketId)
+                }}
+                className="text-red-500 bg-red-50 hover:bg-red-200 p-1.5 rounded-md transition-all ease-in-out duration-300"
+            >
+                <LuTrash2 size={15} />
+            </button>
+        </>
     )
 }
+
+
+
+
+
 
 export default function Actions({ ticketId }) {
     const [openModal, setOpenModal] = useState(false)
 
-    const { data: ticket } = useTicket(ticketId)
-    // console.log(ticket)
-    const { mutate: updateTicket } = useEditTicket()
+    // const { data } = useTicket(ticketId)
+    const { updateTicket } = useEditTicket(ticketId)
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
-            title: ticket?.title || "",
-            email: ticket?.customerEmail || "",
-            description: ticket?.description || "",
+            title: updateTicket?.title || "",
+            email: updateTicket?.customerEmail || "",
+            description: updateTicket?.description || "",
         }
     })
 
@@ -68,7 +78,6 @@ export default function Actions({ ticketId }) {
                 title="Edit Ticket"
                 LAction="Cancel"
                 RAction="Update Ticket"
-            // RIcon={<LuPlus size={15} />}
             >
                 <form id="edit-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <FormInput

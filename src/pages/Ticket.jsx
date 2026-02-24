@@ -1,9 +1,5 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-
 import { LuTicket, LuCalendarArrowDown, LuCircleCheck, LuShieldCheck } from "react-icons/lu"
 
-import Input from '../components/ui/Input';
 import Header from '../components/dashboard/Header';
 import FilterButton from '../components/ui/FilterButton';
 import Table from '../components/ui/Table';
@@ -12,16 +8,13 @@ import StatusBadge from '../components/ui/StatusBadge';
 import PriorityBadge from '../components/ui/PriorityBadge';
 
 import useTickets from '../Hooks/useTickets';
-
+import TicketSearch from '../components/ticket/TicketSearch';
+import { useState } from "react";
 
 function Ticket() {
-    const { register, handleSubmit, formState: { errors } } = useForm()
     const { data, error, isLoading } = useTickets()
+    // const results = useState()
 
-    // useEffect(() => {
-    //     const results = data
-    //     console.log(results)
-    // }, [activeMenu])
 
     return (
         <div>
@@ -35,8 +28,9 @@ function Ticket() {
 
 
             <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] min-h-screen mt-5 m-2 rounded-2xl'>
-                <div className='sticky top-20 bg-white flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 pb-4 mb-4'>
-                    <Input register={register} error={errors.search} />
+                <div className=' bg-white flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 mb-5 py-4'>
+                    <TicketSearch />
+
                     <div className='flex items-center gap-2'>
                         <FilterButton
                             title="Date"
@@ -63,27 +57,28 @@ function Ticket() {
                         { key: 'actions', title: 'Actions' },
 
                     ]}
-                    data={
-                        (data || []).map((t, i) => {
-                            const fmt = (s) => {
-                                if (!s) return ''
-                                // replace dashes and ensure first letter uppercase
-                                const replaced = String(s).replace(/-/g, ' ')
-                                return replaced.charAt(0).toUpperCase() + replaced.slice(1)
-                            }
 
-                            return {
-                                id: t.id,
-                                title: t.title,
-                                customer: t.customerEmail || '',
-                                description: t.description || '',
-                                priority: <PriorityBadge priority={fmt(t.priority) || 'Low'} />,
-                                status: <StatusBadge status={fmt(t.status) || 'Open'} />,
-                                createdAt: t.createdAt ? new Date(t.createdAt).toLocaleString() : '',
-                                actions: <Actions ticketId={t.id} />
-                            }
-                        })
-                    }
+                data={
+                    (data || []).map((t, i) => {
+                        const fmt = (s) => {
+                            if (!s) return ''
+
+                            const replaced = String(s).replace(/-/g, ' ')
+                            return replaced.charAt(0).toUpperCase() + replaced.slice(1)
+                        }
+
+                        return {
+                            id: t.id,
+                            title: t.title,
+                            customer: t.customerEmail || '',
+                            description: t.description || '',
+                            priority: <PriorityBadge priority={fmt(t.priority) || 'Low'} />,
+                            status: <StatusBadge status={fmt(t.status) || 'Open'} />,
+                            createdAt: t.createdAt ? new Date(t.createdAt).toLocaleString() : '',
+                            actions: <Actions ticketId={t.id} />
+                        }
+                    })
+                }
                 />
             </div>
         </div>

@@ -5,11 +5,10 @@ import { LuPlus, LuMail } from 'react-icons/lu';
 import TicketModal from '../ticket/TicketModal';
 import { FormInput, FormTextArea } from '../ui/Input'
 import useCreateTicket from '../../Hooks/useCreateTicket';
-import Toast from '../../components/ui/Toast'
+
 
 function Header({ icon, title, description }) {
     const [openModal, setOpenModal] = useState(false)
-
     const { register, handleSubmit, trigger, reset, formState: { errors } } = useForm()
 
     const { createTicket, isLoading } = useCreateTicket();
@@ -17,12 +16,17 @@ function Header({ icon, title, description }) {
     const onSubmit = (data) => {
         createTicket(data, {
             onSuccess: () => {
+                // setToast({ message: "Ticket created!", type: "success" })
                 reset()
                 setOpenModal(false)
+            },
+            onError: () => {
+                // setToast({ message: "Something went wrong", type: "error" })
             }
         })
-        
+
     }
+
 
     return (
         <div>
@@ -51,7 +55,7 @@ function Header({ icon, title, description }) {
                 RAction={"Create Ticket"}
                 RIcon={<LuPlus size={16} className="inline mr-2 group-hover:animate-wiggle" />
                 }
-                submit={() => handleSubmit(onSubmit)}
+                submit={handleSubmit(onSubmit)}
             >
                 <form className="space-y-4">
                     <FormInput

@@ -1,20 +1,7 @@
-// export const toastColors = {
-//     info: 'blue',
-//     danger: 'red',
-//     success: 'green',
-//     warning: 'yellow',
-// }
-
-// export const priorityColors = {
-//     high: 'red',
-//     medium: 'orange',
-//     low: 'blue',
-// }
-
-// export const statusColors = {
-//     open: 'red',
-//     closed: 'green',
-// }
+export const variants = {
+    success: "bg-green-100 text-green-700 border-green-200",
+    error: "bg-red-100 text-red-700 border-red-200",
+}
 
 export const optionBaseClasses = "bg-gray-100 mb-2 px-4 p-2 text-gray-400 rounded-full items-center flex text-xs transition-all ease-in-out duration-300";
 export const baseClasses = "group border-2 text-nowrap p-2 rounded-lg font-medium text-xs transition-all ease-in-out duration-300 ";
