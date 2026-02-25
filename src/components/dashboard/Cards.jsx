@@ -14,7 +14,7 @@ const Cards = () => {
     ]
 
     return (
-        <div className='flex overflow-x-auto items-center gap-4 w-full border-b-2 border-gray-100 pb-4 mb-4 [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:bg-gray-400 [&::-webkit-scrollbar-thumb]:rounded-sm'>
+        <div className='flex overflow-x-auto items-center gap-4  w-full border-b-2 border-gray-100 pb-4 mb-4 [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:bg-gray-400 [&::-webkit-scrollbar-thumb]:rounded-sm'>
             {ticketCards.map((card) => (
                 <Card
                     key={card.id}

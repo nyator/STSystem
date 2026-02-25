@@ -31,7 +31,7 @@ function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submi
                             </h2>
                         </div>
 
-                        <div className='text-gray-600'>
+                        <div className='text-gray-600 items-center text-center'>
                             {children}
                         </div>
 

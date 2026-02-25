@@ -6,8 +6,8 @@ function Table({ columns, title, data = [] }) {
     const stickyClass = "sticky left-0 z-0 bg-white rounded-bl-xl text-nowrap";
 
     return (
-        <>
-            <h1 className="">{title}</h1>
+        <div className="flex-col flex items-center w-full">
+            <h1 className="font-black text-2xl">{title}</h1>
             <div className='flex flex-col rounded-xl border border-gray-200 items-center w-full'>
                 <div className="w-full overflow-x-auto [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:bg-gray-400 [&::-webkit-scrollbar-thumb]:rounded-sm rounded-t-xl">
                     <table className="w-full">
@@ -29,7 +29,7 @@ function Table({ columns, title, data = [] }) {
                                     <td colSpan={cols.length} className="p-3 text-center">No data</td>
                                 </tr>
                             ) : data.map((row, idx) => (
-                                <tr key={idx}  className={` border-gray-200 text-nowrap  ${idx === data.length - 1 ? 'border-b-0' : ' border-b'}`}>
+                                <tr key={idx} className={` border-gray-200 text-nowrap  ${idx === data.length - 1 ? 'border-b-0' : ' border-b'}`}>
                                     {cols.map((col, index) => (
                                         <td
                                             key={col.key}
@@ -44,7 +44,7 @@ function Table({ columns, title, data = [] }) {
                     </table>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

@@ -1,9 +1,6 @@
 
 import { CgSpinner } from "react-icons/cg";
 
-
-
-
 function Spinner() {
   return (
     <div className="max-w-sm w-fit mx-auto">

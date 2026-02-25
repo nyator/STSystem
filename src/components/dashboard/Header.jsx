@@ -5,6 +5,7 @@ import { LuPlus, LuMail } from 'react-icons/lu';
 import TicketModal from '../ticket/TicketModal';
 import { FormInput, FormTextArea } from '../ui/Input'
 import useCreateTicket from '../../Hooks/useCreateTicket';
+import toast from 'react-hot-toast';
 
 
 function Header({ icon, title, description }) {
@@ -22,13 +23,13 @@ function Header({ icon, title, description }) {
     const onSubmit = (data) => {
         createTicket(data, {
             onSuccess: () => {
-                // setToast({ message: "Ticket created!", type: "success" })
+                toast.success("Tickets Created!")
                 reset()
                 setOpenModal(false)
             },
-            // onError: () => {
-            //     // setToast({ message: "Something went wrong", type: "error" })
-            // }
+            onError: () => {
+                toast.error("Error creating trikets!")
+            }
         })
 
     }

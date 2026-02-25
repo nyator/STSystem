@@ -10,6 +10,8 @@ import PriorityBadge from '../components/ui/PriorityBadge';
 import useTickets from '../Hooks/useTickets';
 import TicketSearch from '../components/ticket/TicketSearch';
 
+import Spinner from "../components/ui/Spinner";
+
 function Ticket() {
     const { data, error, isLoading } = useTickets()
 
@@ -79,6 +81,8 @@ function Ticket() {
                                 actions: <Actions ticketId={t.id} />
                             }
                         })
+
+                        //  isLoading ? <Spinner /> : null
                     }
                 />
             </div>
