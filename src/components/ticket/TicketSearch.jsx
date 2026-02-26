@@ -1,28 +1,36 @@
 import { useForm } from "react-hook-form"
 import { useQuery } from "@tanstack/react-query"
+import { useEffect } from 'react'
 import useDebounce from '../../hooks/useDebounce'
 import Input from '../ui/Input'
-import { getTickets } from '../../utils/TicketService'
+import { getTickets } from '../../utils/TicketUtil'
 
 function TicketSearch({ onResults }) {
 
     const { register, watch } = useForm()
     const searchValue = watch('search', '')
-    const debouncedValue = useDebounce(searchValue, 1000)
+    const debouncedValue = useDebounce(searchValue, 500)
 
     const { data: tickets = [] } = useQuery({
         queryKey: ['tickets'],
         queryFn: getTickets
     })
 
+    // Move filtering into useEffect
+    useEffect(() => {
+        const filteredTickets = tickets.filter((ticket) =>
+            ticket.title.toLowerCase().includes(debouncedValue.toLowerCase()) ||
+            ticket.customerEmail.toLowerCase().includes(debouncedValue.toLowerCase()) ||
+            ticket.id.toLowerCase().includes(debouncedValue.toLowerCase())
+        )
 
-    const filteredTickets = tickets.filter((ticket) =>
-        ticket.title.toLowerCase().includes(debouncedValue.toLowerCase()) ||
-        ticket.customerEmail.toLowerCase().includes(debouncedValue.toLowerCase()) ||
-        ticket.id.toLowerCase().includes(debouncedValue.toLowerCase())
-    )
-    onResults?.(filteredTickets)
-    // console.log(filteredTickets)
+        // Only call onResults if there's a search value, otherwise pass all tickets
+        if (debouncedValue) {
+            onResults?.(filteredTickets)
+        } else {
+            onResults?.(tickets)
+        }
+    }, [debouncedValue, tickets, onResults])
 
     return (
         <Input

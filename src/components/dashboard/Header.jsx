@@ -10,14 +10,18 @@ import toast from 'react-hot-toast';
 
 function Header({ icon, title, description }) {
     const [openModal, setOpenModal] = useState(false)
-    const { register, handleSubmit, trigger, reset, formState: { errors } } = useForm()
+    const [selectedPriority, setSelectedPriority] = useState()
+    const [isOpen, setIsOpen] = useState(null)
 
     const { createTicket, isLoading } = useCreateTicket();
+    const { register, handleSubmit, trigger, reset, formState: { errors } } = useForm()
+
+
 
     const priorityOptions = [
-        { label: "Low", value: "low", onClick: () => { } },
-        { label: "Medium", value: "medium", onClick: () => { } },
-        { label: "High", value: "high", onClick: () => { } },
+        { label: "Low", value: "low", onClick: () => setSelectedPriority("low") },
+        { label: "Medium", value: "medium", onClick: () => setSelectedPriority("medium") },
+        { label: "High", value: "high", onClick: () => setSelectedPriority("high") },
     ]
 
     const onSubmit = (data) => {
@@ -74,7 +78,7 @@ function Header({ icon, title, description }) {
                     <FormInput
                         name="email"
                         placeholder="Enter customer email"
-                        icon={<LuMail className="absolute left-3 top-3 text-gray-500" size={15} />}
+                        icon={<LuMail className="absolute left-3 top-3 text-gray-700" size={15} />}
                         register={register}
                         formfields={{ required: "Email is required" }}
                         error={errors.email}
@@ -87,7 +91,14 @@ function Header({ icon, title, description }) {
                         error={errors.description}
                     />
                     <div className='flex space-x-2'>
-                        <OptionButton options={priorityOptions}>Priority</OptionButton>
+                        <OptionButton
+                            options={priorityOptions}
+                            selected={selectedPriority}
+                            isOpen={isOpen}
+                            setIsOpen={setIsOpen}
+                        >
+                            Priority
+                        </OptionButton>
 
                     </div>
                 </form>

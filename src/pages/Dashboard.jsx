@@ -46,12 +46,12 @@ function Dashboard() {
                                             if (!s) return ''
 
                                             const replaced = String(s).replace(/-/g, ' ')
-                                            return replaced.charAt(0).toUpperCase() + replaced.slice(1)
+                                            return replaced.charAt(0).toLowerCase() + replaced.slice(1)
                                         }
                                         return {
                                             id: t.id,
                                             title: t.title,
-                                            priority: <PriorityBadge priority={fmt(t.priority) || 'Low'} />, createdAt: t.createdAt ? new Date(t.createdAt).toLocaleDateString() : '',
+                                            priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />, createdAt: t.createdAt ? new Date(t.createdAt).toGMTString().slice(0, -7) : '',
                                             actions: <Actions ticketId={t.id} />
                                         }
                                     })

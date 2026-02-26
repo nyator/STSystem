@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LuChevronDown } from 'react-icons/lu';
+import { LuChevronDown, LuCheck } from 'react-icons/lu';
 import { baseClasses, variantClasses, optionBaseClasses } from "../../constant/constants"
 
 function MainButton({ variant = "default", children, type, onClick, }) {
@@ -16,20 +16,45 @@ function MainButton({ variant = "default", children, type, onClick, }) {
 
 
 
-function OptionButton({ children, options, isOpen, setOpen }) {
-  const openClasses = isOpen ? "bg-gray-200 text-gray-600" : "hover:bg-gray-200";
+function OptionButton({ children, options, selected, isOpen, setIsOpen }) {
 
-  const [open, setIsOpen] = useState(false);
+  // Find the selected option label to display
+  const selectedOption = options.find(opt => opt.value === selected);
+  const displayText = selectedOption ? selectedOption.label : children;
+
   return (
     <div className="relative h-full">
-      <button onClick={() => setIsOpen(!open)} className={`${optionBaseClasses} ${openClasses}`}>{children}<LuChevronDown className="inline ml-1" size={12} /></button>
-      {
-        open && (
-          <div className="absolute -bottom-12 left-0 mt-2 w-full bg-white border border-gray-200 rounded-lg min-h-12 shadow-lg z-10">
-            {optionItems}
-          </div>
-        )
-      }
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={`${optionBaseClasses} ${isOpen ? 'bg-gray-200 text-gray-800' : 'hover:bg-gray-200'}`}
+      >
+        {displayText}
+        <LuChevronDown
+          className={`inline ml-1 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          size={12}
+        />
+      </button>
+
+      {isOpen && (
+        <div className="absolute -top-30 left-0 mt-2 w-full bg-white border border-gray-200 rounded-lg min-h-12 min-w-24 shadow-lg z-10">
+          {options && options.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              className={`w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center justify-between ${selected === opt.value ? 'bg-blue-50 text-blue-600 font-medium' : ''
+                }`}
+              onClick={() => {
+                setIsOpen(false);
+                if (opt.onClick) opt.onClick();
+              }}
+            >
+              {opt.label}
+              {selected === opt.value}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

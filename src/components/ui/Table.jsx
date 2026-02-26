@@ -4,6 +4,7 @@ function Table({ columns, title, data = [] }) {
 
     const stickyHeaderClass = "sticky left-0 z-0 bg-gray-50 rounded-tl-xl";
     const stickyClass = "sticky left-0 z-0 bg-white rounded-bl-xl text-nowrap";
+    
 
     return (
         <div className="flex-col flex items-center w-full">

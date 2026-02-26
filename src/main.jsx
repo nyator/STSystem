@@ -7,10 +7,10 @@ import SideBar from './Layouts/SideBar'
 import { Toaster } from 'react-hot-toast'
 
 createRoot(document.getElementById('root')).render(
-  // <StrictMode>
+  <StrictMode>
     <QueryClientProvider client={new QueryClient()}>
       <SideBar />
       <Toaster position='top-center' />
     </QueryClientProvider>
-  // </StrictMode>,
+  </StrictMode>,
 )

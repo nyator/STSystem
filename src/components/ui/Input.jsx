@@ -12,7 +12,7 @@ function SearchInput({ register, error, formfields, ...props }) {
                 className={baseInputClasses}
                 {...props}
             />
-            <LuSearch className="absolute left-3 top-3 text-gray-500" size={15} />
+            <LuSearch className="absolute left-3 top-3 text-gray-700" size={15} />
             {error && <span className="text-red-500 text-xs mt-1">{error.message}</span>}
         </div>
     )
@@ -28,7 +28,7 @@ function FormInput({ register, name, placeholder, error, formfields, icon, ...pr
                 className={baseInputClasses}
                 {...props}
             />
-            {icon ? icon : <LuTextSelect className="absolute left-3 top-3 text-gray-500" size={15} />}
+            {icon ? icon : <LuTextSelect className="absolute left-3 top-3 text-gray-700" size={15} />}
             {error && <span className="text-red-500 text-xs mt-1 block">{error.message}</span>}
         </div>
     )
@@ -43,7 +43,7 @@ function FormTextArea({ register, name, placeholder, formfields, error, ...props
                 className="w-full p-2 pl-8 text-mblack font-medium text-xs bg-gray-50 border-2 border-gray-100 min-h-20 max-h-32 rounded-lg focus:outline-none focus:bg-gray-100 transition-colors duration-300"
                 {...props}
             />
-            <LuTextCursorInput className="absolute left-3 top-3 text-gray-500" size={15} />
+            <LuTextCursorInput className="absolute left-3 top-3 text-gray-700" size={15} />
             {error && <span className="text-red-500 text-xs mt-1 block">{error.message}</span>}
         </div>
     )

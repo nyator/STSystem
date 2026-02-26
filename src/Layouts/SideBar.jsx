@@ -4,7 +4,7 @@ import MainContent from './MainContent';
 import { getLocalStorage, setLocalStorage } from "../Hooks/useLocalStorage"
 
 export default function SideBar() {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
 
     const [activeMenu, setActiveMenu] = useState(() => {
@@ -14,7 +14,6 @@ export default function SideBar() {
 
     useEffect(() => {
         setLocalStorage('activeMenu', activeMenu)
-        setLocalStorage("news", 'kwodqnnwq')
     }, [activeMenu]);
 
     const menuItems = [
@@ -40,7 +39,7 @@ export default function SideBar() {
                 </div>
 
 
-                <nav className={`flex ${isOpen ? 'items-start' : 'items-center'} flex-col justify-start flex-1 p-4 space-y-2`}>
+                <nav className={`flex ${isOpen ? 'items-start' : 'items-center'} flex-col justify-start flex-1 p-4 space-y-5`}>
                     {menuItems.map((item) => (
                         <a
                             key={item.label}

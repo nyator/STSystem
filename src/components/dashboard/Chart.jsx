@@ -5,7 +5,7 @@ const Chart = () => {
     const { data: tickets = [] } = useTickets()
 
     const ticketChart = [
-        { name: "Progress Tickets", value: tickets.filter(t => (t.status || '').toLowerCase() === 'progress').length },
+        { name: "Progress Tickets", value: tickets.filter(t => (t.status || '').toLowerCase() === 'in-progress').length },
         { name: "Opened Tickets", value: tickets.filter(t => (t.status || '').toLowerCase() === 'open').length },
         { name: "Resolved Tickets", value: tickets.filter(t => (t.status || '').toLowerCase() === 'resolved').length },
         { name: "Total Tickets", value: tickets.length },
