@@ -24,12 +24,12 @@ export default function SideBar() {
     return (
         <div className="flex h-screen max-w-360">
             <div
-                className={`${isOpen ? 'w-44' : 'w-20'
+                className={`${isOpen ? 'w-38' : 'w-12'
                     } bg-white transition-all duration-300 h-full flex flex-col border-r border-gray-200 overflow-hidden`}>
 
                 {/* Header */}
                 <div className={`flex items-center ${isOpen ? 'justify-between' : 'justify-center'} px-4 py-5 border-b border-gray-200`}>
-                    {isOpen && <h1 className="text-sm font-bold text-nowrap">HelpDesk Lite</h1>}
+                    {isOpen && <h1 className="text-xs font-bold text-nowrap">HDesk Lite</h1>}
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="p-2 hover:bg-gray-200 bg-gray-50 rounded-lg border-2 border-gray-100"

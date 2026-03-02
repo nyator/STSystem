@@ -1,18 +1,20 @@
+import { LuArrowUpDown } from "react-icons/lu";
+import Pagination from "./Pagination";
 
-function Table({ columns, title, data = [] }) {
+
+function Table({ columns, title, data = [], currentPage = 1, totalPages = 1, totalItems = 0, onPrev, onNext }) {
     const cols = (columns && columns.length) ? columns : (data.length ? Object.keys(data[0]).map(key => ({ key, title: key })) : []);
 
     const stickyHeaderClass = "sticky left-0 z-0 bg-gray-50 rounded-tl-xl";
     const stickyClass = "sticky left-0 z-0 bg-white rounded-bl-xl text-nowrap";
-    
 
     return (
-        <div className="flex-col flex items-center w-full">
+        <div className="flex-col flex items-center w-full z-0">
             <h1 className="font-black text-2xl">{title}</h1>
-            <div className='flex flex-col rounded-xl border border-gray-200 items-center w-full'>
-                <div className="w-full overflow-x-auto [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-thumb]:bg-gray-400 [&::-webkit-scrollbar-thumb]:rounded-sm rounded-t-xl">
+            <div className='flex flex-col rounded-xl border border-gray-200 items-center w-full max-h-screen overflow-auto'>
+                <div className="w-full relative overflow-x-auto rounded-t-xl">
                     <table className="w-full">
-                        <thead className="border-b border-gray-200 bg-gray-50 text-xs font-medium text-nowrap">
+                        <thead className="border-b border-gray-200 bg-gray-50 text-xs font-medium text-nowrap sticky top-0 z-5 ">
                             <tr className="w-full">
                                 {cols.map((col, index) => (
                                     <th
@@ -45,6 +47,13 @@ function Table({ columns, title, data = [] }) {
                     </table>
                 </div>
             </div>
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                onPrev={onPrev}
+                onNext={onNext}
+            />
         </div>
     );
 }

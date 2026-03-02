@@ -10,8 +10,8 @@ import toast from 'react-hot-toast';
 
 function Header({ icon, title, description }) {
     const [openModal, setOpenModal] = useState(false)
-    const [selectedPriority, setSelectedPriority] = useState()
-    const [isOpen, setIsOpen] = useState(null)
+    const [selectedPriority, setSelectedPriority] = useState("low")  // ← was useState()
+     const [isOpen, setIsOpen] = useState(null)
 
     const { createTicket, isLoading } = useCreateTicket();
     const { register, handleSubmit, trigger, reset, formState: { errors } } = useForm()
@@ -25,31 +25,31 @@ function Header({ icon, title, description }) {
     ]
 
     const onSubmit = (data) => {
-        createTicket(data, {
+        createTicket({ ...data, priority: selectedPriority }, {  // ← add selectedPriority here
             onSuccess: () => {
                 toast.success("Tickets Created!")
                 reset()
+                setSelectedPriority(undefined)  // ← reset priority too
                 setOpenModal(false)
             },
             onError: () => {
-                toast.error("Error creating trikets!")
+                toast.error("Error creating tickets!")
             }
         })
-
     }
 
 
     return (
         <div>
-            <div className='flex items-end justify-center sm:justify-between'>
-                <div className='hidden sm:block'>
-                    <div className='flex justify-start  w-full items-end'>
+            <div className='flex items-end justify-between z-0'>
+                <div className='block'>
+                    <div className='flex justify-start w-full items-end'>
                         <div className="rounded-lg bg-blue-50 p-1 w-fit text-blue-500">
                             {icon}
                         </div>
-                        <h1 className='text-xl font-medium'>{title}</h1>
+                        <h1 className='text-xl font-medium hidden sm:block'>{title}</h1>
                     </div>
-                    <p className='text-gray-400 text-xs'>{description}</p>
+                    <p className='text-gray-400 text-xs hidden sm:block'>{description}</p>
                 </div>
 
                 <Button variant="primary" onClick={() => setOpenModal(true)}>

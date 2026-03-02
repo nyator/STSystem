@@ -3,7 +3,7 @@ import { LuTicket } from 'react-icons/lu'
 
 function Card({ label, value, colors, id }) {
     return (
-        <div key={id} className="border border-[#e5e7eb] rounded-xl overflow-clip p-4 w-48 relative flex flex-col items-center sm:items-start gap-2 shadow-blue-50 shadow-md">
+        <div key={id} className="border border-[#e5e7eb] rounded-xl overflow-clip p-4 w-28  relative flex flex-col items-center sm:items-start gap-2 shadow-blue-50 shadow-md">
             <div className={` ${colors ? colors : "text-blue-500"} rounded-full p-2 w-fit`}>
                 <LuTicket size={20} className="inline" />
             </div>

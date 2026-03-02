@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LuTicket, LuCalendarArrowDown, LuCircleCheck, LuShieldCheck, LuSlidersHorizontal, LuX } from "react-icons/lu"
+import { LuTicket, LuCalendarArrowDown, LuCircleCheck, LuShieldCheck, LuSlidersHorizontal, LuArrowDownUp } from "react-icons/lu"
 
 import Header from '../components/dashboard/Header';
 import FilterButton from '../components/ui/FilterButton';
@@ -10,10 +10,9 @@ import PriorityBadge from '../components/ui/PriorityBadge';
 
 import useTickets from '../Hooks/useTickets';
 import useFilter from '../Hooks/useFilter';
+import useSort from '../Hooks/useSort';
 import TicketSearch from '../components/ticket/TicketSearch';
 
-import Spinner from "../components/ui/Spinner";
-import Pagination from "../components/ui/Pagination";
 import TableSkeleton from "../components/ui/TableSkeleton";
 
 // Filter options
@@ -34,21 +33,86 @@ const dateOptions = [
     { value: 'oldest', label: 'Oldest First' }
 ]
 
+
+// Sort options for the sort menu
+const sortOptions = [
+    { value: 'createdAt', label: 'Created At' },
+    { value: 'priority', label: 'Priority' },
+    { value: 'status', label: 'Status' },
+    { value: 'title', label: 'Title' },
+]
+
+const sortGroups = [
+    {
+        title: 'Sort By',
+        filterType: 'sortKey',
+        options: sortOptions
+    },
+    {
+        title: 'Direction',
+        filterType: 'sortDirection',
+        options: [
+            { value: 'asc', label: 'Ascending' },
+            { value: 'desc', label: 'Descending' }
+        ]
+    }
+]
+
+// Filter groups for the combined filter menu
+const filterGroups = [
+    {
+        title: 'Status',
+        filterType: 'status',
+        options: statusOptions
+    },
+    {
+        title: 'Priority',
+        filterType: 'priority',
+        options: priorityOptions
+    },
+    {
+        title: 'Date',
+        filterType: 'date',
+        options: dateOptions
+    }
+]
+
+
 function Ticket() {
+
     const { data, error, isLoading } = useTickets()
     const [isOpen, setIsOpen] = useState(null)
     const [searchedTickets, setSearchedTickets] = useState(null)
-    
+
+
+
     // Use the filter hook
-    const { filteredTickets, filters, setFilter, clearFilters, hasActiveFilters } = useFilter(data || [])
+    const { filteredTickets, filters, setFilter, clearFilters, hasActiveFilters } = useFilter(data || []);
 
-    // Combine search and filter results
-    const ticketsToDisplay = searchedTickets !== null 
-        ? filteredTickets.filter(ticket => 
-            searchedTickets.some(searched => searched.id === ticket.id)
-          )
-        : filteredTickets
+    // Sorting state
+    const [sortState, setSortState] = useState({ key: null, direction: 'asc' });
+    const { sortedData, sort, setSort, clearSort } = useSort(
+        (searchedTickets !== null
+            ? filteredTickets.filter(ticket => searchedTickets.some(searched => searched.id === ticket.id))
+            : filteredTickets),
+        sortState
+    );
 
+    // Combine search, filter, and sort results
+    const ticketsToDisplay = sortedData;
+
+    // Pagination logic
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const totalItems = ticketsToDisplay.length;
+    const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+    const paginatedTickets = ticketsToDisplay.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    const handlePrev = () => setCurrentPage((prev) => Math.max(1, prev - 1));
+    const handleNext = () => setCurrentPage((prev) => Math.min(totalPages, prev + 1));
 
     return (
         <div>
@@ -62,51 +126,56 @@ function Ticket() {
 
 
             <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] min-h-screen m-2 rounded-2xl'>
-                <div className=' bg-white flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 mb-5 py-4'>
+                <div className='sticky top-18 z-5 bg-white flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 mb-5 py-2'>
                     <TicketSearch onResults={setSearchedTickets} />
 
-                    <div className='hidden md:flex items-center gap-2'>
-                        <FilterButton
-                            isOpen={isOpen === 'Status'}
-                            setIsOpen={(open) => setIsOpen(open ? 'Status' : null)}
-                            title="Status"
-                            icon={<LuCircleCheck size={15} />}
-                            options={statusOptions}
-                            onFilterChange={setFilter}
-                            currentFilter={filters.status}
-                            filterType="status"
-                        />
-                        <FilterButton
-                            isOpen={isOpen === 'Priority'}
-                            setIsOpen={(open) => setIsOpen(open ? 'Priority' : null)}
-                            title="Priority"
-                            icon={<LuShieldCheck size={15} />}
-                            options={priorityOptions}
-                            onFilterChange={setFilter}
-                            currentFilter={filters.priority}
-                            filterType="priority"
-                        />
-                        <FilterButton
-                            isOpen={isOpen === 'Date'}
-                            setIsOpen={(open) => setIsOpen(open ? 'Date' : null)}
-                            title="Date"
-                            icon={<LuCalendarArrowDown size={15} />}
-                            options={dateOptions}
-                            onFilterChange={setFilter}
-                            currentFilter={filters.date}
-                            filterType="date"
-                        />
-                    </div>
+                    <div className='flex items-center gap-2'>
 
-                    <div className='flex md:hidden items-center gap-2 text-xs text-gray-600 bg-gray-50 border-2 border-gray-100 h-10 px-3 rounded-lg hover:bg-gray-200 transition-all ease-in-out duration-300 focus:outline-none'>
-                        <LuSlidersHorizontal />
+                        {/* Sorting Button */}
+                        <FilterButton
+                            title="Sort By"
+                            icon={<LuArrowDownUp size={15} />}
+                            isOpen={isOpen === 'sort'}
+                            setIsOpen={(open) => setIsOpen(open ? 'sort' : null)}
+                            filterGroups={sortGroups}
+                            filters={{
+                                sortKey: sort.key,
+                                sortDirection: sort.direction
+                            }}
+                            setFilter={(type, value) => {
+                                if (type === 'sortKey') {
+                                    setSortState(prev => ({ ...prev, key: value }))
+                                    setSort(value)
+                                } else if (type === 'sortDirection') {
+                                    setSortState(prev => ({ ...prev, direction: value }))
+                                    setSort(prev => ({ ...prev, direction: value }))
+                                }
+                            }}
+                            clearFilters={() => {
+                                setSortState({ key: null, direction: 'asc' })
+                                clearSort()
+                            }}
+                            hasActiveFilters={!!sort.key}
+                        />
+
+                        <FilterButton
+                            title="Filter"
+                            icon={<LuSlidersHorizontal size={15} className={`${isOpen ? 'rotate-180' : ''}`} />}
+                            isOpen={isOpen === 'filter'}
+                            setIsOpen={(open) => setIsOpen(open ? 'filter' : null)}
+                            filterGroups={filterGroups}
+                            filters={filters}
+                            setFilter={setFilter}
+                            clearFilters={clearFilters}
+                            hasActiveFilters={hasActiveFilters}
+                        />
                     </div>
                 </div>
 
                 {isLoading ?
                     <TableSkeleton rows={10} />
                     : ticketsToDisplay.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center w-full py-20 text-gray-500">
+                        <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-10rem)] py-20 text-gray-500">
                             <LuTicket size={48} className="mb-4 opacity-50" />
                             <p className="text-lg font-medium">No tickets found</p>
                             <p className="text-sm mt-2">Try adjusting your search or filters</p>
@@ -120,18 +189,14 @@ function Ticket() {
                             { key: 'status', title: 'Status' },
                             { key: 'createdAt', title: 'Created At' },
                             { key: 'actions', title: 'Actions' },
-
                         ]}
-
                         data={
-                            (ticketsToDisplay).map((t) => {
+                            paginatedTickets.map((t) => {
                                 const fmt = (s) => {
-                                    if (!s) return ''
-
-                                    const replaced = String(s).replace("-", ' ')
-                                    return replaced.charAt(0).toLowerCase() + replaced.slice(1)
-                                }
-
+                                    if (!s) return '';
+                                    const replaced = String(s).replace("-", ' ');
+                                    return replaced.charAt(0).toLowerCase() + replaced.slice(1);
+                                };
                                 return {
                                     id: t.id,
                                     title: t.title,
@@ -141,15 +206,18 @@ function Ticket() {
                                     status: <StatusBadge status={fmt(t.status) || 'open'} />,
                                     createdAt: t.createdAt ? new Date(t.createdAt).toUTCString().slice(0, -7) : '',
                                     actions: <Actions ticketId={t.id} />
-                                }
+                                };
                             })
                         }
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        totalItems={totalItems}
+                        onPrev={handlePrev}
+                        onNext={handleNext}
                     />
                 }
-                <Pagination />
             </div>
         </div>
     )
 }
-
 export default Ticket

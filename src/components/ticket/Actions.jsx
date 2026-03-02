@@ -107,7 +107,7 @@ export default function Actions({ ticketId }) {
                 isOpen={openModal}
                 onClose={() => setOpenModal(false)}
                 // title="Edit Ticket"
-                TitleIcon= {<LuTicketSlash className='mr-2'/>}
+                TitleIcon={<LuTicketSlash className='mr-2' />}
                 LAction="Cancel"
                 RAction="Update Ticket"
                 RIcon={<LuSquarePen size={16} className="inline mr-2 group-hover:animate-wiggle" />}
@@ -127,7 +127,12 @@ export default function Actions({ ticketId }) {
                         placeholder="Enter customer email"
                         icon={<LuMail className="absolute left-3 top-3 text-gray-700" size={15} />}
                         register={register}
-                        formfields={{ required: "Email is required" }}
+                        formfields={{
+                            required: "Email is required", 
+                            // pattern: {
+                            //     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            // },
+                        }}
                         error={errors.email}
                     />
                     <FormTextArea

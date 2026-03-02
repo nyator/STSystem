@@ -13,7 +13,7 @@ function Toast({ message, duration = 3000, type = "success", onClose }) {
     }, [duration, onClose])
 
     return (
-        <div className="max-w-sm w-fit mx-auto absolute top-3 left-1/3 z-50 transition-all duration-300 ease-in-out">
+        <div className="max-w-sm w-fit mx-auto absolute top-3 left-1/3 z-[2000] transition-all duration-300 ease-in-out">
             <div
                 className={`flex items-center border rounded-lg p-4 text-sm ${variants[type] || variants.success}`}
                 role="alert"
