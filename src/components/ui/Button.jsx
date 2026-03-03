@@ -16,7 +16,7 @@ function MainButton({ variant = "default", children, type, onClick, }) {
 
 
 
-function OptionButton({ children, options, selected, isOpen, setIsOpen }) {
+function OptionButton({ children, options, selected, isOpen, setIsOpen, title }) {
 
   // Find the selected option label to display
   const selectedOption = options.find(opt => opt.value === selected);
@@ -29,6 +29,8 @@ function OptionButton({ children, options, selected, isOpen, setIsOpen }) {
         onClick={() => setIsOpen(!isOpen)}
         className={`${optionBaseClasses} ${isOpen ? 'bg-gray-200 text-gray-800' : 'hover:bg-gray-200'}`}
       >
+        {title && <p className='text-center mr-2 text-gray-500'>{title} :</p>}
+
         {displayText}
         <LuChevronDown
           className={`inline ml-1 transition-transform ${isOpen ? 'rotate-180' : ''}`}

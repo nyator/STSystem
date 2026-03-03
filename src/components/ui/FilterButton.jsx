@@ -15,7 +15,7 @@ function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, s
                     <span className="w-2 h-4 bg-blue-500 border-2 border-blue-300 rounded-full absolute top-3 -left-0.5"></span>
                 )}
                 {icon}
-                <span className="font-medium">{title}</span>
+                <span className="hidden md:block font-medium">{title}</span>
             </button>
 
             {isOpen && (

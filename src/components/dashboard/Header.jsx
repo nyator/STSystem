@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 function Header({ icon, title, description }) {
     const [openModal, setOpenModal] = useState(false)
     const [selectedPriority, setSelectedPriority] = useState("low")  // ← was useState()
-     const [isOpen, setIsOpen] = useState(null)
+    const [isOpen, setIsOpen] = useState(null)
 
     const { createTicket, isLoading } = useCreateTicket();
     const { register, handleSubmit, trigger, reset, formState: { errors } } = useForm()
@@ -80,7 +80,13 @@ function Header({ icon, title, description }) {
                         placeholder="Enter customer email"
                         icon={<LuMail className="absolute left-3 top-3 text-gray-700" size={15} />}
                         register={register}
-                        formfields={{ required: "Email is required" }}
+                        formfields={{
+                            required: "Email is required",
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: "Invalid email address"
+                            },
+                        }}
                         error={errors.email}
                     />
                     <FormTextArea
@@ -92,6 +98,7 @@ function Header({ icon, title, description }) {
                     />
                     <div className='flex space-x-2'>
                         <OptionButton
+                            title="Priority"
                             options={priorityOptions}
                             selected={selectedPriority}
                             isOpen={isOpen}

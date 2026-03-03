@@ -128,7 +128,7 @@ export default function Actions({ ticketId }) {
                         icon={<LuMail className="absolute left-3 top-3 text-gray-700" size={15} />}
                         register={register}
                         formfields={{
-                            required: "Email is required", 
+                            required: "Email is required",
                             // pattern: {
                             //     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                             // },
@@ -144,6 +144,7 @@ export default function Actions({ ticketId }) {
                     />
                     <div className='flex space-x-2'>
                         <OptionButton
+                            title="Priority"
                             options={priorityOptions}
                             selected={selectedPriority}
                             isOpen={openDropdown === 'priority'}
@@ -152,6 +153,7 @@ export default function Actions({ ticketId }) {
                             Priority
                         </OptionButton>
                         <OptionButton
+                            title="Status"
                             options={statusOptions}
                             selected={selectedStatus}
                             isOpen={openDropdown === 'status'}

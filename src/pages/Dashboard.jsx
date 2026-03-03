@@ -39,7 +39,7 @@ function Dashboard() {
             </div>
 
             <div>
-                <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] min-h-screen m-2 rounded-2xl'>
+                <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] lg:h-[calc(100vh-6rem)] m-2 rounded-2xl'>
                     <Cards />
 
                     <div className='flex flex-col lg:flex-row justify-around w-full mt-1 gap-5'>

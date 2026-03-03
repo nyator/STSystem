@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LuTicket, LuCalendarArrowDown, LuCircleCheck, LuShieldCheck, LuSlidersHorizontal, LuArrowDownUp } from "react-icons/lu"
 
 import Header from '../components/dashboard/Header';
@@ -103,7 +103,7 @@ function Ticket() {
 
     // Pagination logic
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 8;
     const totalItems = ticketsToDisplay.length;
     const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
     const paginatedTickets = ticketsToDisplay.slice(
@@ -111,8 +111,18 @@ function Ticket() {
         currentPage * itemsPerPage
     );
 
+
     const handlePrev = () => setCurrentPage((prev) => Math.max(1, prev - 1));
     const handleNext = () => setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+
+    // if (searchedTickets) {
+    //     setCurrentPage(1)
+    // }
+
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [searchedTickets, filters])
+
 
     return (
         <div>
@@ -125,7 +135,7 @@ function Ticket() {
             </div>
 
 
-            <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] min-h-screen m-2 rounded-2xl'>
+            <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] h-[calc(100vh-6rem)] m-2 rounded-2xl'>
                 <div className='sticky top-18 z-5 bg-white flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 mb-5 py-2'>
                     <TicketSearch onResults={setSearchedTickets} />
 
@@ -133,7 +143,7 @@ function Ticket() {
 
                         {/* Sorting Button */}
                         <FilterButton
-                            title="Sort By"
+                            title="Sort"
                             icon={<LuArrowDownUp size={15} />}
                             isOpen={isOpen === 'sort'}
                             setIsOpen={(open) => setIsOpen(open ? 'sort' : null)}
@@ -160,7 +170,7 @@ function Ticket() {
 
                         <FilterButton
                             title="Filter"
-                            icon={<LuSlidersHorizontal size={15} className={`${isOpen ? 'rotate-180' : ''}`} />}
+                            icon={<LuSlidersHorizontal size={15} className={`${isOpen === 'filter' ? 'rotate-180' : ''}`} />}
                             isOpen={isOpen === 'filter'}
                             setIsOpen={(open) => setIsOpen(open ? 'filter' : null)}
                             filterGroups={filterGroups}

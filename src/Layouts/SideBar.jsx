@@ -4,13 +4,25 @@ import MainContent from './MainContent';
 import { getLocalStorage, setLocalStorage } from "../Hooks/useLocalStorage"
 
 export default function SideBar() {
-    const [isOpen, setIsOpen] = useState(false);
-
+    const [isOpen, setIsOpen] = useState(true);
 
     const [activeMenu, setActiveMenu] = useState(() => {
         const saved = getLocalStorage('activeMenu')
         return saved || 'Dashboard'
     });
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 700) {
+                setIsOpen(false)
+            } else {
+                setIsOpen(true)
+            } 
+        }
+        handleResize()
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
 
     useEffect(() => {
         setLocalStorage('activeMenu', activeMenu)
@@ -28,8 +40,8 @@ export default function SideBar() {
                     } bg-white transition-all duration-300 h-full flex flex-col border-r border-gray-200 overflow-hidden`}>
 
                 {/* Header */}
-                <div className={`flex items-center ${isOpen ? 'justify-between' : 'justify-center'} px-4 py-5 border-b border-gray-200`}>
-                    {isOpen && <h1 className="text-xs font-bold text-nowrap">HDesk Lite</h1>}
+                <div className={`flex items-center ${isOpen ? 'justify-between' : 'justify-center'} px-2 py-5 border-b border-gray-200`}>
+                    {isOpen && <h1 className="text-xs font-bold text-nowrap pl-5">HDesk Lite</h1>}
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="p-2 hover:bg-gray-200 bg-gray-50 rounded-lg border-2 border-gray-100"
@@ -39,7 +51,7 @@ export default function SideBar() {
                 </div>
 
 
-                <nav className={`flex ${isOpen ? 'items-start' : 'items-center'} flex-col justify-start flex-1 p-4 space-y-5`}>
+                <nav className={`flex ${isOpen ? 'items-start' : 'items-center'} flex-col justify-start flex-1 py-4 px-2 space-y-5`}>
                     {menuItems.map((item) => (
                         <a
                             key={item.label}
