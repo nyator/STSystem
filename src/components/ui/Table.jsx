@@ -153,14 +153,17 @@ function Table({ columns, title, data = [], currentPage = 1, totalPages = 1, tot
                                     <tr>
                                         <td colSpan={cols.length} className="p-3 text-center">No data</td>
                                     </tr>
-                                ) : data.map((row, idx) => (
-                                    <tr
+                                ) : data.map((row, idx) => (                                    <tr
                                         key={idx}
                                         onClick={() => setSelectedRowId(row.id)}
                                         className={`group border-gray-200 text-nowrap hover:bg-gray-50 cursor-pointer transition-all duration-100 ease-in ${idx === data.length - 1 ? 'border-b-0' : 'border-b'}`}
                                     >
                                         {cols.map((col, index) => (
-                                            <td key={col.key} className={`text-left p-2 ${index === 0 ? stickyClass : ''}`}>
+                                            <td
+                                                key={col.key}
+                                                className={`text-left p-2 ${index === 0 ? stickyClass : ''}`}
+                                                onClick={col.key === 'actions' ? (e) => e.stopPropagation() : undefined}
+                                            >
                                                 {col.render ? col.render(row, idx) : (row[col.key] ?? '')}
                                             </td>
                                         ))}

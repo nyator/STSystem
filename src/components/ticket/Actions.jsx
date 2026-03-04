@@ -8,6 +8,8 @@ import useTicket from '../../Hooks/useTicket'
 import useDeleteTicket from "../../Hooks/useDeleteTicket"
 import useEditTicket from "../../Hooks/useEditTicket"
 
+import { useForm } from 'react-hook-form'
+
 const EditAction = ({ setOpenModal }) => (
     <button
         onClick={(e) => { e.stopPropagation(); setOpenModal(true) }}
@@ -16,7 +18,6 @@ const EditAction = ({ setOpenModal }) => (
         <LuSquarePen size={15} />
     </button>
 )
-
 
 const DeleteAction = ({ setDeleteModal }) => {
     return (
@@ -32,11 +33,18 @@ const DeleteAction = ({ setDeleteModal }) => {
 export default function Actions({ ticketId }) {
     const [openModal, setOpenModal] = useState(false)
     const [deleteModal, setDeleteModal] = useState(false)
-    // console.log("Action " + openModal)
 
     const { updateTicket, isLoading: isUpdating } = useEditTicket()
     const { deleteTicket, isLoading: isDeleting } = useDeleteTicket()
     const { ticket } = useTicket(ticketId)
+
+    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+        defaultValues: {
+            title: "",
+            email: "",
+            description: "",
+        }
+    })
 
     const handleUpdate = (data) => {
         updateTicket({
@@ -58,6 +66,7 @@ export default function Actions({ ticketId }) {
             }
         })
     }
+    
     return (
         <>
             <div className='flex gap-2'>
@@ -74,12 +83,16 @@ export default function Actions({ ticketId }) {
                 RAction="Update Ticket"
                 RIcon={<LuSquarePen size={16} className="inline mr-2 group-hover:animate-wiggle" />}
                 ticketId={ticketId}
-                submit={() => handleUpdate}
+                submit={handleSubmit(handleUpdate)}
             >
                 <TicketForm
                     ticket={ticket}
                     onSubmit={handleUpdate}
                     isLoading={isUpdating}
+                    register={register}
+                    errors={errors}
+                    reset={reset}
+                    handleSubmit={handleSubmit}
                 />
             </TicketModal>
 

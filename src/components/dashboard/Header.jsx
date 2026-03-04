@@ -17,7 +17,6 @@ function Header({ icon, title, description }) {
     const { register, handleSubmit, trigger, reset, formState: { errors } } = useForm()
 
 
-
     const priorityOptions = [
         { label: "Low", value: "low", onClick: () => setSelectedPriority("low") },
         { label: "Medium", value: "medium", onClick: () => setSelectedPriority("medium") },

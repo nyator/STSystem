@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { LuMail, LuTicketSlash } from 'react-icons/lu'
 import { FormInput, FormTextArea } from '../ui/Input'
 import { OptionButton } from '../ui/Button'
@@ -9,15 +8,16 @@ export default function TicketForm({
     ticket = null,
     onSubmit,
     isLoading = false,
+    register,
+    errors,
+    reset,
+    handleSubmit,
 }) {
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({
-        defaultValues: {
-            title: "",
-            email: "",
-            description: "",
-        }
-    })
+    const [selectedPriority, setSelectedPriority] = useState(ticket?.priority || "low")
+    console.log(selectedPriority)
+    const [selectedStatus, setSelectedStatus] = useState(ticket?.status || "open")
+    const [openDropdown, setOpenDropdown] = useState(null)
 
     // For edit mode, populate form with existing ticket data
     useEffect(() => {
@@ -27,28 +27,23 @@ export default function TicketForm({
                 email: ticket.customerEmail || "",
                 description: ticket.description || "",
             })
+            setSelectedPriority(ticket.priority || "low")
+            setSelectedStatus(ticket.status || "open")
         }
     }, [ticket, reset])
 
-    // Local state for priority and status (used in edit mode)
-    const [selectedPriority, setSelectedPriority] = useState(ticket?.priority || "low")
-    const [selectedStatus, setSelectedStatus] = useState(ticket?.status || "open")
-    const [openDropdown, setOpenDropdown] = useState(null)
 
-    // const handleFormSubmit = (data) => {
-    //     if (isEditMode) {
-    //         onSubmit({
-    //             ...data,
-    //             priority: selectedPriority,
-    //             status: selectedStatus
-    //         })
-    //     } else {
-    //         onSubmit(data)
-    //     }
-    // }
+
+    const handleFormSubmit = (data) => {
+        onSubmit({
+            ...data,
+            priority: selectedPriority,
+            status: selectedStatus
+        })
+    }
 
     return (
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
             <FormInput
                 name="title"
                 placeholder="Enter Ticket Title"
@@ -78,7 +73,6 @@ export default function TicketForm({
                 error={errors.description}
             />
 
-
             <div className='flex space-x-2 justify-center'>
                 <OptionButton
                     title="Priority"
@@ -99,14 +93,6 @@ export default function TicketForm({
                     Status
                 </OptionButton>
             </div>
-
-            {/* <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-300"
-            >
-                {isLoading ? 'Saving...' : isEditMode ? 'Update Ticket' : 'Create Ticket'}
-            </button> */}
         </form>
     )
 }
