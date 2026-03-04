@@ -1,11 +1,12 @@
-import React from 'react'
-import { createPortal } from 'react-dom'  // ← add this
+import React, { useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import Button from '../ui/Button'
 import { LuX } from 'react-icons/lu'
 
 function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submit, TitleIcon, LIcon, RIcon, ticketId }) {
+
     const handleContentClick = (e) => {
-        e.stopPropagation()
+        e.stopPropagation();
     }
 
     if (!isOpen) return null  // ← move the check here
@@ -39,10 +40,12 @@ function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submi
                 </div>
 
                 <div className='flex justify-center gap-2 mt-6'>
-                    <Button variant="default" onClick={onClose}>
-                        {LIcon}
-                        {LAction}
-                    </Button>
+                    {LAction &&
+                        <Button variant="default" onClick={onClose}>
+                            {LIcon}
+                            {LAction}
+                        </Button>
+                    }
                     <Button variant="primary" type="submit" onClick={submit}>
                         {RIcon}
                         {RAction}
@@ -55,3 +58,4 @@ function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submi
 }
 
 export default TicketModal
+

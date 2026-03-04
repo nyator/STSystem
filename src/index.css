@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
 @import "tailwindcss";
 
+
 * {
   font-family: 'Google Sans', sans-serif;
 }
@@ -13,10 +14,11 @@ body {
 
 @theme {
   --animate-wiggle: wiggle 1s ease-in-out infinite;
-  --color-mblack : #333333;
+  --color-mblack: #333333;
 
 
   @keyframes wiggle {
+
     0%,
     100% {
       transform: rotate(-10deg);

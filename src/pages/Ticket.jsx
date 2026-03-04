@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LuTicket, LuCalendarArrowDown, LuCircleCheck, LuShieldCheck, LuSlidersHorizontal, LuArrowDownUp } from "react-icons/lu"
+import { LuTicket, LuSlidersHorizontal, LuArrowDownUp, } from "react-icons/lu"
 
 import Header from '../components/dashboard/Header';
 import FilterButton from '../components/ui/FilterButton';
@@ -14,6 +14,7 @@ import useSort from '../Hooks/useSort';
 import TicketSearch from '../components/ticket/TicketSearch';
 
 import TableSkeleton from "../components/ui/TableSkeleton";
+import DatePicker from "../components/ui/DatePicker";
 
 // Filter options
 const statusOptions = [
@@ -29,9 +30,13 @@ const priorityOptions = [
 ]
 
 const dateOptions = [
-    { value: 'newest', label: 'Newest First' },
-    { value: 'oldest', label: 'Oldest First' }
+    { value: 'newest', label: 'Newest' },
+    { value: 'oldest', label: 'Oldest' }
 ]
+
+// const dateOptions = [
+//     <DatePicker/>
+// ]
 
 
 // Sort options for the sort menu
@@ -70,11 +75,11 @@ const filterGroups = [
         filterType: 'priority',
         options: priorityOptions
     },
-    {
-        title: 'Date',
-        filterType: 'date',
-        options: dateOptions
-    }
+    // {
+    //     title: 'Date',
+    //     filterType: 'date',
+    //     options: dateOptions
+    // }
 ]
 
 
@@ -83,8 +88,6 @@ function Ticket() {
     const { data, error, isLoading } = useTickets()
     const [isOpen, setIsOpen] = useState(null)
     const [searchedTickets, setSearchedTickets] = useState(null)
-
-
 
     // Use the filter hook
     const { filteredTickets, filters, setFilter, clearFilters, hasActiveFilters } = useFilter(data || []);
@@ -111,13 +114,8 @@ function Ticket() {
         currentPage * itemsPerPage
     );
 
-
     const handlePrev = () => setCurrentPage((prev) => Math.max(1, prev - 1));
     const handleNext = () => setCurrentPage((prev) => Math.min(totalPages, prev + 1));
-
-    // if (searchedTickets) {
-    //     setCurrentPage(1)
-    // }
 
     useEffect(() => {
         setCurrentPage(1)
@@ -138,9 +136,8 @@ function Ticket() {
             <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] h-[calc(100vh-6rem)] m-2 rounded-2xl'>
                 <div className='sticky top-18 z-5 bg-white flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 mb-5 py-2'>
                     <TicketSearch onResults={setSearchedTickets} />
-
+                    {/* <DatePicker /> */}
                     <div className='flex items-center gap-2'>
-
                         {/* Sorting Button */}
                         <FilterButton
                             title="Sort"
@@ -178,6 +175,7 @@ function Ticket() {
                             setFilter={setFilter}
                             clearFilters={clearFilters}
                             hasActiveFilters={hasActiveFilters}
+                            otherActions={<DatePicker onRangeChange={(range) => setFilter('dateRange', range)} />}
                         />
                     </div>
                 </div>
@@ -194,6 +192,7 @@ function Ticket() {
                         columns={[
                             { key: 'id', title: 'ID' },
                             { key: 'title', title: 'Title' },
+                            // {key: 'description', title: 'Description'},
                             { key: 'customer', title: 'Customer' },
                             { key: 'priority', title: 'Priority' },
                             { key: 'status', title: 'Status' },
@@ -211,7 +210,7 @@ function Ticket() {
                                     id: t.id,
                                     title: t.title,
                                     customer: t.customerEmail || '',
-                                    description: t.description || '',
+                                    // description: t.description || '',
                                     priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />,
                                     status: <StatusBadge status={fmt(t.status) || 'open'} />,
                                     createdAt: t.createdAt ? new Date(t.createdAt).toUTCString().slice(0, -7) : '',
@@ -226,6 +225,7 @@ function Ticket() {
                         onNext={handleNext}
                     />
                 }
+
             </div>
         </div>
     )

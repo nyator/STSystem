@@ -44,8 +44,7 @@ function OptionButton({ children, options, selected, isOpen, setIsOpen, title })
             <button
               key={opt.value}
               type="button"
-              className={`w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center justify-between ${selected === opt.value ? 'bg-blue-50 text-blue-600 font-medium' : ''
-                }`}
+              className={`w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center justify-between ${selected === opt.value ? 'bg-blue-50 text-blue-600 font-medium' : ''}`}
               onClick={() => {
                 setIsOpen(false);
                 if (opt.onClick) opt.onClick();

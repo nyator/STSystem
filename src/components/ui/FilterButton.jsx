@@ -1,5 +1,5 @@
 
-function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, setFilter, clearFilters, hasActiveFilters }) {
+function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, setFilter, clearFilters, hasActiveFilters, otherActions }) {
     const handleOptionClick = (filterType, value) => {
         setFilter(filterType, value)
         setIsOpen(false)
@@ -19,7 +19,7 @@ function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, s
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 top-full mt-2 w-38 bg-white border-2 border-gray-100 rounded-lg shadow-lg p-2 max-h-96 overflow-y-auto z-20">
+                <div className="absolute right-0 top-full mt-2 w-38 bg-white border-2 border-gray-100 rounded-b-lg shadow-lg p-2 max-h-96 overflow-y-auto z-20">
                     {filterGroups.map((group, groupIndex) => (
                         <div key={group.title} className={groupIndex > 0 ? 'border-t border-gray-200 mt-2 pt-2' : ''}>
                             <div className="text-xs font-semibold text-gray-800 mb-1 px-1">{group.title}</div>
@@ -27,7 +27,7 @@ function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, s
                                 <button
                                     key={option.value}
                                     onClick={() => handleOptionClick(group.filterType, option.value)}
-                                    className={`w-full text-left text-nowrap flex items-center justify-between px-3 py-2 text-xs rounded-md transition-all ease-in-out duration-300 focus:outline-none ${filters[group.filterType] === option.value
+                                    className={`w-full text-left text-nowrap flex items-center justify-between px-3 py-2 text-xs rounded-lg transition-all ease-in-out duration-300 focus:outline-none ${filters[group.filterType] === option.value
                                         ? 'bg-blue-500 text-white'
                                         : 'text-gray-700 hover:bg-gray-100'
                                         }`}
@@ -37,10 +37,15 @@ function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, s
                             ))}
                         </div>
                     ))}
+
+                    {otherActions && (
+                        <>{otherActions}</>
+                    )}
+
                     {hasActiveFilters && (
                         <button
                             onClick={() => { clearFilters(); setIsOpen(false); }}
-                            className="w-full text-left px-3 py-2 text-xs text-red-600 hover:bg-red-50 rounded-md transition-all ease-in-out duration-300 mt-2 border-t border-gray-200"
+                            className="w-full text-left px-3 py-2 text-xs text-red-600 hover:bg-red-50 rounded-b-md transition-all ease-in-out duration-300 mt-2 border-t border-gray-200"
                         >
                             Clear all filters
                         </button>

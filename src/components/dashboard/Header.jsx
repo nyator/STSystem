@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 
 function Header({ icon, title, description }) {
     const [openModal, setOpenModal] = useState(false)
-    const [selectedPriority, setSelectedPriority] = useState("low")  // ← was useState()
+    const [selectedPriority, setSelectedPriority] = useState("low")
     const [isOpen, setIsOpen] = useState(null)
 
     const { createTicket, isLoading } = useCreateTicket();
@@ -25,11 +25,11 @@ function Header({ icon, title, description }) {
     ]
 
     const onSubmit = (data) => {
-        createTicket({ ...data, priority: selectedPriority }, {  // ← add selectedPriority here
+        createTicket({ ...data, priority: selectedPriority }, {
             onSuccess: () => {
                 toast.success("Tickets Created!")
                 reset()
-                setSelectedPriority(undefined)  // ← reset priority too
+                setSelectedPriority(undefined)
                 setOpenModal(false)
             },
             onError: () => {
@@ -47,14 +47,14 @@ function Header({ icon, title, description }) {
                         <div className="rounded-lg bg-blue-50 p-1 w-fit text-blue-500">
                             {icon}
                         </div>
-                        <h1 className='text-xl font-medium hidden sm:block'>{title}</h1>
+                        <h1 className='text-xl font-medium'>{title}</h1>
                     </div>
                     <p className='text-gray-400 text-xs hidden sm:block'>{description}</p>
                 </div>
 
                 <Button variant="primary" onClick={() => setOpenModal(true)}>
                     <LuPlus size={16} className="inline mr-2 group-hover:animate-wiggle" />
-                    Create Ticket
+                    New Ticket
                 </Button>
             </div>
 

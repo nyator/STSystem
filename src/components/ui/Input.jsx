@@ -19,7 +19,7 @@ function SearchInput({ register, error, formfields, ...props }) {
 }
 
 
-function FormInput({ register, name, placeholder, error, formfields, icon, ...props }) {
+function FormInput({ register, readOnly, name, placeholder, error, formfields, icon, ...props }) {
     return (
         <div className="relative mb-2">
             <input
@@ -27,6 +27,7 @@ function FormInput({ register, name, placeholder, error, formfields, icon, ...pr
                 placeholder={placeholder}
                 className={baseInputClasses}
                 {...props}
+                {...(readOnly && { readOnly })}
             />
             {icon ? icon : <LuTextSelect className="absolute left-3 top-3 text-gray-700" size={15} />}
             {error && <span className="text-red-500 text-xs mt-1 block">{error.message}</span>}
@@ -34,13 +35,14 @@ function FormInput({ register, name, placeholder, error, formfields, icon, ...pr
     )
 }
 
-function FormTextArea({ register, name, placeholder, formfields, error, ...props }) {
+function FormTextArea({ register, readOnly, name, placeholder, formfields, error, ...props }) {
     return (
         <div className="relative mb-2">
             <textarea
+                {...(readOnly && { readOnly })}
                 {...register(name, formfields)}
                 placeholder={placeholder}
-                className="w-full p-2 pl-8 text-mblack font-medium text-xs bg-gray-50 border-2 border-gray-100 min-h-20 max-h-32 rounded-lg focus:outline-none focus:bg-gray-100 transition-colors duration-300"
+                className="w-full p-2 pl-8 text-mblack font-medium text-xs bg-gray-50 border-2 border-gray-100 min-h-28 max-h-42 rounded-lg focus:outline-none focus:bg-gray-100 transition-colors duration-300"
                 {...props}
             />
             <LuTextCursorInput className="absolute left-3 top-3 text-gray-700" size={15} />

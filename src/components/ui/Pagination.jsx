@@ -10,7 +10,7 @@ function Pagination({ currentPage, totalPages, totalItems, onPrev, onNext, itemL
                 <p>|</p>
                 <p>page {currentPage} of {totalPages}</p>
             </div>
-            <div className='flex flex-row space-x-1'>
+            <div className='flex flex-row space-x-1 '>
                 <Button onClick={onPrev} disabled={currentPage === 1}>
                     <LuChevronLeft className='text-lg' />
                     <span className='hidden md:inline pr-2'>Back</span>

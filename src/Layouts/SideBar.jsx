@@ -17,7 +17,7 @@ export default function SideBar() {
                 setIsOpen(false)
             } else {
                 setIsOpen(true)
-            } 
+            }
         }
         handleResize()
         window.addEventListener('resize', handleResize)
@@ -30,7 +30,8 @@ export default function SideBar() {
 
     const menuItems = [
         { icon: LuLayoutDashboard, label: 'Dashboard' },
-        { icon: LuTicket, label: 'Tickets' }
+        { icon: LuTicket, label: 'Tickets' },
+        // { icon: LuTicket, label: 'New Ticket' }
     ];
 
     return (

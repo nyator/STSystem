@@ -39,11 +39,15 @@ function Dashboard() {
             </div>
 
             <div>
-                <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] lg:h-[calc(100vh-6rem)] m-2 rounded-2xl'>
+                <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'>
                     <Cards />
-
-                    <div className='flex flex-col lg:flex-row justify-around w-full mt-1 gap-5'>
-                        <div className='lg:w-3/5'>
+                    <div className='flex flex-col sm:flex-col-reverse justify-around w-full mt-1 gap-5'>
+                        <div className='hidden md:flex  bg-gray-50 h-fit p-3 rounded-2xl'>
+                            <div className='w-2/5'>
+                                <Chart />
+                            </div>
+                        </div>
+                        <div className='w-full'>
                             <Table
                                 title="Opened Tickets"
                                 columns={[
@@ -63,7 +67,8 @@ function Dashboard() {
                                         return {
                                             id: t.id,
                                             title: t.title,
-                                            priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />, createdAt: t.createdAt ? new Date(t.createdAt).toGMTString().slice(0, -7) : '',
+                                            priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />,
+                                            createdAt: t.createdAt ? new Date(t.createdAt).toGMTString().slice(0, -7) : '',
                                             actions: <Actions ticketId={t.id} />
                                         };
                                     })
@@ -76,10 +81,6 @@ function Dashboard() {
                                 itemLabel="Tickets"
                             />
                         </div>
-                        <div className='lg:w-2/5 lg:mt-8 bg-gray-50 h-fit p-3 rounded-2xl'>
-                            <Chart />
-                        </div>
-
                     </div>
                 </div>
             </div>

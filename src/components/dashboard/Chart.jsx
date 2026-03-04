@@ -23,7 +23,7 @@ const Chart = () => {
                 bottom: 0,
             }}
         >
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid strokeDasharray="9 9" />
             <XAxis dataKey="name" />
             <YAxis width="auto" />
             <Tooltip />
