@@ -3,6 +3,8 @@ import { LuChevronRight, LuLayoutDashboard, LuTicket } from 'react-icons/lu';
 import MainContent from './MainContent';
 import { getLocalStorage, setLocalStorage } from "../Hooks/useLocalStorage"
 
+import logo from '../assets/logo.png'
+
 export default function SideBar() {
     const [isOpen, setIsOpen] = useState(true);
 
@@ -41,8 +43,10 @@ export default function SideBar() {
                     } bg-white transition-all duration-300 h-full flex flex-col border-r border-gray-200 overflow-hidden`}>
 
                 {/* Header */}
-                <div className={`flex items-center ${isOpen ? 'justify-between' : 'justify-center'} px-2 py-5 border-b border-gray-200`}>
-                    {isOpen && <h1 className="text-xs font-bold text-nowrap pl-5">HDesk Lite</h1>}
+                <div className={`flex items-center ${isOpen ? 'justify-between' : 'justify-center'} px-2 py-5 border-b mx-2 border-gray-200`}>
+                    {isOpen && <img src={logo} className='w-8 h-8 grayscale' />}
+                    {/* {isOpen && <h1 className="text-xs font-bold text-nowrap pl-5">HDesk Lite</h1>} */}
+
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="p-2 hover:bg-gray-200 bg-gray-50 rounded-lg border-2 border-gray-100"
