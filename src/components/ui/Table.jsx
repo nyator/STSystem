@@ -22,22 +22,24 @@ function Table({ columns, title, data = [], currentPage = 1, totalPages = 1, tot
     const [openDropdown, setOpenDropdown] = useState(null)
 
     const priorityOptions = [
-        { label: "Low", value: "low", onClick: () => setSelectedPriority("low") },
-        { label: "Medium", value: "medium", onClick: () => setSelectedPriority("medium") },
-        { label: "High", value: "high", onClick: () => setSelectedPriority("high") },
+        { label: "Low", value: "low", onClick: () => handlePriorityChange("low") },
+        { label: "Medium", value: "medium", onClick: () => handlePriorityChange("medium") },
+        { label: "High", value: "high", onClick: () => handlePriorityChange("high") },
     ]
 
     const statusOptions = [
-        { label: "Open", value: "open", onClick: () => setSelectedStatus("open") },
-        { label: "In-progress", value: "in-progress", onClick: () => setSelectedStatus("in-progress") },
-        { label: "Resolved", value: "resolved", onClick: () => setSelectedStatus("resolved") },
+        { label: "Open", value: "open", onClick: () => handleStatusChange("open") },
+        { label: "In-progress", value: "in-progress", onClick: () => handleStatusChange("in-progress") },
+        { label: "Resolved", value: "resolved", onClick: () => handleStatusChange("resolved") },
     ]
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    const { register, handleSubmit, reset, setValue, getValues, formState: { errors } } = useForm({
         defaultValues: {
             title: "",
             email: "",
             description: "",
+            priority: "low",
+            status: "open",
         }
     })
 
@@ -50,15 +52,33 @@ function Table({ columns, title, data = [], currentPage = 1, totalPages = 1, tot
             })
             setSelectedPriority(ticket.priority || "low")
             setSelectedStatus(ticket.status || "open")
+            // Set values in react-hook-form
+            setValue("priority", ticket.priority || "low")
+            setValue("status", ticket.status || "open")
         }
-    }, [ticket, reset])
+    }, [ticket, reset, setValue])
+
+    // Update react-hook-form when local state changes
+    const handlePriorityChange = (value) => {
+        setSelectedPriority(value)
+        setValue("priority", value)
+    }
+
+    const handleStatusChange = (value) => {
+        setSelectedStatus(value)
+        setValue("status", value)
+    }
 
     const onSubmit = (data) => {
+        // Get the current values from react-hook-form to ensure we have the latest
+        const formValues = getValues()
         updateTicket({
-            ticket,
-            ...data,
-            priority: selectedPriority,
-            status: selectedStatus
+            ticketId: ticket.id,
+            title: data.title,
+            email: data.email,
+            description: data.description,
+            priority: formValues.priority || selectedPriority,
+            status: formValues.status || selectedStatus
         })
         setSelectedRowId(null)
         toast.success("Ticket Updated Successfully")

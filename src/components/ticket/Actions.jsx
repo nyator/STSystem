@@ -38,11 +38,13 @@ export default function Actions({ ticketId }) {
     const { deleteTicket, isLoading: isDeleting } = useDeleteTicket()
     const { ticket } = useTicket(ticketId)
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    const { register, handleSubmit, reset, setValue, getValues, formState: { errors } } = useForm({
         defaultValues: {
             title: "",
             email: "",
             description: "",
+            priority: "low",
+            status: "open",
         }
     })
 
@@ -93,6 +95,8 @@ export default function Actions({ ticketId }) {
                     errors={errors}
                     reset={reset}
                     handleSubmit={handleSubmit}
+                    setValue={setValue}
+                    getValues={getValues}
                 />
             </TicketModal>
 

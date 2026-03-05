@@ -12,10 +12,10 @@ export default function TicketForm({
     errors,
     reset,
     handleSubmit,
+    setValue,
+    getValues,
 }) {
-
     const [selectedPriority, setSelectedPriority] = useState(ticket?.priority || "low")
-    console.log(selectedPriority)
     const [selectedStatus, setSelectedStatus] = useState(ticket?.status || "open")
     const [openDropdown, setOpenDropdown] = useState(null)
 
@@ -29,16 +29,46 @@ export default function TicketForm({
             })
             setSelectedPriority(ticket.priority || "low")
             setSelectedStatus(ticket.status || "open")
+            // Set values in react-hook-form
+            if (setValue) {
+                setValue("priority", ticket.priority || "low")
+                setValue("status", ticket.status || "open")
+            }
         }
-    }, [ticket, reset])
+    }, [ticket, reset, setValue])
 
+    // Update react-hook-form when local state changes
+    const handlePriorityChange = (value) => {
+        setSelectedPriority(value)
+        if (setValue) {
+            setValue("priority", value)
+        }
+    }
 
+    const handleStatusChange = (value) => {
+        setSelectedStatus(value)
+        if (setValue) {
+            setValue("status", value)
+        }
+    }
 
     const handleFormSubmit = (data) => {
+        // Get the current values from react-hook-form to ensure we have the latest
+        let priority = selectedPriority
+        let status = selectedStatus
+        
+        if (getValues) {
+            const formValues = getValues()
+            priority = formValues.priority || selectedPriority
+            status = formValues.status || selectedStatus
+        }
+        
         onSubmit({
-            ...data,
-            priority: selectedPriority,
-            status: selectedStatus
+            title: data.title,
+            email: data.email,
+            description: data.description,
+            priority,
+            status
         })
     }
 
@@ -76,7 +106,7 @@ export default function TicketForm({
             <div className='flex space-x-2 justify-center'>
                 <OptionButton
                     title="Priority"
-                    options={priorityOptions.map(opt => ({ ...opt, onClick: () => setSelectedPriority(opt.value) }))}
+                    options={priorityOptions.map(opt => ({ ...opt, onClick: () => handlePriorityChange(opt.value) }))}
                     selected={selectedPriority}
                     isOpen={openDropdown === 'priority'}
                     setIsOpen={(open) => setOpenDropdown(open ? 'priority' : null)}
@@ -85,7 +115,7 @@ export default function TicketForm({
                 </OptionButton>
                 <OptionButton
                     title="Status"
-                    options={statusOptions.map(opt => ({ ...opt, onClick: () => setSelectedStatus(opt.value) }))}
+                    options={statusOptions.map(opt => ({ ...opt, onClick: () => handleStatusChange(opt.value) }))}
                     selected={selectedStatus}
                     isOpen={openDropdown === 'status'}
                     setIsOpen={(open) => setOpenDropdown(open ? 'status' : null)}

@@ -35,7 +35,7 @@ export default function SideBar() {
     ];
 
     return (
-        <div className="flex h-screen max-w-360">
+        <div className="flex h-screen">
             <div
                 className={`${isOpen ? 'w-38' : 'w-12'
                     } bg-white transition-all duration-300 h-full flex flex-col border-r border-gray-200 overflow-hidden`}>
