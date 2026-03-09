@@ -27,9 +27,9 @@ function OptionButton({ children, options, selected, isOpen, setIsOpen, title })
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`${optionBaseClasses} ${isOpen ? 'bg-gray-200 text-gray-800' : 'hover:bg-gray-200'}`}
+        className={`${optionBaseClasses} ${isOpen ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
       >
-        {title && <p className='text-center mr-2 text-gray-500'>{title} :</p>}
+        {title && <p className='text-center mr-2 text-gray-500 dark:text-gray-400'>{title} :</p>}
 
         {displayText}
         <LuChevronDown
@@ -39,12 +39,12 @@ function OptionButton({ children, options, selected, isOpen, setIsOpen, title })
       </button>
 
       {isOpen && (
-        <div className="absolute -top-30 left-0 mt-2 w-full bg-white border border-gray-200 rounded-lg min-h-12 min-w-24 shadow-lg z-10">
+        <div className="absolute -top-30 left-0 mt-2 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg min-h-12 min-w-24 shadow-lg z-10">
           {options && options.map((opt) => (
             <button
               key={opt.value}
               type="button"
-              className={`w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center justify-between ${selected === opt.value ? 'bg-blue-50 text-blue-600 font-medium' : ''}`}
+              className={`w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-between ${selected === opt.value ? 'bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-400 font-medium' : ''}`}
               onClick={() => {
                 setIsOpen(false);
                 if (opt.onClick) opt.onClick();

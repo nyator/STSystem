@@ -8,9 +8,9 @@ import Actions from '../components/ticket/Actions';
 import StatusBadge from '../components/ui/StatusBadge';
 import PriorityBadge from '../components/ui/PriorityBadge';
 
-import useTickets from '../Hooks/useTickets';
-import useFilter from '../Hooks/useFilter';
-import useSort from '../Hooks/useSort';
+import useTickets from '../Hooks/Tickets/useTickets';
+import useFilter from '../Hooks/Tickets/useFilter';
+import useSort from '../Hooks/Tickets/useSort';
 import TicketSearch from '../components/ticket/TicketSearch';
 
 import TableSkeleton from "../components/ui/TableSkeleton";
@@ -33,11 +33,6 @@ const dateOptions = [
     { value: 'newest', label: 'Newest' },
     { value: 'oldest', label: 'Oldest' }
 ]
-
-// const dateOptions = [
-//     <DatePicker/>
-// ]
-
 
 // Sort options for the sort menu
 const sortOptions = [
@@ -74,12 +69,7 @@ const filterGroups = [
         title: 'Priority',
         filterType: 'priority',
         options: priorityOptions
-    },
-    // {
-    //     title: 'Date',
-    //     filterType: 'date',
-    //     options: dateOptions
-    // }
+    }
 ]
 
 
@@ -124,7 +114,7 @@ function Ticket() {
 
     return (
         <div>
-            <div className='sticky top-0 z-10 bg-white p-4 w-full'>
+            <div className='sticky top-0 z-10 bg-white dark:bg-gray-800 p-4 w-full'>
                 <Header
                     icon={<LuTicket size={20} className="inline" />}
                     title="Tickets"
@@ -133,8 +123,8 @@ function Ticket() {
             </div>
 
 
-            <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] h-[calc(100vh-6rem)] m-2 rounded-2xl'>
-                <div className='sticky top-18 z-5 bg-white flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 mb-5 py-2'>
+            <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] h-[calc(100vh-6rem)] m-2 rounded-2xl'>
+                <div className='sticky top-18 z-5 bg-white dark:bg-gray-800 flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 dark:border-gray-700 mb-5 py-2'>
                     <TicketSearch onResults={setSearchedTickets} />
                     {/* <DatePicker /> */}
                     <div className='flex items-center gap-2'>

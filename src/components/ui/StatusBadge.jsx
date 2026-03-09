@@ -3,9 +3,9 @@ import { LuDot } from 'react-icons/lu';
 function StatusBadge({ status = "Open" }) {
 
     const varaintColors = {
-        "in progress": "bg-yellow-100 text-yellow-600",
-        resolved: "bg-green-100 text-green-700",
-        open: "bg-red-100 text-red-700",
+        "in progress": "bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-400",
+        resolved: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-400",
+        open: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-400",
     }
 
     const baseClass = "max-w-sm w-fit px-2 text-nowrap rounded-md py-1 mx-auto font-medium flex items-center justify-center text-xs"

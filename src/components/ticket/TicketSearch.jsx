@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
 import { useQuery } from "@tanstack/react-query"
 import { useEffect } from 'react'
-import useDebounce from '../../hooks/useDebounce'
+import useDebounce from '../../Hooks/Tickets/useDebounce'
 import Input from '../ui/Input'
 import { getTickets } from '../../utils/TicketUtil'
 

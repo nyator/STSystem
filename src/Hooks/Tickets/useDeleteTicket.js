@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { deleteTicket } from "../utils/TicketUtil"
+import { deleteTicket } from "../../utils/TicketUtil"
 
 function useDeleteTicket() {
     const queryClient = useQueryClient()

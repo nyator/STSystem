@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { LuPlus, LuMail } from 'react-icons/lu';
 import TicketModal from '../ticket/TicketModal';
 import { FormInput, FormTextArea } from '../ui/Input'
-import useCreateTicket from '../../Hooks/useCreateTicket';
+import useCreateTicket from '../../Hooks/Tickets/useCreateTicket';
 import toast from 'react-hot-toast';
 
 
@@ -42,13 +42,13 @@ function Header({ icon, title, description }) {
         <div>
             <div className='flex items-end justify-between z-0'>
                 <div className='block'>
-                    <div className='flex justify-start w-full items-end'>
-                        <div className="rounded-lg bg-blue-50 p-1 w-fit text-blue-500">
+                    <div className='flex justify-start w-full items-end space-x-2'>
+                        <div className="rounded-lg bg-blue-50 dark:bg-blue-900 p-1  w-fit text-blue-500">
                             {icon}
                         </div>
-                        <h1 className='text-xl font-medium'>{title}</h1>
+                        <h1 className='text-xl font-semibold dark:text-white'>{title}</h1>
                     </div>
-                    <p className='text-gray-400 text-xs hidden sm:block'>{description}</p>
+                    <p className='text-gray-400 dark:text-gray-500 text-xs hidden sm:block'>{description}</p>
                 </div>
 
                 <Button variant="primary" onClick={() => setOpenModal(true)}>
@@ -77,7 +77,7 @@ function Header({ icon, title, description }) {
                     <FormInput
                         name="email"
                         placeholder="Enter customer email"
-                        icon={<LuMail className="absolute left-3 top-3 text-gray-700" size={15} />}
+                        icon={<LuMail className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />}
                         register={register}
                         formfields={{
                             required: "Email is required",

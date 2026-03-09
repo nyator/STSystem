@@ -4,16 +4,16 @@ import { useState } from 'react'
 import { LuTrash2, LuSquarePen, LuDelete, LuTicketSlash } from 'react-icons/lu'
 import TicketModal from './TicketModal'
 import TicketForm from './TicketForm'
-import useTicket from '../../Hooks/useTicket'
-import useDeleteTicket from "../../Hooks/useDeleteTicket"
-import useEditTicket from "../../Hooks/useEditTicket"
+import useTicket from '../../Hooks/Tickets/useTicket'
+import useDeleteTicket from "../../Hooks/Tickets/useDeleteTicket"
+import useEditTicket from "../../Hooks/Tickets/useEditTicket"
 
 import { useForm } from 'react-hook-form'
 
 const EditAction = ({ setOpenModal }) => (
     <button
         onClick={(e) => { e.stopPropagation(); setOpenModal(true) }}
-        className="text-blue-500 bg-blue-50 hover:bg-blue-200 p-1.5 rounded-md transition-all ease-in-out duration-300"
+        className="text-blue-500 bg-blue-50 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 p-1.5 rounded-md transition-all ease-in-out duration-300"
     >
         <LuSquarePen size={15} />
     </button>
@@ -23,7 +23,7 @@ const DeleteAction = ({ setDeleteModal }) => {
     return (
         <button
             onClick={(e) => { e.stopPropagation(); setDeleteModal(true) }}
-            className="text-red-500 bg-red-50 hover:bg-red-200 p-1.5 rounded-md transition-all ease-in-out duration-300"
+            className="text-red-500 bg-red-50 dark:bg-red-900 hover:bg-red-200 dark:hover:bg-red-800 p-1.5 rounded-md transition-all ease-in-out duration-300"
         >
             <LuTrash2 size={15} />
         </button>

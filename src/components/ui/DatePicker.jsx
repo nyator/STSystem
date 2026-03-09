@@ -14,8 +14,8 @@ export default function DatePicker({ onRangeChange = () => { } }) {
     };
 
     return (
-        <div className="flex flex-col items-center gap-2 text-sm bg-white border-t border-gray-200 mt-2 pt-2">
-            <p className='text-xs text-start w-full font-semibold text-gray-800 mb-1 px-1' >Date </p>
+        <div className="flex flex-col items-center gap-2 text-sm bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-2 pt-2">
+            <p className='text-xs text-start w-full font-semibold text-gray-800 dark:text-gray-200 mb-1 px-1' >Date </p>
             <div className="text-xs flex flex-col">
                 <input
                     type="date"
@@ -24,7 +24,7 @@ export default function DatePicker({ onRangeChange = () => { } }) {
                         setStartDate(e.target.value);
                         handleChange(e.target.value, endDate);
                     }}
-                    className="outline-none text-gray-600 cursor-pointer  border border-gray-200 rounded-lg px-2 py-1.5 hover:bg-gray-100 transition-all duration-200 ease-in"
+                    className="outline-none text-gray-600 dark:text-gray-300 cursor-pointer bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-2 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-200 ease-in"
                 />
             </div>
             <div className="text-xs flex flex-col">
@@ -36,7 +36,7 @@ export default function DatePicker({ onRangeChange = () => { } }) {
                         setEndDate(e.target.value);
                         handleChange(startDate, e.target.value);
                     }}
-                    className="outline-none text-gray-600 cursor-pointer  border border-gray-200 rounded-lg px-2 py-1.5 hover:bg-gray-100 transition-all duration-200 ease-in"
+                    className="outline-none text-gray-600 dark:text-gray-300 cursor-pointer bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-2 py-1.5 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-200 ease-in"
                 />
             </div>
         </div>

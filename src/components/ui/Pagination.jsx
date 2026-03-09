@@ -6,9 +6,9 @@ function Pagination({ currentPage, totalPages, totalItems, onPrev, onNext, itemL
     return (
         <div className="w-full flex flex-row items-center justify-between mt-2">
             <div className='flex flex-row items-center space-x-1'>
-                <p>{totalItems} {itemLabel}</p>
-                <p>|</p>
-                <p>page {currentPage} of {totalPages}</p>
+                <p className="dark:text-gray-300">{totalItems} {itemLabel}</p>
+                <p className="dark:text-gray-300">|</p>
+                <p className="dark:text-gray-300">page {currentPage} of {totalPages}</p>
             </div>
             <div className='flex flex-row space-x-1 '>
                 <Button onClick={onPrev} disabled={currentPage === 1}>

@@ -4,7 +4,7 @@ import Header from '../components/dashboard/Header';
 import Cards from '../components/dashboard/Cards';
 import Table from '../components/ui/Table';
 import Chart from '../components/dashboard/Chart';
-import useTickets from '../Hooks/useTickets';
+import useTickets from '../Hooks/Tickets/useTickets';
 
 import PriorityBadge from '../components/ui/PriorityBadge';
 import Actions from '../components/ticket/Actions';
@@ -30,7 +30,7 @@ function Dashboard() {
 
     return (
         <div>
-            <div className='sticky top-0 z-10 bg-white p-4 w-full'>
+            <div className='sticky top-0 z-10 bg-white dark:bg-gray-800 p-4 w-full'>
                 <Header
                     icon={<LuLayoutDashboard size={20} className="inline" />}
                     title="Dashboard"
@@ -39,10 +39,10 @@ function Dashboard() {
             </div>
 
             <div>
-                <div className='flex flex-col items-start bg-white p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'>
+                <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'>
                     <Cards />
                     <div className='flex flex-col sm:flex-col-reverse justify-around w-full mt-1 gap-5'>
-                        <div className='hidden md:flex  bg-gray-50 h-fit p-3 rounded-2xl'>
+                        <div className='hidden md:flex bg-gray-50 dark:bg-gray-900 h-fit p-3 rounded-2xl'>
                             <div className='w-2/5'>
                                 <Chart />
                             </div>

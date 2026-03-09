@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getTicket } from "../utils/TicketUtil"
+import { getTicket } from "../../utils/TicketUtil"
 
 function useTicket(ticketId) {
     const { data, error, isLoading } = useQuery({

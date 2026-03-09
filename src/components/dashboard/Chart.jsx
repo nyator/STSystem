@@ -1,5 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, } from 'recharts';
-import useTickets from '../../Hooks/useTickets';
+import useTickets from '../../Hooks/Tickets/useTickets';
 
 const Chart = () => {
     const { data: tickets = [] } = useTickets()

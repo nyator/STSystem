@@ -1,4 +1,4 @@
-import useTickets from "../../Hooks/useTickets"
+import useTickets from "../../Hooks/Tickets/useTickets"
 import Card from "../ui/Card"
 
 

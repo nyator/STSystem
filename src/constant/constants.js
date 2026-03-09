@@ -2,10 +2,10 @@ export const variants = {
     success: "bg-green-100 text-green-700 border-green-200",
     error: "bg-red-100 text-red-700 border-red-200",
 }
-export const optionBaseClasses = "bg-gray-100 mb-2 px-4 p-2 text-mblack font-medium rounded-full items-center flex text-xs transition-all ease-in-out duration-300";
+export const optionBaseClasses = "bg-gray-100 dark:bg-gray-700 mb-2 px-4 p-2 text-mblack dark:text-gray-200 font-medium rounded-full items-center flex text-xs transition-all ease-in-out duration-300";
 export const baseClasses = "group border-2 text-nowrap p-2 rounded-lg font-medium text-xs transition-all ease-in-out duration-300 flex items-center justify-between";
 export const variantClasses = {
-    default: "bg-gray-50 hover:bg-gray-200 hover:border-gray-50 border-gray-100 text-mblack",
+    default: "bg-gray-50 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 hover:border-gray-50 dark:hover:border-gray-600 border-gray-100 dark:border-gray-600 text-mblack dark:text-gray-200",
     primary: "bg-blue-500 text-white hover:bg-blue-600 border-blue-500",
     secondary: "bg-gray-500 text-white hover:bg-gray-600 border-gray-500",
 };

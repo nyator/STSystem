@@ -6,8 +6,8 @@ import toast from 'react-hot-toast';
 import { FormInput, FormTextArea } from "./Input";
 import { LuSquarePen, LuMail, LuTicketSlash } from 'react-icons/lu'
 import { useForm } from 'react-hook-form'
-import useTicket from "../../Hooks/useTicket";
-import useEditTicket from "../../Hooks/useEditTicket";
+import useTicket from "../../Hooks/Tickets/useTicket";
+import useEditTicket from "../../Hooks/Tickets/useEditTicket";
 import { OptionButton } from '../ui/Button'
 
 function Table({ columns, title, data = [], currentPage = 1, totalPages = 1, totalItems = 0, onPrev, onNext }) {
@@ -84,8 +84,8 @@ function Table({ columns, title, data = [], currentPage = 1, totalPages = 1, tot
         toast.success("Ticket Updated Successfully")
     }
 
-    const stickyHeaderClass = "sticky left-0 z-0 bg-gray-50 rounded-tl-xl";
-    const stickyClass = "sticky left-0 z-0 bg-white group-hover:bg-gray-50 text-nowrap transition-all duration-100 ease-in";
+    const stickyHeaderClass = "sticky left-0 z-0 bg-gray-50 dark:bg-gray-700 rounded-tl-xl";
+    const stickyClass = "sticky left-0 z-0 bg-white dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-700 text-nowrap transition-all duration-100 ease-in";
 
     return (
         <>
@@ -112,7 +112,7 @@ function Table({ columns, title, data = [], currentPage = 1, totalPages = 1, tot
                     <FormInput
                         name="email"
                         placeholder="Enter customer email"
-                        icon={<LuMail className="absolute left-3 top-3 text-gray-700" size={15} />}
+                        icon={<LuMail className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />}
                         register={register}
                         formfields={{
                             required: "Email is required",
@@ -155,14 +155,14 @@ function Table({ columns, title, data = [], currentPage = 1, totalPages = 1, tot
             </TicketModal>
 
             <div className="flex-col flex items-center w-full">
-                <h1 className="font-black text-2xl">{title}</h1>
-                <div className='flex flex-col rounded-xl border border-gray-200 items-center w-full max-h-screen overflow-auto'>
+                <h1 className="font-black text-2xl dark:text-white">{title}</h1>
+                <div className='flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 items-center w-full max-h-screen overflow-auto'>
                     <div className="w-full relative overflow-x-auto rounded-t-xl">
                         <table className="w-full">
-                            <thead className="border-b border-gray-200 bg-gray-50 text-xs font-medium text-nowrap sticky top-0">
+                            <thead className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-xs font-medium text-nowrap sticky top-0">
                                 <tr className="w-full">
                                     {cols.map((col, index) => (
-                                        <th key={col.key} className={`text-left p-3 ${index === 0 ? stickyHeaderClass : ''}`}>
+                                        <th key={col.key} className={`text-left p-3 dark:text-gray-200 ${index === 0 ? stickyHeaderClass : ''}`}>
                                             {col.title || col.key}
                                         </th>
                                     ))}
@@ -171,17 +171,17 @@ function Table({ columns, title, data = [], currentPage = 1, totalPages = 1, tot
                             <tbody>
                                 {data.length === 0 ? (
                                     <tr>
-                                        <td colSpan={cols.length} className="p-3 text-center">No data</td>
+                                        <td colSpan={cols.length} className="p-3 text-center dark:text-gray-400">No data</td>
                                     </tr>
                                 ) : data.map((row, idx) => (                                    <tr
                                         key={idx}
                                         onClick={() => setSelectedRowId(row.id)}
-                                        className={`group border-gray-200 text-nowrap hover:bg-gray-50 cursor-pointer transition-all duration-100 ease-in ${idx === data.length - 1 ? 'border-b-0' : 'border-b'}`}
+                                        className={`group border-gray-200 dark:border-gray-700 text-nowrap hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-all duration-100 ease-in ${idx === data.length - 1 ? 'border-b-0' : 'border-b'}`}
                                     >
                                         {cols.map((col, index) => (
                                             <td
                                                 key={col.key}
-                                                className={`text-left p-2 ${index === 0 ? stickyClass : ''}`}
+                                                className={`text-left p-2 dark:text-gray-300 ${index === 0 ? stickyClass : ''}`}
                                                 onClick={col.key === 'actions' ? (e) => e.stopPropagation() : undefined}
                                             >
                                                 {col.render ? col.render(row, idx) : (row[col.key] ?? '')}
@@ -199,3 +199,4 @@ function Table({ columns, title, data = [], currentPage = 1, totalPages = 1, tot
     );
 }
 export default Table;
+
