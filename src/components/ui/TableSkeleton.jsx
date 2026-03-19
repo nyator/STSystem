@@ -1,5 +1,5 @@
 function TableSkeleton({ rows = 5 }) {
-    const stickyHeaderClass = "sticky left-0 z-0 bg-gray-50 rounded-tl-xl";
+    const stickyHeaderClass = "sticky left-0 z-0 bg-gray-50/50 rounded-tl-xl";
     const stickyClass = "sticky left-0 z-0 bg-white rounded-bl-xl";
 
     const columns = [
@@ -17,7 +17,7 @@ function TableSkeleton({ rows = 5 }) {
             <div className='flex flex-col rounded-xl border border-gray-200 items-center w-full'>
                 <div className="w-full overflow-x-auto rounded-t-xl">
                     <table className="w-full">
-                        <thead className="border-b border-gray-200 bg-gray-50 text-xs font-medium text-nowrap">
+                        <thead className="border-b border-gray-200 bg-gray-50/50 text-xs font-medium text-nowrap">
                             <tr className="w-full">
                                 {columns.map((col, index) => (
                                     <th

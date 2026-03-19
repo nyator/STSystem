@@ -9,7 +9,7 @@ function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, s
         <div className="relative">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 border-2 h-10 px-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all ease-in-out duration-300 focus:outline-none border-gray-100 dark:border-gray-700`}
+                className={`flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300 bg-gray-50/50 dark:bg-gray-800 border-2 h-10 px-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all ease-in-out duration-300 focus:outline-none border-gray-100 dark:border-gray-700`}
             >
                 {hasActiveFilters && (
                     <span className="w-2 h-4 bg-blue-500 border-2 border-blue-300 rounded-full absolute top-3 -left-0.5"></span>

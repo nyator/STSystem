@@ -8,6 +8,7 @@ import useTickets from '../Hooks/Tickets/useTickets';
 
 import PriorityBadge from '../components/ui/PriorityBadge';
 import Actions from '../components/ticket/Actions';
+import Chart2 from '../components/dashboard/Chart2';
 
 
 
@@ -18,7 +19,7 @@ function Dashboard() {
 
     // Pagination logic
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
+    const itemsPerPage = 6;
     const totalItems = filteredData.length;
     const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
     const paginatedData = filteredData.slice(
@@ -41,13 +42,16 @@ function Dashboard() {
             <div>
                 <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'>
                     <Cards />
-                    <div className='flex flex-col sm:flex-col-reverse justify-around w-full mt-1 gap-5'>
-                        <div className='hidden md:flex bg-gray-50 dark:bg-gray-900 h-fit p-3 rounded-2xl'>
-                            <div className='w-2/5'>
+                    <div className='flex flex-col sm:flex-col justify-around w-full mt-1 gap-5 '>
+                        <div className='hidden md:flex bg-gray-50/50 dark:bg-gray-900 h-fit p-3 rounded-2xl items-center justify-center border-[1.3px] border-[#e5e7eb]'>
+                            <div className='w-2/5 '>
                                 <Chart />
                             </div>
+                            <div className='w-2/5 '>
+                                <Chart2 />
+                            </div>
                         </div>
-                        <div className='w-full'>
+                        <div className='w-full mt-10'>
                             <Table
                                 title="Opened Tickets"
                                 columns={[

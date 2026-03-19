@@ -9,7 +9,6 @@ export function getLocalStorage(key) {
     try {
         return JSON.parse(item)
     } catch (e) {
-        // If stored value is not valid JSON, return the raw string as a fallback
         return item
     }
 }
