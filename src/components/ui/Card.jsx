@@ -7,11 +7,11 @@ function Card({ label, value, colors, id }) {
             <div className={` ${colors ? colors : "text-blue-500"} rounded-full p-2 w-fit`}>
                 <LuTicket size={16} className="inline" />
             </div>
-            <div className='flex flex-col sm:flex-row space-x-2 items-center'>
+            <div className='flex flex-col sm:flex-row space-x-2 items-center z-1'>
                 <p className="text-lg font-bold dark:text-white">{value}</p>
-                <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 text-center sm:text-start leading-3.5">{label}</h3>
+                <h3 className="text-xs font-medium text-gray-500 dark:text-gray-300 text-center sm:text-start leading-3.5">{label}</h3>
             </div>
-            <LuTicket size={140} className="text-gray-50/50 absolute -top-5 -right-5 rotate-140" />
+            <LuTicket size={140} className="text-gray-100/50 dark:text-gray-700 absolute -top-5 -right-5 rotate-140" />
         </div>
     )
 }

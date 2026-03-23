@@ -38,7 +38,7 @@ export default function Actions({ ticketId }) {
     const { deleteTicket, isLoading: isDeleting } = useDeleteTicket()
     const { ticket } = useTicket(ticketId)
 
-    const { register, handleSubmit, reset, setValue, getValues, formState: { errors } } = useForm({
+    const { register, handleSubmit, reset, setValue, getValues, formState: { errors, isDirty } } = useForm({
         defaultValues: {
             title: "",
             email: "",
@@ -49,6 +49,11 @@ export default function Actions({ ticketId }) {
     })
 
     const handleUpdate = (data) => {
+        if (!isDirty) {
+            setOpenModal(false)
+            toast.error("No changes have been made.");
+            return;
+        }
         updateTicket({
             ticketId,
             ...data,
@@ -68,7 +73,7 @@ export default function Actions({ ticketId }) {
             }
         })
     }
-    
+
     return (
         <>
             <div className='flex gap-2'>

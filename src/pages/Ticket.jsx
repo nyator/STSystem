@@ -111,7 +111,6 @@ function Ticket() {
         setCurrentPage(1)
     }, [searchedTickets, filters])
 
-
     return (
         <div>
             <div className='sticky top-0 z-10 bg-white dark:bg-gray-800 p-4 w-full'>

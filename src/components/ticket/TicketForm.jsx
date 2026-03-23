@@ -56,7 +56,7 @@ export default function TicketForm({
         // Get the current values from react-hook-form to ensure we have the latest
         let priority = selectedPriority
         let status = selectedStatus
-        
+
         if (getValues) {
             const formValues = getValues()
             priority = formValues.priority || selectedPriority

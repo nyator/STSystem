@@ -16,15 +16,12 @@ function TicketSearch({ onResults }) {
         queryFn: getTickets
     })
 
-    // Move filtering into useEffect
     useEffect(() => {
         const filteredTickets = tickets.filter((ticket) =>
             ticket.title.toLowerCase().includes(debouncedValue.toLowerCase()) ||
             ticket.customerEmail.toLowerCase().includes(debouncedValue.toLowerCase()) ||
             ticket.id.toLowerCase().includes(debouncedValue.toLowerCase())
         )
-
-        // Only call onResults if there's a search value, otherwise pass all tickets
         if (debouncedValue) {
             onResults?.(filteredTickets)
         } else {

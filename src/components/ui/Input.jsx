@@ -13,7 +13,7 @@ function SearchInput({ register, error, formfields, ...props }) {
                 {...props}
             />
             <LuSearch className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />
-            {error && <span className="text-red-500 text-xs mt-1">{error.message}</span>}
+            {/* {error && <span className="text-red-500 text-xs mt-1">{error.message}</span>} */}
         </div>
     )
 }
@@ -25,12 +25,12 @@ function FormInput({ register, readOnly, name, placeholder, error, formfields, i
             <input
                 {...register(name, formfields)}
                 placeholder={placeholder}
-                className={baseInputClasses}
+                className={`${baseInputClasses} ${error ? "outline-[1.4px] outline-red-500 bg-red-200" : ""}`}
                 {...props}
                 {...(readOnly && { readOnly })}
             />
-            {icon ? icon : <LuTextSelect className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />}
-            {error && <span className="text-red-500 text-xs mt-1 block">{error.message}</span>}
+            {icon ? icon : <LuTextSelect className={`absolute left-3 top-3 text-gray-700 dark:text-gray-400`} size={15} />}
+            {/* {error && <span className="text-red-500 text-xs mt-1 block">{error.message}</span>} */}
         </div>
     )
 }
@@ -42,11 +42,11 @@ function FormTextArea({ register, readOnly, name, placeholder, formfields, error
                 {...(readOnly && { readOnly })}
                 {...register(name, formfields)}
                 placeholder={placeholder}
-                className="w-full p-2 pl-8 text-mblack font-medium text-xs bg-gray-50/50 dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 min-h-28 max-h-42 rounded-lg focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-600 transition-colors duration-300 dark:text-gray-200"
+                className={`${error ? "outline-[1.4px] outline-red-500 bg-red-200" : ""} w-full p-2 pl-8 text-mblack font-medium text-xs bg-gray-50/50 dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 min-h-28 max-h-42 rounded-lg focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-600 transition-colors duration-300 dark:text-gray-200`}
                 {...props}
             />
             <LuTextCursorInput className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />
-            {error && <span className="text-red-500 text-xs mt-1 block">{error.message}</span>}
+            {/* {error && <span className="text-red-500 text-xs mt-1 block">{error.message}</span>} */}
         </div>
     )
 }

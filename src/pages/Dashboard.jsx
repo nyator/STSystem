@@ -40,7 +40,8 @@ function Dashboard() {
             </div>
 
             <div>
-                <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'>
+                {/* <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'> */}
+                 <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] min-h-[calc(100vh-6rem)] m-2 rounded-2xl'>
                     <Cards />
                     <div className='flex flex-col sm:flex-col justify-around w-full mt-1 gap-5 '>
                         <div className='hidden md:flex bg-gray-50/50 dark:bg-gray-900 h-fit p-3 rounded-2xl items-center justify-center border-[1.3px] border-[#e5e7eb]'>
