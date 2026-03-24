@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { editTicket } from "../../utils/TicketUtil"
+import toast from 'react-hot-toast'
 
 function useEditTicket() {
 
@@ -9,6 +10,8 @@ function useEditTicket() {
         mutationFn: ({ ticketId, ...ticketData }) => editTicket(ticketId, ticketData),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["tickets"] })
+            toast.success("Ticket Updated Successfully")
+
         }
     })
     return {

@@ -31,7 +31,7 @@ const Cards = () => {
 
     return (
         // <div className='bg-amber-500 items-center gap-4 w-full '>
-        <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 items-center gap-4 w-full border-b-[1.3px] border-[#e5e7eb] pb-4 mb-4'>
+        <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 items-center gap-4 w-full border-b-[1.3px] border-[#e5e7eba7] pb-4 mb-4'>
             {ticketCards.map((card) => (
                 <Card
                     key={card.id}

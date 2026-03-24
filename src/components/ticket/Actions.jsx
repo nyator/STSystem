@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { LuTrash2, LuSquarePen, LuDelete, LuTicketSlash } from 'react-icons/lu'
 import TicketModal from './TicketModal'
 import TicketForm from './TicketForm'
@@ -48,6 +48,18 @@ export default function Actions({ ticketId }) {
         }
     })
 
+    // useEffect(() => {
+    //     if (ticket) {
+    //         reset({
+    //             title: ticket.title,
+    //             email: ticket.email,
+    //             description: ticket.description,
+    //             priority: ticket.priority,
+    //             status: ticket.status,
+    //         })
+    //     }
+    // }, [ticket, reset])
+
     const handleUpdate = (data) => {
         if (!isDirty) {
             setOpenModal(false)
@@ -60,7 +72,6 @@ export default function Actions({ ticketId }) {
         }, {
             onSuccess: () => {
                 setOpenModal(false)
-                toast.success("Ticket Updated Successfully")
             }
         })
     }
@@ -69,7 +80,6 @@ export default function Actions({ ticketId }) {
         deleteTicket(ticketId, {
             onSuccess: () => {
                 setDeleteModal(false)
-                toast.success("Ticket deleted!")
             }
         })
     }

@@ -19,12 +19,13 @@ function SearchInput({ register, error, formfields, ...props }) {
 }
 
 
-function FormInput({ register, readOnly, name, placeholder, error, formfields, icon, ...props }) {
+function FormInput({ register, readOnly, name, type, placeholder, error, formfields, icon, ...props }) {
     return (
         <div className="relative mb-2">
             <input
                 {...register(name, formfields)}
                 placeholder={placeholder}
+                type={name === "email" ? "email" : "text"}
                 className={`${baseInputClasses} ${error ? "outline-[1.4px] outline-red-500 bg-red-200" : ""}`}
                 {...props}
                 {...(readOnly && { readOnly })}

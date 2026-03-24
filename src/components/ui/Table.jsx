@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { FormInput, FormTextArea } from "./Input";
 import { LuSquarePen, LuMail, LuTicketSlash } from 'react-icons/lu'
 import { useForm } from 'react-hook-form'
+import TicketForm from "../ticket/TicketForm";
 import useTicket from "../../Hooks/Tickets/useTicket";
 import useEditTicket from "../../Hooks/Tickets/useEditTicket";
 import { OptionButton } from '../ui/Button'
@@ -96,7 +97,6 @@ function Table({ columns, title, data = [], currentPage = 1, totalPages = 1, tot
                 RAction="Update Ticket"
                 RIcon={<LuSquarePen size={16} className="inline mr-2 group-hover:animate-wiggle" />}
                 ticketId={selectedRowId}
-                // submit={alert('qrwe')}
                 submit={handleSubmit(onSubmit)}
 
             >
@@ -150,7 +150,6 @@ function Table({ columns, title, data = [], currentPage = 1, totalPages = 1, tot
                         </OptionButton>
                     </div>
                 </form>
-
             </TicketModal>
 
             <div className="flex-col flex items-center w-full">

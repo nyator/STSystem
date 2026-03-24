@@ -62,7 +62,7 @@ export default function TicketForm({
             priority = formValues.priority || selectedPriority
             status = formValues.status || selectedStatus
         }
-        
+
         onSubmit({
             title: data.title,
             email: data.email,
@@ -73,7 +73,7 @@ export default function TicketForm({
     }
 
     return (
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 relative">
             <FormInput
                 name="title"
                 placeholder="Enter Ticket Title"
