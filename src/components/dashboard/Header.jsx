@@ -65,6 +65,7 @@ function Header({ icon, title, description }) {
                 RAction="Create Ticket"
                 RIcon={<LuPlus size={16} className="inline mr-2 group-hover:animate-wiggle" />}
                 submit={handleSubmit(onSubmit)}
+                error={errors.title || errors.email || errors.description}
             >
                 <form className="space-y-4">
                     <FormInput

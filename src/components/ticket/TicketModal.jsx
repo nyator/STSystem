@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import Button from '../ui/Button'
-import { LuX } from 'react-icons/lu'
+import { LuBadgeInfo, LuX } from 'react-icons/lu'
 
-function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submit, TitleIcon, LIcon, RIcon, ticketId }) {
+function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submit, error, TitleIcon, LIcon, RIcon, ticketId }) {
 
     const handleContentClick = (e) => {
         e.stopPropagation();
@@ -39,7 +39,15 @@ function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submi
                     {children}
                 </div>
 
-                <div className='flex justify-center gap-2 mt-6'>
+
+                <div className='flex justify-center gap-2 mt-6 relative'>
+                    {error &&
+                        <div className='absolute -top-6 flex items-center justify-center space-x-1.5 text-red-600 px-2 text-[12px] rounded-2xl w-full'>
+                            <LuBadgeInfo />
+                            <p>enter valid inputs into fields</p>
+                        </div>
+                    }
+
                     {LAction &&
                         <Button variant="default" onClick={onClose}>
                             {LIcon}

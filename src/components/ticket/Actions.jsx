@@ -1,14 +1,9 @@
-import toast from 'react-hot-toast'
-
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { LuTrash2, LuSquarePen, LuDelete, LuTicketSlash } from 'react-icons/lu'
-import TicketModal from './TicketModal'
-import TicketForm from './TicketForm'
-import useTicket from '../../Hooks/Tickets/useTicket'
-import useDeleteTicket from "../../Hooks/Tickets/useDeleteTicket"
-import useEditTicket from "../../Hooks/Tickets/useEditTicket"
 
-import { useForm } from 'react-hook-form'
+import TicketModal from './TicketModal'
+import EditTicketModal from './EditTicketModal'
+import useDeleteTicket from '../../Hooks/Tickets/useDeleteTicket'
 
 const EditAction = ({ setOpenModal }) => (
     <button
@@ -19,117 +14,58 @@ const EditAction = ({ setOpenModal }) => (
     </button>
 )
 
-const DeleteAction = ({ setDeleteModal }) => {
-    return (
-        <button
-            onClick={(e) => { e.stopPropagation(); setDeleteModal(true) }}
-            className="text-red-500 bg-red-50 dark:bg-red-900 hover:bg-red-200 dark:hover:bg-red-800 p-1.5 rounded-md transition-all ease-in-out duration-300"
-        >
-            <LuTrash2 size={15} />
-        </button>
-    )
-}
+const DeleteAction = ({ setDeleteModal }) => (
+    <button
+        onClick={(e) => { e.stopPropagation(); setDeleteModal(true) }}
+        className="text-red-500 bg-red-50 dark:bg-red-900 hover:bg-red-200 dark:hover:bg-red-800 p-1.5 rounded-md transition-all ease-in-out duration-300"
+    >
+        <LuTrash2 size={15} />
+    </button>
+)
 
 export default function Actions({ ticketId }) {
-    const [openModal, setOpenModal] = useState(false)
+    const [openEdit, setOpenEdit] = useState(false)
     const [deleteModal, setDeleteModal] = useState(false)
 
-    const { updateTicket, isLoading: isUpdating } = useEditTicket()
     const { deleteTicket, isLoading: isDeleting } = useDeleteTicket()
-    const { ticket } = useTicket(ticketId)
-
-    const { register, handleSubmit, reset, setValue, getValues, formState: { errors, isDirty } } = useForm({
-        defaultValues: {
-            title: "",
-            email: "",
-            description: "",
-            priority: "low",
-            status: "open",
-        }
-    })
-
-    // useEffect(() => {
-    //     if (ticket) {
-    //         reset({
-    //             title: ticket.title,
-    //             email: ticket.email,
-    //             description: ticket.description,
-    //             priority: ticket.priority,
-    //             status: ticket.status,
-    //         })
-    //     }
-    // }, [ticket, reset])
-
-    const handleUpdate = (data) => {
-        if (!isDirty) {
-            setOpenModal(false)
-            toast.error("No changes have been made.");
-            return;
-        }
-        updateTicket({
-            ticketId,
-            ...data,
-        }, {
-            onSuccess: () => {
-                setOpenModal(false)
-            }
-        })
-    }
 
     const handleDeleteConfirm = () => {
         deleteTicket(ticketId, {
             onSuccess: () => {
                 setDeleteModal(false)
-            }
+            },
         })
     }
 
     return (
         <>
-            <div className='flex gap-2'>
-                <EditAction ticketId={ticketId} setOpenModal={setOpenModal} />
-                <DeleteAction ticketId={ticketId} setDeleteModal={setDeleteModal} />
+            <div className="flex gap-2">
+                <EditAction setOpenModal={setOpenEdit} />
+                <DeleteAction setDeleteModal={setDeleteModal} />
             </div>
 
-            {/* EDIT TICKET */}
-            <TicketModal
-                isOpen={openModal}
-                onClose={(e) => { e.stopPropagation(); setOpenModal(false) }}
-                TitleIcon={<LuTicketSlash className='mr-2' />}
-                LAction="Cancel"
-                RAction="Update Ticket"
-                RIcon={<LuSquarePen size={16} className="inline mr-2 group-hover:animate-wiggle" />}
-                ticketId={ticketId}
-                submit={handleSubmit(handleUpdate)}
-            >
-                <TicketForm
-                    ticket={ticket}
-                    onSubmit={handleUpdate}
-                    isLoading={isUpdating}
-                    register={register}
-                    errors={errors}
-                    reset={reset}
-                    handleSubmit={handleSubmit}
-                    setValue={setValue}
-                    getValues={getValues}
-                />
-            </TicketModal>
+            {/* Shared edit modal */}
+            <EditTicketModal
+                ticketId={openEdit ? ticketId : null}
+                onClose={() => setOpenEdit(false)}
+            />
 
-            {/* DELETE MODAL */}
+            {/* Delete confirmation modal */}
             <TicketModal
                 isOpen={deleteModal}
                 onClose={(e) => { e.stopPropagation(); setDeleteModal(false) }}
-                title='Confirm Delete'
-                LAction='Cancel'
-                RAction='Confirm Delete'
+                title="Confirm Delete"
+                LAction="Cancel"
+                RAction="Confirm Delete"
                 RIcon={<LuDelete size={16} className="inline mr-2 group-hover:animate-wiggle" />}
                 submit={handleDeleteConfirm}
+                isLoading={isDeleting}
             >
-                <p className='text-center'>
-                    Are you sure you want to delete Ticket: <span className='font-bold'>{ticketId}</span>
+                <p className="text-center">
+                    Are you sure you want to delete Ticket:{' '}
+                    <span className="font-bold">{ticketId}</span>
                 </p>
             </TicketModal>
         </>
     )
 }
-
