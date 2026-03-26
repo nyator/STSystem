@@ -15,7 +15,7 @@ function PriorityBadge({ priority = "Low" }) {
     return (
         <div className="flex items-center justify-start w-fit">
             <div className={`${baseClass} ${classes} `}>
-                <LuDot size={20} />
+                {/* <LuDot size={20} /> */}
                 {priority}
             </div>
         </div>

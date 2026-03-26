@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { LuChevronRight, LuLayoutDashboard, LuSettings, LuTicket, LuUsersRound } from 'react-icons/lu';
-import MainContent from './MainContent';
 import { getLocalStorage, setLocalStorage } from "../Hooks/useLocalStorage"
+import MainContent from './MainContent';
 
+import { LuChevronRight, LuLayoutDashboard, LuSettings, LuTicket, LuUsersRound } from 'react-icons/lu';
 import logo from '../assets/logo.png'
 
 export default function SideBar() {
@@ -33,7 +33,7 @@ export default function SideBar() {
     const menuItems = [
         { icon: LuLayoutDashboard, label: 'Dashboard' },
         { icon: LuTicket, label: 'Tickets' },
-        { icon: LuUsersRound, label: 'Team' }
+        // { icon: LuUsersRound, label: 'Team' }
     ];
 
     return (
@@ -77,6 +77,7 @@ export default function SideBar() {
                         <LuSettings size={15} />
                         {isOpen ? <span className="text-xs font-medium">Settings</span> : null}
                     </a>
+
                 </nav>
             </div>
 

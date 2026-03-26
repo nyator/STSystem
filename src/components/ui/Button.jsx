@@ -1,14 +1,20 @@
-import { useState } from 'react'
 import { LuChevronDown, LuCheck } from 'react-icons/lu';
 import { baseClasses, variantClasses, optionBaseClasses } from "../../constant/constants"
 
-function MainButton({ variant = "default", children, type, onClick, }) {
+function MainButton({ variant = "default", children, type, onClick, disabled }) {
 
   const classes = `${baseClasses} ${variantClasses[variant] || variantClasses.default}`;
-
+  const disabledClass = `${baseClasses} ${variantClasses.disabled}`
   return (
     <>
-      <button className={classes} onClick={onClick} type={type}>{children}</button>
+      <button
+        className={disabled ? disabledClass : classes}
+        onClick={onClick}
+        type={type}
+        disabled={disabled}
+      >
+        {children}
+      </button>
     </>
   )
 }

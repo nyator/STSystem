@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import Button from '../ui/Button'
 import { LuBadgeInfo, LuX } from 'react-icons/lu'
 
-function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submit, error, TitleIcon, LIcon, RIcon, ticketId }) {
+function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submit, error, disabled, TitleIcon, LIcon, RIcon, ticketId }) {
 
     const handleContentClick = (e) => {
         e.stopPropagation();
@@ -25,7 +25,7 @@ function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submi
                     className='group absolute right-4 top-3.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-2xl leading-none p-2 rounded-lg ease-in-out duration-300'
                     aria-label="Close modal"
                 >
-                    <LuX className='group-hover:rotate-90 text-sm group-transition-transform duration-300 ease-in-out group-hover:text-mblack text-gray-600 dark:text-gray-300' />
+                    <LuX className='group-hover:rotate-90 text-sm group-transition-transform duration-300 ease-in-out group-hover:text-mblack dark:group-hover:text-white text-gray-600 dark:text-gray-100' />
                 </button>
                 <div className='flex justify-center items-center mb-4 p-2'>
                     <h2 className='flex flex-row items-center text-3xl text-center font-semibold dark:text-white'>
@@ -54,7 +54,7 @@ function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submi
                             {LAction}
                         </Button>
                     }
-                    <Button variant="primary" type="submit" onClick={submit}>
+                    <Button variant="primary" type="submit" disabled={disabled} onClick={submit}>
                         {RIcon}
                         {RAction}
                     </Button>

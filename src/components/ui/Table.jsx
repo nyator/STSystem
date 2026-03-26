@@ -16,8 +16,8 @@ function Table({
         columns && columns.length
             ? columns
             : data.length
-            ? Object.keys(data[0]).map((key) => ({ key, title: key }))
-            : []
+                ? Object.keys(data[0]).map((key) => ({ key, title: key }))
+                : []
 
     const [selectedRowId, setSelectedRowId] = useState(null)
 
@@ -47,9 +47,8 @@ function Table({
                                     {cols.map((col, index) => (
                                         <th
                                             key={col.key}
-                                            className={`text-left p-3 dark:text-gray-200 ${
-                                                index === 0 ? stickyHeaderClass : ''
-                                            }`}
+                                            className={`text-left p-3 dark:text-gray-200 ${index === 0 ? stickyHeaderClass : ''
+                                                }`}
                                         >
                                             {col.title || col.key}
                                         </th>
@@ -71,18 +70,16 @@ function Table({
                                         <tr
                                             key={idx}
                                             onClick={() => setSelectedRowId(row.id)}
-                                            className={`group border-gray-200 dark:border-gray-700 text-nowrap hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-all duration-100 ease-in ${
-                                                idx === data.length - 1
+                                            className={`group border-gray-200 dark:border-gray-700 text-nowrap hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-all duration-100 ease-in ${idx === data.length - 1
                                                     ? 'border-b-0'
                                                     : 'border-b'
-                                            }`}
+                                                }`}
                                         >
                                             {cols.map((col, index) => (
                                                 <td
                                                     key={col.key}
-                                                    className={`text-left p-2 dark:text-gray-300 ${
-                                                        index === 0 ? stickyClass : ''
-                                                    }`}
+                                                    className={`text-left p-2 pl-3 dark:text-gray-300 ${index === 0 ? stickyClass : ''
+                                                        }`}
                                                     onClick={
                                                         col.key === 'actions'
                                                             ? (e) => e.stopPropagation()

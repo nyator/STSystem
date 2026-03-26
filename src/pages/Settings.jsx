@@ -1,7 +1,6 @@
 import Header from "../components/dashboard/Header"
 import { LuSettings } from "react-icons/lu"
-import ThemeToggle from "../components/ui/ThemeToggle"
-
+import ThemeToggle from "../components/ui/ThemeToggles"
 function Settings() {
     return (
         <div>
@@ -17,7 +16,12 @@ function Settings() {
                 <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'>
                     <div>
                         <p className=" text-gray-400 dark:text-gray-500 text-md mb-3">Appearance</p>
-                        <ThemeToggle />
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-xs font-medium text-nowrap">Light / Dark Mode</span>
+                                <ThemeToggle />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

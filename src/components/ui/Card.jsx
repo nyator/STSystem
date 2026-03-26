@@ -11,7 +11,7 @@ function Card({ label, value, colors, id }) {
                 <p className="text-lg font-bold dark:text-white">{value}</p>
                 <h3 className="text-xs font-medium text-gray-500 dark:text-gray-300 text-center sm:text-start leading-3.5">{label}</h3>
             </div>
-            <LuTicket size={140} className="text-gray-100/50 dark:text-gray-700 absolute -top-5 -right-5 rotate-140" />
+            <LuTicket size={140} className="text-gray-100/30 dark:text-gray-700 absolute -top-5 -right-5 rotate-140" />
         </div>
     )
 }

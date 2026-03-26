@@ -8,6 +8,10 @@ import { OptionButton } from '../ui/Button'
 import TicketModal from './TicketModal'
 import useTicket from '../../Hooks/Tickets/useTicket'
 import useEditTicket from '../../Hooks/Tickets/useEditTicket'
+import CustomInfoToast from '../ui/CustomInfoToast'
+
+import { DevTool } from "@hookform/devtools";
+
 
 const PRIORITY_OPTIONS = ['low', 'medium', 'high']
 const STATUS_OPTIONS = ['open', 'in-progress', 'resolved']
@@ -24,6 +28,7 @@ export default function EditTicketModal({ ticketId, onClose }) {
     const {
         register,
         handleSubmit,
+        control,
         reset,
         setValue,
         getValues,
@@ -66,7 +71,7 @@ export default function EditTicketModal({ ticketId, onClose }) {
     const onSubmit = (data) => {
         if (!isDirty) {
             onClose()
-            toast.error('No changes have been made.')
+            CustomInfoToast()
             return
         }
 
@@ -111,7 +116,8 @@ export default function EditTicketModal({ ticketId, onClose }) {
             ticketId={ticketId}
             submit={handleSubmit(onSubmit)}
             isLoading={isUpdating}
-        >
+        >      <DevTool control={control} /> {/* set up the dev tool */}
+
             <form id="edit-ticket-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <FormInput
                     name="title"
@@ -119,6 +125,7 @@ export default function EditTicketModal({ ticketId, onClose }) {
                     register={register}
                     formfields={{ required: 'Title is required' }}
                     error={errors.title}
+                // readOnly
                 />
                 <FormInput
                     name="email"
@@ -138,6 +145,7 @@ export default function EditTicketModal({ ticketId, onClose }) {
                         },
                     }}
                     error={errors.email}
+                // readOnly
                 />
                 <FormTextArea
                     name="description"

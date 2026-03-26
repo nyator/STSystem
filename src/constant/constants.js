@@ -6,6 +6,7 @@ export const optionBaseClasses = "bg-gray-100 dark:bg-gray-700 mb-2 px-4 p-2 tex
 export const baseClasses = "group border-2 text-nowrap p-2 rounded-lg font-medium text-xs transition-all ease-in-out duration-300 flex items-center justify-between";
 export const variantClasses = {
     default: "bg-gray-50 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 hover:border-gray-50 dark:hover:border-gray-600 border-gray-100 dark:border-gray-600 text-mblack dark:text-gray-200",
+    disabled: "bg-gray-50 dark:bg-gray-700  border-gray-100 dark:border-gray-600 text-mblack/40 dark:text-gray-200 cursor-not-allowed",
     primary: "bg-blue-500 text-white hover:bg-blue-600 border-blue-500",
     secondary: "bg-gray-500 text-white hover:bg-gray-600 border-gray-500",
 };

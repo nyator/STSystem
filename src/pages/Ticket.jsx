@@ -202,7 +202,7 @@ function Ticket() {
                                     // description: t.description || '',
                                     priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />,
                                     status: <StatusBadge status={fmt(t.status) || 'open'} />,
-                                    createdAt: t.createdAt ? new Date(t.createdAt).toUTCString().slice(0, -7) : '',
+                                    createdAt: t.createdAt ? new Date(t.createdAt).toUTCString().slice(0, -13) : '',
                                     actions: <Actions ticketId={t.id} />
                                 };
                             })

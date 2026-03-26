@@ -1,11 +1,15 @@
 import { useState } from 'react'
-import Button, { OptionButton } from '../ui/Button'
+import { DevTool } from "@hookform/devtools";
 import { useForm } from 'react-hook-form';
-import { LuPlus, LuMail } from 'react-icons/lu';
 import TicketModal from '../ticket/TicketModal';
-import { FormInput, FormTextArea } from '../ui/Input'
 import useCreateTicket from '../../Hooks/Tickets/useCreateTicket';
 import toast from 'react-hot-toast';
+
+import Button, { OptionButton } from '../ui/Button'
+import { ThemeToggle2 } from '../ui/ThemeToggles'
+import { LuPlus, LuMail } from 'react-icons/lu';
+import { FormInput, FormTextArea } from '../ui/Input'
+
 
 
 function Header({ icon, title, description }) {
@@ -14,7 +18,7 @@ function Header({ icon, title, description }) {
     const [isOpen, setIsOpen] = useState(null)
 
     const { createTicket, isLoading } = useCreateTicket();
-    const { register, handleSubmit, trigger, reset, formState: { errors } } = useForm()
+    const { register, handleSubmit, control, reset, formState: { errors } } = useForm()
 
 
     const priorityOptions = [
@@ -50,12 +54,16 @@ function Header({ icon, title, description }) {
                     </div>
                     <p className='text-gray-400 dark:text-gray-500 text-xs hidden sm:block'>{description}</p>
                 </div>
+                <div className='flex gap-2'>
+                    <Button variant="primary" onClick={() => setOpenModal(true)}>
+                        <LuPlus size={16} className="inline mr-2 group-hover:animate-wiggle" />
+                        New Ticket
+                    </Button>
+                    <ThemeToggle2 />
+                </div>
 
-                <Button variant="primary" onClick={() => setOpenModal(true)}>
-                    <LuPlus size={16} className="inline mr-2 group-hover:animate-wiggle" />
-                    New Ticket
-                </Button>
             </div>
+
 
             <TicketModal
                 isOpen={openModal}
@@ -67,6 +75,7 @@ function Header({ icon, title, description }) {
                 submit={handleSubmit(onSubmit)}
                 error={errors.title || errors.email || errors.description}
             >
+                <DevTool control={control} /> {/* set up the dev tool */}
                 <form className="space-y-4">
                     <FormInput
                         name="title"
