@@ -1,14 +1,7 @@
-import { useState } from 'react'
-import { LuTrash2, LuSquarePen } from 'react-icons/lu'
-
-import TicketModal from './TicketModal'
+import { useState, useRef, useEffect } from 'react'
+import { LuSquarePen, LuEllipsis, LuTrash2, LuUserPlus, LuLink } from 'react-icons/lu'
 import EditTicketModal from './EditTicketModal'
-import useDeleteTicket from '../../Hooks/Tickets/useDeleteTicket'
-import { FormInputEmpty } from '../ui/Input'
-
-import { useForm, useWatch } from 'react-hook-form'
-import { DevTool } from "@hookform/devtools";
-
+import DeleteTicketModal from './DeleteTicketModal'
 
 const EditAction = ({ setOpenModal }) => (
     <button
@@ -19,88 +12,64 @@ const EditAction = ({ setOpenModal }) => (
     </button>
 )
 
-const DeleteAction = ({ setDeleteModal }) => (
-    <button
-        onClick={(e) => { e.stopPropagation(); setDeleteModal(true) }}
-        className="text-red-600 bg-red-50 dark:bg-red-200 hover:bg-red-200 dark:hover:bg-red-300 p-1.5 rounded-md transition-all ease-in-out duration-300"
-    >
-        <LuTrash2 size={15} />
-    </button>
-)
+const OptionsPopover = ({ onDelete }) => {
+    const [open, setOpen] = useState(false)
+    const ref = useRef(null)
+
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (ref.current && !ref.current.contains(e.target)) setOpen(false)
+        }
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [])
+
+    return (
+        <div ref={ref} className="relative">
+            <button
+                onClick={(e) => { e.stopPropagation(); setOpen((prev) => !prev) }}
+                className="text-black bg-gray-50 dark:bg-gray-200 hover:bg-gray-200 dark:hover:bg-gray-300 p-1.5 rounded-md transition-all ease-in-out duration-300"
+            >
+                <LuEllipsis size={15} />
+            </button>
+
+            {open && (
+                <div className="absolute flex flex-col right-0 top-full mt-2 z-10 min-w-40 p-3 rounded-b-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg overflow-hidden">
+                    <button className="popover-item" onClick={() => setOpen(false)}>
+                        <LuUserPlus size={14} /> Assign ticket
+                    </button>
+                    <button className="popover-item" onClick={() => setOpen(false)}>
+                        <LuLink size={14} /> Copy link
+                    </button>
+                    <button className="popover-item" onClick={() => setOpen(false)}>
+                        <LuTrash2 size={14} /> Change status
+                    </button>
+                    <div className="border-t border-gray-100 dark:border-gray-700 my-1" />
+                    <button
+                        className="popover-item text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                        onClick={() => { setOpen(false); onDelete() }}
+                    >
+                        <LuTrash2 size={14} /> Delete ticket
+                    </button>
+                </div>
+            )}
+        </div>
+    )
+}
 
 export default function Actions({ ticketId }) {
     const [openEdit, setOpenEdit] = useState(false)
-    const [deleteModal, setDeleteModal] = useState(false)
-
-    const { register, getValues, setError, reset, control, formState: { errors } } = useForm()
-    const { deleteTicket, isLoading: isDeleting } = useDeleteTicket()
-
-    const confirmDeleteValue = useWatch({ control, name: 'confirmDelete', defaultValue: '' })
-
-    const handleCloseDeleteModal = () => {
-        reset()
-        setDeleteModal(false)
-    }
-
-    const handleDeleteConfirm = () => {
-        const { confirmDelete } = getValues()
-
-        if (confirmDelete !== ticketId) {
-            setError('confirmDelete', {
-                type: 'manual',
-                message: `Input must match Ticket ID: ${ticketId}`,
-            })
-            return
-        }
-
-        deleteTicket(ticketId, {
-            onSuccess: () => handleCloseDeleteModal(),
-            onError: () => {
-                setError('confirmDelete', {
-                    type: 'manual',
-                    message: 'Failed to delete ticket. Please try again.',
-                })
-            },
-        })
-    }
+    const [openDelete, setOpenDelete] = useState(false)
 
     return (
         <>
             <div className="flex gap-2">
                 <EditAction setOpenModal={setOpenEdit} />
-                <DeleteAction setDeleteModal={setDeleteModal} />
+                <OptionsPopover onDelete={() => setOpenDelete(true)} />
             </div>
 
-            {openEdit && <EditTicketModal
-                ticketId={ticketId}
-                onClose={() => setOpenEdit(false)}
-            />}
-
-            <TicketModal
-                isOpen={deleteModal}
-                onClose={handleCloseDeleteModal}
-                title="Confirm Delete"
-                LAction="Cancel"
-                RAction="Confirm Delete"
-                RIcon={<LuTrash2 size={16} className={`inline mr-2 ${confirmDeleteValue !== ticketId ? "" : "group-hover:animate-wiggle"}`} />}
-                submit={handleDeleteConfirm}
-                isLoading={isDeleting}
-                deleteError={errors.confirmDelete}
-                disabled={confirmDeleteValue !== ticketId}
-            >
-                <DevTool control={control} /> {/* set up the dev tool */}
-
-                <p className="text-center mb-3">
-                    To confirm, type <span className="font-bold">"{ticketId}"</span> in the box below
-                </p>
-
-                <FormInputEmpty
-                    name="confirmDelete"
-                    register={register}
-                    formfields={{ required: 'Delete input is required' }}
-                    error={errors.confirmDelete}
-                />
-            </TicketModal>
+            {openEdit && <EditTicketModal ticketId={ticketId} onClose={() => setOpenEdit(false)} />}
+            {openDelete && <DeleteTicketModal ticketId={ticketId} onClose={() => setOpenDelete(false)} />}
         </>
     )
 }

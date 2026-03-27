@@ -8,8 +8,6 @@ import useTickets from '../Hooks/Tickets/useTickets';
 
 import PriorityBadge from '../components/ui/PriorityBadge';
 import Actions from '../components/ticket/Actions';
-import Chart2 from '../components/dashboard/Chart2';
-
 
 
 function Dashboard() {
@@ -45,7 +43,7 @@ function Dashboard() {
                     <Cards />
                     <div className='flex flex-col sm:flex-col justify-around w-full mt-1 gap-5 '>
                         <div className='hidden md:flex bg-gray-50/50 dark:bg-gray-900/50 h-fit p-3 rounded-2xl items-center justify-center border-[1.3px] border-[#e5e7eb] dark:border-gray-700'>
-                            <div className='w-5/5 flex justify-center '>
+                            <div className='w-5/6 flex justify-center items-center  pb-10'>
                                 <Chart />
                             </div>
                             {/* <div className='w-2/5 flex justify-center '>

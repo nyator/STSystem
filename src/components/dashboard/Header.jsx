@@ -32,12 +32,13 @@ function Header({ icon, title, description }) {
         createTicket({ ...data, priority: selectedPriority }, {
             onSuccess: () => {
                 toast.success("Tickets Created!")
-                reset()
-                setSelectedPriority(undefined)
+                // reset()
+                setSelectedPriority("low")
                 setOpenModal(false)
             },
             onError: () => {
                 toast.error("Error creating tickets!")
+                // setOpenModal(false)
             }
         })
     }

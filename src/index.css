@@ -20,10 +20,11 @@ body {
 }
 
 
+
+
 @theme {
   --animate-wiggle: wiggle 1s ease-in-out infinite;
   --color-mblack: #333333;
-
 
   @keyframes wiggle {
 
@@ -37,6 +38,14 @@ body {
     }
   }
 }
+
+
+@layer components {
+  .popover-item {
+    @apply flex rounded-md py-1 px-2 items-center gap-1 text-xs;
+  }
+}
+
 
 
 /* Container */

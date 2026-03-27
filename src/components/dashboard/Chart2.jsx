@@ -13,8 +13,8 @@ const Chart2 = () => {
     const totalTickets = tickets.length;
 
     return (
-        <div style={{ width: '100%', maxWidth: '410px', height: '200px', position: 'relative' }}>
-            <ResponsiveContainer width="100%" height="100%">
+        <div style={{ width: '410px', height: '200px', position: 'relative' }}>
+            <ResponsiveContainer width={410} height={200}>
                 <PieChart>
                     <Pie
                         data={data}

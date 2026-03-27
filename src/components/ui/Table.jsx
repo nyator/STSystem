@@ -42,7 +42,7 @@ function Table({
                 <div className="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 items-center w-full max-h-screen overflow-auto">
                     <div className="w-full relative overflow-x-auto rounded-t-xl">
                         <table className="w-full">
-                            <thead className="border-b border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-700 text-xs font-medium text-nowrap sticky top-0">
+                            <thead className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-xs font-medium text-nowrap sticky top-0">
                                 <tr className="w-full">
                                     {cols.map((col, index) => (
                                         <th

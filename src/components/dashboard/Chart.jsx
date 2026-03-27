@@ -12,8 +12,8 @@ const Chart = () => {
   ];
 
   return (
-    <div style={{ width: '100%', maxWidth: '450px', height: '250px', padding: '20px', borderRadius: '12px' }}>
-      <ResponsiveContainer width="100%" height="100%">
+    <div style={{ width: '450px', height: '250px', padding: '20px', borderRadius: '12px' }}>
+      <ResponsiveContainer width={450} height={250}>
         <BarChart
           data={ticketChart}
           margin={{ top: 20, right: 10, left: -20, bottom: 0 }}
@@ -21,7 +21,7 @@ const Chart = () => {
         >
           {/* Soft horizontal lines only */}
           <CartesianGrid vertical={false} stroke="#e2e8f0" strokeDasharray="3 3" />
-          
+
           <XAxis
             dataKey="name"
             axisLine={false}
@@ -29,7 +29,7 @@ const Chart = () => {
             tick={{ fill: "#94a3b8", fontSize: 12, fontWeight: 500 }}
             dy={10}
           />
-          
+
           <YAxis
             axisLine={false}
             tickLine={false}

@@ -23,7 +23,7 @@ export const editTicket = (ticketId, ticketData) => {
     const tickets = getTickets()
 
     const updated = tickets.map((item) =>
-        item.id === ticketId ? { ...item, ...ticketData } : item
+        item.id === ticketId ? { ...item, ...ticketData, updatedAt: new Date().toISOString() } : item
     )
 
     localStorage.setItem("tickets", JSON.stringify(updated))
@@ -35,23 +35,23 @@ export const createTicket = async (ticketData) => {
 
     const newTicket = {
         id: `T-${Math.floor(Math.random() * 900) + 100}`,
-        title: ticketData.title || "Untitled",
-        description: ticketData.description || "",
+        title: ticketData.title.trim() || "Untitled",
+        description: ticketData.description.trim() || "",
         customerEmail: ticketData.email || "",
         priority: ticketData.priority || "low",
         status: "open",
         createdAt: new Date().toISOString(),
 
-        updatedAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString() || null,
         assignedTo: ticketData.assignedTo || null,
-        assignedAt: ticketData.assignedTo || null,
-        comments: [
-            {
+        assignedAt: new Date().toISOString() || null,
+        ...(ticketData.comments && {
+            comments: [{
                 message: ticketData.comments.message || "",
                 author: ticketData.comments.author || "",
                 createdAt: new Date().toISOString()
-            }
-        ]
+            }]
+        })
     };
 
     localStorage.setItem("tickets", JSON.stringify([...tickets, newTicket]))

@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom'
 import Button from '../ui/Button'
 import { LuBadgeInfo, LuX } from 'react-icons/lu'
 
-function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submit, error, disabled, TitleIcon, LIcon, RIcon, ticketId }) {
+function TicketModal({ isOpen, onClose, title, LAction, RVariant, RAction, children, submit, error, disabled, TitleIcon, LIcon, RIcon, ticketId }) {
 
     const handleContentClick = (e) => {
         e.stopPropagation();
@@ -53,7 +53,7 @@ function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submi
                             {LAction}
                         </Button>
                     }
-                    <Button variant="primary" type="submit" disabled={disabled} onClick={submit}>
+                    <Button variant={ RVariant ||"primary"} type="submit" disabled={disabled} onClick={submit}>
                         {RIcon}
                         {RAction}
                     </Button>
