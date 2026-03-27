@@ -1,4 +1,3 @@
-import React, { useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import Button from '../ui/Button'
 import { LuBadgeInfo, LuX } from 'react-icons/lu'
@@ -9,27 +8,29 @@ function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submi
         e.stopPropagation();
     }
 
-    if (!isOpen) return null  // ← move the check here
+    if (!isOpen) return null;
 
-    return createPortal(  // ← wrap with createPortal
+    return createPortal(
         <div
             onClick={onClose}
-            className='fixed inset-0 bg-black/70 flex items-center justify-center z-9999'
+            className='fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] w-screen h-screen'
         >
             <div
                 onClick={handleContentClick}
                 className='bg-white dark:bg-gray-800 p-2 px-6 rounded-2xl shadow-lg w-96 max-h-[90vh] overflow-y-auto relative'
             >
                 <button
+                    type="button"
                     onClick={onClose}
                     className='group absolute right-4 top-3.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-2xl leading-none p-2 rounded-lg ease-in-out duration-300'
                     aria-label="Close modal"
                 >
-                    <LuX className='group-hover:rotate-90 text-sm group-transition-transform duration-300 ease-in-out group-hover:text-mblack dark:group-hover:text-white text-gray-600 dark:text-gray-100' />
+                    <LuX className='group-hover:rotate-90 text-sm transition-transform duration-300 ease-in-out group-hover:text-black dark:group-hover:text-white text-gray-600 dark:text-gray-100' />
                 </button>
+
                 <div className='flex justify-center items-center mb-4 p-2'>
                     <h2 className='flex flex-row items-center text-3xl text-center font-semibold dark:text-white'>
-                        {title} {" "}
+                        {title}{" "}
                         {TitleIcon}
                         <span className='font-bold text-3xl'>{ticketId}</span>
                     </h2>
@@ -39,7 +40,6 @@ function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submi
                     {children}
                 </div>
 
-
                 <div className='flex justify-center gap-2 mt-6 relative'>
                     {error &&
                         <div className='absolute -top-6 flex items-center justify-center space-x-1.5 text-red-600 px-2 text-[12px] rounded-2xl w-full'>
@@ -47,7 +47,6 @@ function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submi
                             <p>enter valid inputs into fields</p>
                         </div>
                     }
-
                     {LAction &&
                         <Button variant="default" onClick={onClose}>
                             {LIcon}
@@ -61,9 +60,8 @@ function TicketModal({ isOpen, onClose, title, LAction, RAction, children, submi
                 </div>
             </div>
         </div>,
-        document.body  // ← renders outside all stacking contexts
+        document.body
     )
 }
 
 export default TicketModal
-

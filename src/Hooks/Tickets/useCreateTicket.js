@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { saveTicket } from "../../utils/TicketUtil";
+import { createTicket } from "../../utils/TicketUtil";
 
 function useCreateTicket() {
     const queryClient = useQueryClient()
 
     const mutation = useMutation({
-        mutationFn: saveTicket,
+        mutationFn: createTicket,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["tickets"] })
         }

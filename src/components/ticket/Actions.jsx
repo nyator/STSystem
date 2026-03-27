@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LuTrash2, LuSquarePen, LuDelete } from 'react-icons/lu'
+import { LuTrash2, LuSquarePen } from 'react-icons/lu'
 
 import TicketModal from './TicketModal'
 import EditTicketModal from './EditTicketModal'
@@ -71,18 +71,18 @@ export default function Actions({ ticketId }) {
                 <DeleteAction setDeleteModal={setDeleteModal} />
             </div>
 
-            <EditTicketModal
-                ticketId={openEdit ? ticketId : null}
+            {openEdit && <EditTicketModal
+                ticketId={ticketId}
                 onClose={() => setOpenEdit(false)}
-            />
+            />}
 
             <TicketModal
                 isOpen={deleteModal}
-                onClose={(e) => { e.stopPropagation(); handleCloseDeleteModal() }}
+                onClose={handleCloseDeleteModal}
                 title="Confirm Delete"
                 LAction="Cancel"
                 RAction="Confirm Delete"
-                RIcon={<LuDelete size={16} className={`inline mr-2 ${confirmDeleteValue !== ticketId ? "" : "group-hover:animate-wiggle"}`} />}
+                RIcon={<LuTrash2 size={16} className={`inline mr-2 ${confirmDeleteValue !== ticketId ? "" : "group-hover:animate-wiggle"}`} />}
                 submit={handleDeleteConfirm}
                 isLoading={isDeleting}
                 deleteError={errors.confirmDelete}

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import toast from 'react-hot-toast'
 
 import { LuSquarePen, LuMail, LuTicketSlash } from 'react-icons/lu'
 import { FormInput, FormTextArea } from '../ui/Input'
@@ -10,12 +9,8 @@ import useTicket from '../../Hooks/Tickets/useTicket'
 import useEditTicket from '../../Hooks/Tickets/useEditTicket'
 import CustomInfoToast from '../ui/CustomInfoToast'
 
-import { DevTool } from "@hookform/devtools";
-
-
 const PRIORITY_OPTIONS = ['low', 'medium', 'high']
 const STATUS_OPTIONS = ['open', 'in-progress', 'resolved']
-
 
 export default function EditTicketModal({ ticketId, onClose }) {
     const { ticket } = useTicket(ticketId)
@@ -31,7 +26,6 @@ export default function EditTicketModal({ ticketId, onClose }) {
         control,
         reset,
         setValue,
-        getValues,
         formState: { errors, isDirty },
     } = useForm({
         defaultValues: {
@@ -43,7 +37,6 @@ export default function EditTicketModal({ ticketId, onClose }) {
         },
     })
 
-    // Populate form whenever the ticket data arrives / changes
     useEffect(() => {
         if (ticket) {
             reset({
@@ -75,23 +68,22 @@ export default function EditTicketModal({ ticketId, onClose }) {
             return
         }
 
-        const formValues = getValues()
         updateTicket(
             {
                 ticketId,
                 title: data.title,
                 email: data.email,
                 description: data.description,
-                priority: formValues.priority || selectedPriority,
-                status: formValues.status || selectedStatus,
+                priority: data.priority,
+                status: data.status,
             },
             {
-                onSuccess: () => {
-                    onClose()
-                },
+                onSuccess: () => onClose(),
             }
         )
     }
+
+    const hasErrors = Object.keys(errors).length > 0
 
     const priorityOptions = PRIORITY_OPTIONS.map((value) => ({
         label: value.charAt(0).toUpperCase() + value.slice(1),
@@ -108,16 +100,16 @@ export default function EditTicketModal({ ticketId, onClose }) {
     return (
         <TicketModal
             isOpen={!!ticketId}
-            onClose={(e) => { e?.stopPropagation?.(); onClose() }}
+            onClose={onClose}
             TitleIcon={<LuTicketSlash className="mr-2" />}
             LAction="Cancel"
             RAction="Update Ticket"
             RIcon={<LuSquarePen size={16} className="inline mr-2 group-hover:animate-wiggle" />}
             ticketId={ticketId}
             submit={handleSubmit(onSubmit)}
-            isLoading={isUpdating}
-        >      <DevTool control={control} /> {/* set up the dev tool */}
-
+            disabled={isUpdating}
+            error={hasErrors}
+        >
             <form id="edit-ticket-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <FormInput
                     name="title"
@@ -125,7 +117,6 @@ export default function EditTicketModal({ ticketId, onClose }) {
                     register={register}
                     formfields={{ required: 'Title is required' }}
                     error={errors.title}
-                // readOnly
                 />
                 <FormInput
                     name="email"
@@ -145,7 +136,6 @@ export default function EditTicketModal({ ticketId, onClose }) {
                         },
                     }}
                     error={errors.email}
-                // readOnly
                 />
                 <FormTextArea
                     name="description"

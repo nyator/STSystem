@@ -33,7 +33,7 @@ export default function SideBar() {
     const menuItems = [
         { icon: LuLayoutDashboard, label: 'Dashboard' },
         { icon: LuTicket, label: 'Tickets' },
-        // { icon: LuUsersRound, label: 'Team' }
+        { icon: LuUsersRound, label: 'Team' }
     ];
 
     return (

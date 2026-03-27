@@ -30,7 +30,7 @@ export const editTicket = (ticketId, ticketData) => {
     return updated.find((item) => item.id === ticketId)
 }
 
-export const saveTicket = async (ticketData) => {
+export const createTicket = async (ticketData) => {
     const tickets = getTickets()
 
     const newTicket = {
@@ -41,6 +41,17 @@ export const saveTicket = async (ticketData) => {
         priority: ticketData.priority || "low",
         status: "open",
         createdAt: new Date().toISOString(),
+
+        updatedAt: new Date().toISOString(),
+        assignedTo: ticketData.assignedTo || null,
+        assignedAt: ticketData.assignedTo || null,
+        comments: [
+            {
+                message: ticketData.comments.message || "",
+                author: ticketData.comments.author || "",
+                createdAt: new Date().toISOString()
+            }
+        ]
     };
 
     localStorage.setItem("tickets", JSON.stringify([...tickets, newTicket]))

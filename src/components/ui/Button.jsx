@@ -2,9 +2,9 @@ import { LuChevronDown, LuCheck } from 'react-icons/lu';
 import { baseClasses, variantClasses, optionBaseClasses } from "../../constant/constants"
 
 function MainButton({ variant = "default", children, type, onClick, disabled }) {
-
   const classes = `${baseClasses} ${variantClasses[variant] || variantClasses.default}`;
   const disabledClass = `${baseClasses} ${variantClasses.disabled}`
+  
   return (
     <>
       <button
