@@ -16,7 +16,7 @@ function PriorityBadge({ priority = "Low" }) {
         <div className="flex items-center justify-start w-fit">
             <div className={`${baseClass} ${classes} `}>
                 {/* <LuDot size={20} /> */}
-                {priority}
+                {priority.toUpperCase()[0] + priority.slice(1)}
             </div>
         </div>
     )

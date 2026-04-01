@@ -1,4 +1,4 @@
-import { createPortal } from 'react-dom'
+import { createPortalBody } from '../../utils/createPortal'
 import Button from '../ui/Button'
 import { LuBadgeInfo, LuX } from 'react-icons/lu'
 
@@ -10,10 +10,10 @@ function TicketModal({ isOpen, onClose, title, LAction, RVariant, RAction, child
 
     if (!isOpen) return null;
 
-    return createPortal(
+    return createPortalBody(
         <div
             onClick={onClose}
-            className='fixed inset-0 bg-black/70 flex items-center justify-center z-[9999] w-screen h-screen'
+            className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 w-screen h-screen'
         >
             <div
                 onClick={handleContentClick}
@@ -29,16 +29,18 @@ function TicketModal({ isOpen, onClose, title, LAction, RVariant, RAction, child
                 </button>
 
                 <div className='flex justify-center items-center mb-4 p-2'>
-                    <h2 className='flex flex-row items-center text-3xl text-center font-semibold dark:text-white'>
+                    <h2 className='flex flex-row items-center text-2xl text-center font-semibold dark:text-white gap-1.5'>
                         {title}{" "}
                         {TitleIcon}
-                        <span className='font-bold text-3xl'>{ticketId}</span>
+                        <span className='font-bold text-2xl'>{ticketId}</span>
                     </h2>
                 </div>
 
                 <div className='text-gray-600 dark:text-gray-300 items-center'>
                     {children}
                 </div>
+
+
 
                 <div className='flex justify-center gap-2 mt-6 relative'>
                     {error &&
@@ -53,7 +55,7 @@ function TicketModal({ isOpen, onClose, title, LAction, RVariant, RAction, child
                             {LAction}
                         </Button>
                     }
-                    <Button variant={ RVariant ||"primary"} type="submit" disabled={disabled} onClick={submit}>
+                    <Button variant={RVariant || "primary"} type="submit" disabled={disabled} onClick={submit}>
                         {RIcon}
                         {RAction}
                     </Button>

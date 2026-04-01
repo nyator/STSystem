@@ -6,9 +6,12 @@ export const getTickets = () => {
     return tickets.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
 }
 
+
+
 export const getTicket = (ticketId) => {
     return getTickets().find((item) => item.id === ticketId) || null
 }
+
 
 export const deleteTicket = (ticketId) => {
     const tickets = getTickets()
@@ -19,16 +22,33 @@ export const deleteTicket = (ticketId) => {
     return ticketId
 }
 
+
+export const assignTicket = (ticketId, assigneeId) => {
+    const tickets = getTickets()
+
+    const updated = tickets.map((item) =>
+        item.id === ticketId
+            ? { ...item, assignedTo: assigneeId, assignedAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
+            : item
+    )
+    localStorage.setItem("tickets", JSON.stringify(updated))
+    return updated.find((item) => item.id === ticketId)
+}
+
+
 export const editTicket = (ticketId, ticketData) => {
     const tickets = getTickets()
 
     const updated = tickets.map((item) =>
-        item.id === ticketId ? { ...item, ...ticketData, updatedAt: new Date().toISOString() } : item
+        item.id === ticketId
+            ? { ...item, ...ticketData, updatedAt: new Date().toISOString() }
+            : item
     )
 
     localStorage.setItem("tickets", JSON.stringify(updated))
     return updated.find((item) => item.id === ticketId)
 }
+
 
 export const createTicket = async (ticketData) => {
     const tickets = getTickets()
@@ -41,17 +61,17 @@ export const createTicket = async (ticketData) => {
         priority: ticketData.priority || "low",
         status: "open",
         createdAt: new Date().toISOString(),
-
-        updatedAt: new Date().toISOString() || null,
+        updatedAt: null,
         assignedTo: ticketData.assignedTo || null,
-        assignedAt: new Date().toISOString() || null,
-        ...(ticketData.comments && {
-            comments: [{
-                message: ticketData.comments.message || "",
-                author: ticketData.comments.author || "",
-                createdAt: new Date().toISOString()
-            }]
-        })
+        assignedAt: ticketData.assignedTo ? new Date().toISOString() : null,
+        // ...(ticketData.comments && {
+        //     comments: [{
+        //         message: ticketData.comments.message || "",
+        //         author: ticketData.comments.author || "",
+        //         createdAt: new Date().toISOString()
+        //     }]
+        // })
+        comments: ticketData.comments || []
     };
 
     localStorage.setItem("tickets", JSON.stringify([...tickets, newTicket]))

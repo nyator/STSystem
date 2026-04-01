@@ -29,16 +29,17 @@ function Header({ icon, title, description }) {
     ]
 
     const onSubmit = (data) => {
+        console.log({ ...data, priority: selectedPriority })
         createTicket({ ...data, priority: selectedPriority }, {
             onSuccess: () => {
                 toast.success("Tickets Created!")
-                // reset()
+                reset()
                 setSelectedPriority("low")
                 setOpenModal(false)
             },
             onError: () => {
                 toast.error("Error creating tickets!")
-                // setOpenModal(false)
+                setOpenModal(false)
             }
         })
     }
@@ -58,7 +59,7 @@ function Header({ icon, title, description }) {
                 </div>
                 <div className='flex gap-2'>
                     <Button variant="primary" onClick={() => setOpenModal(true)}>
-                        <LuPlus size={16} className="inline mr-2 group-hover:animate-wiggle" />
+                        <LuPlus size={16} className="inline group-hover:animate-wiggle" />
                         New Ticket
                     </Button>
                     <ThemeToggle2 />
@@ -69,7 +70,7 @@ function Header({ icon, title, description }) {
 
             <TicketModal
                 isOpen={openModal}
-                onClose={() => setOpenModal(false)}
+                onClose={() => { setOpenModal(false); reset(); setSelectedPriority("low") }}
                 title="New Ticket"
                 LAction="Cancel"
                 RAction="Create Ticket"
@@ -114,9 +115,7 @@ function Header({ icon, title, description }) {
                             selected={selectedPriority}
                             isOpen={isOpen}
                             setIsOpen={setIsOpen}
-                        >
-                            Priority
-                        </OptionButton>
+                        />
 
                     </div>
                 </form>

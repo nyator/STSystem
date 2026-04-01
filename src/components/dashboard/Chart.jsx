@@ -1,21 +1,29 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import useTickets from '../../Hooks/Tickets/useTickets';
+import { useMemo } from 'react';
 
 const Chart = () => {
   const { data: tickets = [] } = useTickets();
 
-  const ticketChart = [
-    { name: "Open", value: tickets.filter(t => t.status?.toLowerCase() === 'open').length, color: "#fb2c36" },
-    { name: "In-Progress", value: tickets.filter(t => t.status?.toLowerCase() === 'in-progress').length, color: "#f0b100" },
-    { name: "Resolved", value: tickets.filter(t => t.status?.toLowerCase() === 'resolved').length, color: "#10b981" },
-    { name: "Total", value: tickets.length, color: "#2b7fff" },
-  ];
+  const chartData = useMemo(() => {
+    const openCount = tickets.filter(t => t.status?.toLowerCase() === 'open').length;
+    const inProgressCount = tickets.filter(t => t.status?.toLowerCase() === 'in-progress').length;
+    const resolvedCount = tickets.filter(t => t.status?.toLowerCase() === 'resolved').length;
+    const totalCount = tickets.length;
+
+    return [
+      { name: "Open", value: openCount, color: "#fb2c36" },
+      { name: "In-Progress", value: inProgressCount, color: "#f0b100" },
+      { name: "Resolved", value: resolvedCount, color: "#10b981" },
+      { name: "Total", value: totalCount, color: "#2b7fff" },
+    ]
+  }, [tickets]);
 
   return (
-    <div style={{ width: '450px', height: '250px', padding: '20px', borderRadius: '12px' }}>
-      <ResponsiveContainer width={450} height={250}>
+    <div style={{ width: '100%', height: '220px', padding: '10px' }}>
+      <ResponsiveContainer width={350} height={250}>
         <BarChart
-          data={ticketChart}
+          data={chartData}
           margin={{ top: 20, right: 10, left: -20, bottom: 0 }}
           barGap={4}
         >
@@ -27,7 +35,7 @@ const Chart = () => {
             axisLine={false}
             tickLine={false}
             tick={{ fill: "#94a3b8", fontSize: 12, fontWeight: 500 }}
-            dy={10}
+            dy={5}
           />
 
           <YAxis
@@ -54,7 +62,7 @@ const Chart = () => {
             background={{ fill: "#e2e8f0", radius: 10 }}
           >
             {/* Assigning unique colors to each bar */}
-            {ticketChart.map((entry, index) => (
+            {chartData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
           </Bar>

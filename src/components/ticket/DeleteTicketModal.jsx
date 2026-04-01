@@ -7,7 +7,7 @@ import TicketModal from './TicketModal';
 import { FormInputEmpty } from '../ui/Input'
 import { LuTrash2 } from 'react-icons/lu'
 
-export default function DeleteTicketModal({ ticketId, onClose }) {
+export default function DeleteTicketModal({ ticketId, onClose, }) {
     const { deleteTicket, isLoading } = useDeleteTicket()
     const { register, getValues, setError, reset, control, formState: { errors } } = useForm()
     const confirmDeleteValue = useWatch({ control, name: 'confirmDelete', defaultValue: '' })
@@ -24,7 +24,10 @@ export default function DeleteTicketModal({ ticketId, onClose }) {
         }
 
         deleteTicket(ticketId, {
-            onSuccess: () => handleCloseDeleteModal(),
+            onSuccess: () => {
+                onClose();
+                reset()
+            },
             onError: () => {
                 setError('confirmDelete', {
                     type: 'manual',

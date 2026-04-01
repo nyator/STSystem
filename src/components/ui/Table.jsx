@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Pagination from './Pagination'
 import EditTicketModal from '../ticket/EditTicketModal'
+import TicketDrawer from '../ticket/TicketDrawer'
 
 function Table({
     columns,
@@ -25,14 +26,18 @@ function Table({
         'sticky left-0 z-0 bg-gray-50 dark:bg-gray-700 rounded-tl-xl'
     const stickyClass =
         'sticky left-0 z-0 bg-white dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-700 text-nowrap transition-all duration-100 ease-in'
+    const stickyEndHeaderClass = 'sticky right-0 z-0 bg-gray-50 dark:bg-gray-700 rounded-tr-xl'
+    const stickyEndClass = 'sticky right-0 bg-white dark:bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-700 text-nowrap transition-all duration-100 ease-in'
 
     return (
         <>
             {/* Shared edit modal — driven by selectedRowId */}
-            <EditTicketModal
+            {/* <EditTicketModal
                 ticketId={selectedRowId}
                 onClose={() => setSelectedRowId(null)}
-            />
+            /> */}
+
+            {/* <TicketDrawer/> */}
 
             <div className="flex-col flex items-center w-full">
                 {title ? (
@@ -47,8 +52,8 @@ function Table({
                                     {cols.map((col, index) => (
                                         <th
                                             key={col.key}
-                                            className={`text-left p-3 dark:text-gray-200 ${index === 0 ? stickyHeaderClass : ''
-                                                }`}
+                                            className={`text-left py-3 px-2 dark:text-gray-200 ${index === 0 ? stickyHeaderClass : ''
+                                                } ${index === cols.length - 1 ? stickyEndHeaderClass : ''}`}
                                         >
                                             {col.title || col.key}
                                         </th>
@@ -70,16 +75,16 @@ function Table({
                                         <tr
                                             key={idx}
                                             onClick={() => setSelectedRowId(row.id)}
-                                            className={`group border-gray-200 dark:border-gray-700 text-nowrap hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-all duration-100 ease-in ${idx === data.length - 1
-                                                    ? 'border-b-0'
-                                                    : 'border-b'
+                                            className={`group border-gray-200 dark:border-gray-700 text-nowrap hover:bg-gray-50 dark:hover:bg-gray-700 cursor-default transition-all duration-100 ease-in ${idx === data.length - 1
+                                                ? 'border-b-0'
+                                                : 'border-b'
                                                 }`}
                                         >
                                             {cols.map((col, index) => (
                                                 <td
                                                     key={col.key}
-                                                    className={`text-left p-2 pl-3 dark:text-gray-300 ${index === 0 ? stickyClass : ''
-                                                        }`}
+                                                    className={`text-left p-2 dark:text-gray-300 ${index === 0 ? stickyClass : ''
+                                                        } ${index === cols.length - 1 ? stickyEndClass : ''}`}
                                                     onClick={
                                                         col.key === 'actions'
                                                             ? (e) => e.stopPropagation()
@@ -87,7 +92,7 @@ function Table({
                                                     }
                                                 >
                                                     {col.render
-                                                        ? col.render(row, idx)
+                                                        ? col.render(row, idx, data.length)
                                                         : (row[col.key] ?? '')}
                                                 </td>
                                             ))}

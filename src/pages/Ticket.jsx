@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LuTicket, LuSlidersHorizontal, LuArrowDownUp, } from "react-icons/lu"
+import { LuTicket, LuSlidersHorizontal, LuArrowDownUp, LuTicketSlash } from "react-icons/lu"
 
 import Header from '../components/dashboard/Header';
 import FilterButton from '../components/ui/FilterButton';
@@ -15,6 +15,7 @@ import TicketSearch from '../components/ticket/TicketSearch';
 
 import TableSkeleton from "../components/ui/TableSkeleton";
 import DatePicker from "../components/ui/DatePicker";
+import TicketDrawer from "../components/ticket/TicketDrawer";
 
 // Filter options
 const statusOptions = [
@@ -96,7 +97,7 @@ function Ticket() {
 
     // Pagination logic
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 8;
+    const itemsPerPage = 9;
     const totalItems = ticketsToDisplay.length;
     const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
     const paginatedTickets = ticketsToDisplay.slice(
@@ -111,6 +112,10 @@ function Ticket() {
         setCurrentPage(1)
     }, [searchedTickets, filters])
 
+
+    // Render Drawer
+    const [openDrawer, setOpenDrawer] = useState(false);
+
     return (
         <div>
             <div className='sticky top-0 z-10 bg-white dark:bg-gray-800 p-4 w-full'>
@@ -121,102 +126,107 @@ function Ticket() {
                 />
             </div>
 
+            <div className="flex min-h-[calc(100vh-5.5rem)] m-1 gap-1">
 
-            <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] h-[calc(100vh-6rem)] m-2 rounded-2xl'>
-                <div className='sticky top-18 z-5 bg-white dark:bg-gray-800 flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 dark:border-gray-700 mb-5 py-2'>
-                    <TicketSearch onResults={setSearchedTickets} />
-                    {/* <DatePicker /> */}
-                    <div className='flex items-center gap-2'>
-                        {/* Sorting Button */}
-                        <FilterButton
-                            title="Sort"
-                            icon={<LuArrowDownUp size={15} />}
-                            isOpen={isOpen === 'sort'}
-                            setIsOpen={(open) => setIsOpen(open ? 'sort' : null)}
-                            filterGroups={sortGroups}
-                            filters={{
-                                sortKey: sort.key,
-                                sortDirection: sort.direction
-                            }}
-                            setFilter={(type, value) => {
-                                if (type === 'sortKey') {
-                                    setSortState(prev => ({ ...prev, key: value }))
-                                    setSort(value)
-                                } else if (type === 'sortDirection') {
-                                    setSortState(prev => ({ ...prev, direction: value }))
-                                    setSort(prev => ({ ...prev, direction: value }))
-                                }
-                            }}
-                            clearFilters={() => {
-                                setSortState({ key: null, direction: 'asc' })
-                                clearSort()
-                            }}
-                            hasActiveFilters={!!sort.key}
-                        />
+                <div className='flex flex-col items-start bg-white dark:bg-gray-800 px-4 w-full h-[calc(100vh-5.5rem)] rounded-2xl'>
+                    <div className='sticky top-5 z-5 bg-white dark:bg-gray-800 flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 dark:border-gray-700 mb-4 py-4'>
+                        <TicketSearch onResults={setSearchedTickets} />
+                        {/* <DatePicker /> */}
+                        <div className='flex items-center gap-2'>
+                            {/* Sorting Button */}
+                            <FilterButton
+                                title="Sort"
+                                icon={<LuArrowDownUp size={15} />}
+                                isOpen={isOpen === 'sort'}
+                                setIsOpen={(open) => setIsOpen(open ? 'sort' : null)}
+                                filterGroups={sortGroups}
+                                filters={{
+                                    sortKey: sort.key,
+                                    sortDirection: sort.direction
+                                }}
+                                setFilter={(type, value) => {
+                                    if (type === 'sortKey') {
+                                        setSortState(prev => ({ ...prev, key: value }))
+                                        setSort(value)
+                                    } else if (type === 'sortDirection') {
+                                        setSortState(prev => ({ ...prev, direction: value }))
+                                        setSort(prev => ({ ...prev, direction: value }))
+                                    }
+                                }}
+                                clearFilters={() => {
+                                    setSortState({ key: null, direction: 'asc' })
+                                    clearSort()
+                                }}
+                                hasActiveFilters={!!sort.key}
+                            />
 
-                        <FilterButton
-                            title="Filter"
-                            icon={<LuSlidersHorizontal size={15} className={`${isOpen === 'filter' ? 'rotate-180' : ''}`} />}
-                            isOpen={isOpen === 'filter'}
-                            setIsOpen={(open) => setIsOpen(open ? 'filter' : null)}
-                            filterGroups={filterGroups}
-                            filters={filters}
-                            setFilter={setFilter}
-                            clearFilters={clearFilters}
-                            hasActiveFilters={hasActiveFilters}
-                            otherActions={<DatePicker onRangeChange={(range) => setFilter('dateRange', range)} />}
-                        />
-                    </div>
-                </div>
-
-                {isLoading ?
-                    <TableSkeleton rows={10} />
-                    : ticketsToDisplay.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-10rem)] py-20 text-gray-500">
-                            <LuTicket size={48} className="mb-4 opacity-50" />
-                            <p className="text-lg font-medium">No tickets found</p>
-                            <p className="text-sm mt-2">Try adjusting your search or filters</p>
+                            <FilterButton
+                                title="Filter"
+                                icon={<LuSlidersHorizontal size={15} className={`${isOpen === 'filter' ? 'rotate-180' : ''}`} />}
+                                isOpen={isOpen === 'filter'}
+                                setIsOpen={(open) => setIsOpen(open ? 'filter' : null)}
+                                filterGroups={filterGroups}
+                                filters={filters}
+                                setFilter={setFilter}
+                                clearFilters={clearFilters}
+                                hasActiveFilters={hasActiveFilters}
+                                otherActions={<DatePicker onRangeChange={(range) => setFilter('dateRange', range)} />}
+                            />
                         </div>
-                    ) : <Table
-                        columns={[
-                            { key: 'id', title: 'ID' },
-                            { key: 'title', title: 'Title' },
-                            // {key: 'description', title: 'Description'},
-                            { key: 'customer', title: 'Customer' },
-                            { key: 'priority', title: 'Priority' },
-                            { key: 'status', title: 'Status' },
-                            { key: 'createdAt', title: 'Created At' },
-                            { key: 'actions', title: 'Actions' },
-                        ]}
-                        data={
-                            paginatedTickets.map((t) => {
-                                const fmt = (s) => {
-                                    if (!s) return '';
-                                    const replaced = String(s).replace("-", ' ');
-                                    return replaced.charAt(0).toLowerCase() + replaced.slice(1);
-                                };
-                                return {
-                                    id: t.id,
-                                    title: t.title,
-                                    customer: t.customerEmail || '',
-                                    // description: t.description || '',
-                                    priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />,
-                                    status: <StatusBadge status={fmt(t.status) || 'open'} />,
-                                    createdAt: t.createdAt ? new Date(t.createdAt).toUTCString().slice(0, -13) : '',
-                                    actions: <Actions ticketId={t.id} />
-                                };
-                            })
-                        }
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        totalItems={totalItems}
-                        onPrev={handlePrev}
-                        onNext={handleNext}
-                    />
-                }
+                    </div>
 
+                    {isLoading ?
+                        <TableSkeleton rows={10} />
+                        : ticketsToDisplay.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-10rem)] py-20 text-gray-500">
+                                <LuTicket size={48} className="mb-4 opacity-50" />
+                                <p className="text-lg font-medium">No tickets found</p>
+                                <p className="text-sm mt-2">Try adjusting your search or filters</p>
+                            </div>
+                        ) : <Table
+                            columns={[
+                                { key: 'id', title: 'ID' },
+                                { key: 'title', title: 'Title' },
+                                // {key: 'description', title: 'Description'},
+                                { key: 'customer', title: 'Customer' },
+                                { key: 'priority', title: 'Priority' },
+                                { key: 'status', title: 'Status' },
+                                { key: 'createdAt', title: 'Created At' },
+                                { key: 'actions', title: 'Actions' },
+                            ]}
+                            data={
+                                paginatedTickets.map((t) => {
+                                    const fmt = (s) => {
+                                        if (!s) return '';
+                                        const replaced = String(s).replace("-", ' ');
+                                        return replaced.charAt(0).toLowerCase() + replaced.slice(1);
+                                    };
+                                    return {
+                                        id: t.id,
+                                        title: t.title,
+                                        customer: t.customerEmail || '',
+                                        description: t.description || '',
+                                        priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />,
+                                        status: <StatusBadge status={fmt(t.status) || 'open'} />,
+                                        createdAt: t.createdAt ? new Date(t.createdAt).toUTCString().slice(0, -13) : '',
+                                        actions: <Actions ticketId={t.id} rowIndex={paginatedTickets.findIndex(ticket => ticket.id === t.id)} dataLength={paginatedTickets.length} />
+                                    };
+                                })
+                            }
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            totalItems={totalItems}
+                            onPrev={handlePrev}
+                            onNext={handleNext}
+                        />
+                    }
+                </div>
+                {/* <div className="w-1/5">
+                    <TicketDrawer onClose={() => { }} />
+                </div> */}
             </div>
         </div>
+
     )
 }
 export default Ticket

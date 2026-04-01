@@ -54,7 +54,7 @@ function FormTextArea({ register, readOnly, name, placeholder, formfields, error
             <textarea
                 {...register(name, formfields)}
                 placeholder={placeholder}
-                className={`${error ? "outline-[1.4px] outline-red-500 bg-red-200" : ""} w-full p-2 pl-8 text-mblack font-medium text-xs bg-gray-50/50 dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 min-h-28 max-h-42 rounded-lg focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-600 transition-colors duration-300 dark:text-gray-200`}
+                className={`${error ? "outline-[1.4px] outline-red-500 bg-red-200" : ""} w-full p-2 pl-8 text-mblack font-medium text-xs bg-gray-50/50 dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 min-h-18 max-h-42 rounded-lg focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-600 transition-colors duration-300 dark:text-gray-200`}
                 {...props}
                 {...(readOnly && { readOnly })}
             />

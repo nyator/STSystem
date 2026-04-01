@@ -1,14 +1,26 @@
+import { useRef, useEffect, useState } from "react"
 
 function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, setFilter, clearFilters, hasActiveFilters, otherActions }) {
+
+    const ref = useRef(null)
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (ref.current && !ref.current.contains(e.target)) setIsOpen(false)
+        }
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [])
+
     const handleOptionClick = (filterType, value) => {
         setFilter(filterType, value)
         setIsOpen(false)
     }
 
     return (
-        <div className="relative">
+        <div className="relative" ref={ref}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
+                onMouseDown={(e) => e.stopPropagation()}
                 className={`flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300 bg-gray-50/50 dark:bg-gray-800 border-2 h-10 px-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-all ease-in-out duration-300 focus:outline-none border-gray-100 dark:border-gray-700`}
             >
                 {hasActiveFilters && (
@@ -19,9 +31,9 @@ function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, s
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 top-full mt-2 w-38 bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-b-lg shadow-lg p-2 max-h-96 overflow-y-auto z-20">
+                <div className="absolute right-0 top-full mt-4 w-38 bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-b-lg shadow-lg p-2 max-h-96 overflow-y-auto z-20" onMouseDown={(e) => e.stopPropagation()}>
                     {filterGroups.map((group, groupIndex) => (
-                        <div key={group.title} className={groupIndex > 0 ? 'border-t border-gray-200 dark:border-gray-700 mt-2 pt-2' : ''}>
+                        <div key={group.title} className={groupIndex > 0 ? 'border-t border-gray-200 dark:border-gray-700 pt-2' : ''}>
                             <div className="text-xs font-semibold text-gray-800 dark:text-gray-200 mb-1 px-1">{group.title}</div>
                             {group.options.map((option) => (
                                 <button

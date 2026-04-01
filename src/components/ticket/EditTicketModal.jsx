@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { DevTool } from '@hookform/devtools'
 
 import { LuSquarePen, LuMail, LuTicketSlash } from 'react-icons/lu'
 import { FormInput, FormTextArea } from '../ui/Input'
-import { OptionButton } from '../ui/Button'
+import Button, { OptionButton } from '../ui/Button'
 import TicketModal from './TicketModal'
 import useTicket from '../../Hooks/Tickets/useTicket'
 import useEditTicket from '../../Hooks/Tickets/useEditTicket'
 import CustomInfoToast from '../ui/CustomInfoToast'
 
 const PRIORITY_OPTIONS = ['low', 'medium', 'high']
-const STATUS_OPTIONS = ['open', 'in-progress', 'resolved']
+const STATUS_OPTIONS = ['open','assigned' ,'in-progress', 'resolved']
 
 export default function EditTicketModal({ ticketId, onClose }) {
     const { ticket } = useTicket(ticketId)
@@ -110,57 +111,74 @@ export default function EditTicketModal({ ticketId, onClose }) {
             disabled={isUpdating}
             error={hasErrors}
         >
-            <form id="edit-ticket-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                <FormInput
-                    name="title"
-                    placeholder="Enter Ticket Title"
-                    register={register}
-                    formfields={{ required: 'Title is required' }}
-                    error={errors.title}
-                />
-                <FormInput
-                    name="email"
-                    placeholder="Enter customer email"
-                    icon={
-                        <LuMail
-                            className="absolute left-3 top-3 text-gray-700 dark:text-gray-400"
-                            size={15}
+            <DevTool control={control} />
+            <div className='w-full'>
+                <form id="edit-ticket-form" onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+                    <FormInput
+                        name="title"
+                        placeholder="Enter Ticket Title"
+                        register={register}
+                        formfields={{ required: 'Title is required' }}
+                        error={errors.title}
+                    />
+                    <FormInput
+                        name="email"
+                        placeholder="Enter customer email"
+                        icon={
+                            <LuMail
+                                className="absolute left-3 top-3 text-gray-700 dark:text-gray-400"
+                                size={15}
+                            />
+                        }
+                        register={register}
+                        formfields={{
+                            required: 'Email is required',
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: 'Invalid email address',
+                            },
+                        }}
+                        error={errors.email}
+                    />
+                    <FormTextArea
+                        name="description"
+                        placeholder="Enter Ticket Description"
+                        register={register}
+                        formfields={{ required: 'Description is required' }}
+                        error={errors.description}
+                    />
+                    <div className="flex flex-wrap space-x-2 justify-center">
+                        <OptionButton
+                            title="Priority"
+                            options={priorityOptions}
+                            selected={selectedPriority}
+                            isOpen={openDropdown === 'priority'}
+                            setIsOpen={(open) => setOpenDropdown(open ? 'priority' : null)}
                         />
-                    }
-                    register={register}
-                    formfields={{
-                        required: 'Email is required',
-                        pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                            message: 'Invalid email address',
-                        },
-                    }}
-                    error={errors.email}
-                />
-                <FormTextArea
-                    name="description"
-                    placeholder="Enter Ticket Description"
-                    register={register}
-                    formfields={{ required: 'Description is required' }}
-                    error={errors.description}
-                />
-                <div className="flex space-x-2 justify-center">
-                    <OptionButton
-                        title="Priority"
-                        options={priorityOptions}
-                        selected={selectedPriority}
-                        isOpen={openDropdown === 'priority'}
-                        setIsOpen={(open) => setOpenDropdown(open ? 'priority' : null)}
-                    />
-                    <OptionButton
-                        title="Status"
-                        options={statusOptions}
-                        selected={selectedStatus}
-                        isOpen={openDropdown === 'status'}
-                        setIsOpen={(open) => setOpenDropdown(open ? 'status' : null)}
-                    />
-                </div>
-            </form>
+                        <OptionButton
+                            title="Status"
+                            options={statusOptions}
+                            selected={selectedStatus}
+                            isOpen={openDropdown === 'status'}
+                            setIsOpen={(open) => setOpenDropdown(open ? 'status' : null)}
+                        />
+                    </div>
+                    {/* {ticket.comments && ticket?.comments?.length > 0 ? (
+                        <div className="space-y-2">
+                            {ticket.comments.map((comment, index) => (
+                                <div key={index} className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                                    <p className="text-sm text-gray-800 dark:text-gray-200">{comment}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-sm text-gray-500 dark:text-gray-400">No comments yet</p>
+                    )} */}
+
+
+                    <Button variant='secondary' onClick={() => { }} >Add Comment</Button>
+                </form>
+            </div>
         </TicketModal>
     )
 }
