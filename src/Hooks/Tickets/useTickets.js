@@ -5,7 +5,7 @@ function useTickets() {
     const { data, error, isLoading } = useQuery({
         queryKey: ['tickets'],
         queryFn: getTickets,
-        staleTime: 0, //fresh" for 30 minutes
+        staleTime: 0,
         gcTime: 1.8e+6, //After 60 mins, cache is cleared 
         refetchOnMount: true,  //Important for localStorage sync
     })

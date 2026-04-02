@@ -17,8 +17,11 @@ body {
 [data-theme="dark"] body {
   background-color: #1a1a1a;
   color: #e5e5e5;
-  color: #6d83c4;
 }
+
+/* .eg {
+  color: #6d83c4;
+} */
 
 
 
@@ -49,8 +52,9 @@ body {
   .card-item {
     @apply flex rounded-md py-1.5 px-2 items-center gap-1 text-xs hover:bg-gray-50 dark:hover:bg-gray-900/20 transition-colors duration-200 cursor-pointer;
   }
+
   .card {
-    @apply flex flex-col rounded-md bg-white dark:bg-gray-800 p-4 gap-2 shadow shadow-gray-100 ;
+    @apply flex flex-col rounded-md bg-white dark:bg-gray-800 p-4 gap-2 shadow shadow-gray-100;
   }
 }
 

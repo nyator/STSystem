@@ -1,71 +1,93 @@
 import React, { useMemo } from 'react';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { RadialBarChart, RadialBar, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import useMembers from '../../Hooks/Team/useMembers';
 
 const Chart3 = () => {
     const { data: members = [] } = useMembers();
 
-    // UseMemo prevents recalculating filters unless 'members' changes
-    const chartData = useMemo(() => {
-        const activeCount = members.filter(t => t.status?.toLowerCase() === 'active').length;
-        const inactiveCount = members.filter(t => t.status?.toLowerCase() === 'inactive').length;
-
-        return [
-            { name: "Active", value: activeCount, color: "#6d83c4" },
-            { name: "Inactive", value: inactiveCount, color: "#cbd5e1" },
-        ];
+    // 1. Memoize counts to optimize performance
+    const counts = useMemo(() => {
+        const active = members.filter(t => t.status?.toLowerCase() === 'active').length;
+        return {
+            total: members.length,
+            active: active,
+            // Calculate percentage for the progress bar (max 100)
+            percentage: members.length > 0 ? (active / members.length) * 100 : 0,
+        };
     }, [members]);
 
-    const totalMembers = members.length;
+    // 2. Data format must change for RadialBarChart
+    // We treat 'counts.total' as 100% and 'counts.active' as the progress.
+    const chartData = [
+        {
+            name: 'Active Staff',
+            value: counts.active,
+            fill: '#6d83c4', // The active progress color
+        }
+    ];
 
     return (
-        <div style={{ width: '100%', height: '220px', padding: '10px' }}>
-            <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                    <Pie
-                        data={chartData}
+        <div className="w-75 h-55 border border-[#e5e7eb] dark:border-gray-700 rounded-2xl p-3.75 bg-white dark:bg-gray-800">
+
+            {/* Minimal Title/Header */}
+            <div className="mb-2.5 flex justify-between items-center">
+                <h3 className="text-sm font-semibold text-[#374151] dark:text-white">Staff Status</h3>
+                <span className="text-xs text-green-500 bg-green-100 dark:bg-green-900 dark:text-green-300 px-2 py-0.5 rounded-full font-medium">
+                    {counts.percentage.toFixed(0)}% Active
+                </span>
+            </div>
+
+            <div style={{ position: 'relative', width: '100%', height: '160px' }}>
+                <ResponsiveContainer width="100%" height="100%">
+                    {/* Switch PieChart for RadialBarChart */}
+                    <RadialBarChart
                         cx="50%"
-                        cy="80%" // Move the center down to make it a semi-circle
-                        startAngle={180}
-                        endAngle={0}
-                        innerRadius={78}
-                        outerRadius={110}
-                        paddingAngle={0}
-                        cornerRadius={8} // Rounds the edges of the bars
-                        dataKey="value"
+                        cy="50%"
+                        innerRadius="75%"
+                        outerRadius="100%"
+                        barSize={12} // Thickness of the track
+                        data={chartData}
+                        startAngle={90} // Progress bar starts at 12 o'clock
+                        endAngle={-270} // and goes clockwise a full 360 degrees
                     >
-                        {chartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                    </Pie>
+                        {/* Define the 'track' (The light gray inactive background) */}
+                        <PolarAngleAxis
+                            type="number"
+                            domain={[0, counts.total]} // Total count is 100% of the circle
+                            angleAxisId={0}
+                            tick={false}
+                        />
 
-                    <Tooltip
-                        cursor={{ fill: 'transparent' }}
-                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-                    />
-{/* 
-                    <Legend
-                        verticalAlign="top"
-                        align="right"
-                        layout="vertical"
-                        iconType="circle"
-                        wrapperStyle={{ fontSize: '12px', paddingBottom: '20px' }}
-                    /> */}
-                </PieChart>
-            </ResponsiveContainer>
+                        {/* Define the progress (Active count overlay) */}
+                        <RadialBar
+                            minAngle={15}
+                            background={{ fill: '#e5e7eb' }} // Standard slate-200 for 'inactive/empty' track
+                            clockWise
+                            dataKey="value"
+                            cornerRadius={10} // Perfectly rounded ends
+                        />
 
-            <div style={{
-                marginTop: '-85px',
-                // paddingRight: '0px',
-                textAlign: 'center',
-                position: 'relative',
-                zIndex: 1
-            }}>
-                <div style={{ fontSize: '28px', fontWeight: '800', color: '#1f2937', lineHeight: '1' }}>
-                    {totalMembers}
-                </div>
-                <div style={{ fontSize: '11px', fontWeight: "500", color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                    Total Staff
+                    </RadialBarChart>
+                </ResponsiveContainer>
+
+                {/* Central Labels, positioned precisely inside the RadialBar */}
+                <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    textAlign: 'center',
+                    pointerEvents: 'none',
+                    fontFamily: 'sans-serif'
+                }}>
+                    {/* Focus on the active number */}
+                    <div className='text-[36px] font-bold text-[#1f2637] dark:text-white leading-10'>
+                        {counts.active}
+                    </div>
+                    {/* Total as a subtitle label */}
+                    <div className='text-xs text-[#9ca3af] dark:text-gray-300 uppercase mt-1'>
+                        OF {counts.total} TOTAL
+                    </div>
                 </div>
             </div>
         </div>

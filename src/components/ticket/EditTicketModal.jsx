@@ -11,7 +11,7 @@ import useEditTicket from '../../Hooks/Tickets/useEditTicket'
 import CustomInfoToast from '../ui/CustomInfoToast'
 
 const PRIORITY_OPTIONS = ['low', 'medium', 'high']
-const STATUS_OPTIONS = ['open','assigned' ,'in-progress', 'resolved']
+const STATUS_OPTIONS = ['open', 'assigned', 'in-progress', 'resolved']
 
 export default function EditTicketModal({ ticketId, onClose }) {
     const { ticket } = useTicket(ticketId)
@@ -37,6 +37,20 @@ export default function EditTicketModal({ ticketId, onClose }) {
             status: 'open',
         },
     })
+
+    const hasErrors = Object.keys(errors).length > 0
+
+    const priorityOptions = PRIORITY_OPTIONS.map((value) => ({
+        label: value.charAt(0).toUpperCase() + value.slice(1),
+        value,
+        onClick: () => handlePriorityChange(value),
+    }))
+
+    const statusOptions = STATUS_OPTIONS.map((value) => ({
+        label: value.charAt(0).toUpperCase() + value.slice(1),
+        value,
+        onClick: () => handleStatusChange(value),
+    }))
 
     useEffect(() => {
         if (ticket) {
@@ -84,19 +98,7 @@ export default function EditTicketModal({ ticketId, onClose }) {
         )
     }
 
-    const hasErrors = Object.keys(errors).length > 0
 
-    const priorityOptions = PRIORITY_OPTIONS.map((value) => ({
-        label: value.charAt(0).toUpperCase() + value.slice(1),
-        value,
-        onClick: () => handlePriorityChange(value),
-    }))
-
-    const statusOptions = STATUS_OPTIONS.map((value) => ({
-        label: value.charAt(0).toUpperCase() + value.slice(1),
-        value,
-        onClick: () => handleStatusChange(value),
-    }))
 
     return (
         <TicketModal

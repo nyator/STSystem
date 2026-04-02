@@ -116,7 +116,9 @@ function Header({ icon, title, description }) {
                             isOpen={isOpen}
                             setIsOpen={setIsOpen}
                         />
-
+                        <Button >
+                            Assign
+                        </Button>
                     </div>
                 </form>
             </TicketModal>

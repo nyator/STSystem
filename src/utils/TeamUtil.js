@@ -16,7 +16,9 @@ export const createMember = async (memberData) => {
         id: id,
         firstName: memberData.firstName,
         lastName: memberData.lastName,
-        // role: memberData.role || "",
+        email: memberData.email,
+        avatar: memberData.avatar || `https://i.pravatar.cc/150?img=${nextId}`,
+        team: memberData.team || "",
         status: memberData.status || "",
         ticketsAssigned: memberData.ticketsAssigned || 0,
         createdAt: new Date().toString()

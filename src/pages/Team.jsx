@@ -7,14 +7,15 @@ import toast from "react-hot-toast";
 
 import TicketModal from "../components/ticket/TicketModal"
 import Button, { OptionButton } from "../components/ui/Button"
-import { LuPlus, LuUsersRound, LuUserRoundPlus, LuInfo } from "react-icons/lu"
+import { LuPlus, LuUsersRound, LuUserRoundPlus, LuInfo, LuLaptopMinimal } from "react-icons/lu"
 import { FormInput } from "../components/ui/Input";
-import MemberGroup from "../components/team/MemberGroup";
+import MemeberGroup from "../components/team/MemberGroup";
 
 function Team() {
     const [openModal, setOpenModal] = useState(false)
     const [selectedStatus, setSelectedStatus] = useState("active")
-    const [isOpen, setIsOpen] = useState(false)
+    const [selectedTeam, setSelectedTeam] = useState()
+    const [isOpen, setIsOpen] = useState(null)
 
     const { createMember } = useCreateMember()
     const { register, handleSubmit, control, reset, formState: { errors } } = useForm()
@@ -24,13 +25,21 @@ function Team() {
         { label: "Inactive", value: "inactive", onClick: () => setSelectedStatus("inactive") },
     ]
 
+    const TeamOptions = [
+        { label: "Frontend", value: "frontend", onClick: () => setSelectedTeam("frontend") },
+        { label: "Backend", value: "backend", onClick: () => setSelectedTeam("backend") },
+        { label: "DevOps", value: "devops", onClick: () => setSelectedTeam("devops") },
+        { label: "Database", value: "database", onClick: () => setSelectedTeam("database") },
+    ]
+
     const onSubmit = (data) => {
-        console.log({ ...data, status: selectedStatus })
-        createMember({ ...data, status: selectedStatus }, {
+        console.log({ ...data, status: selectedStatus, team: selectedTeam })
+        createMember({ ...data, status: selectedStatus, team: selectedTeam }, {
             onSuccess: () => {
                 toast.success("Member Created!")
                 reset()
                 setSelectedStatus("active")
+                setSelectedTeam(undefined)
                 setOpenModal(false)
             },
             onError: () => {
@@ -59,17 +68,14 @@ function Team() {
                         <LuUserRoundPlus size={15} />
                         Add Member
                     </Button>
-                    <MemberGroup />
+
+                    <MemeberGroup />
                 </div>
-
-                
-            
-
             </div>
 
             <TicketModal
                 isOpen={openModal}
-                onClose={() => { setOpenModal(false); reset(); setSelectedStatus("active") }}
+                onClose={() => { setOpenModal(false); reset(); setSelectedStatus("active"); setSelectedTeam(undefined); setIsOpen(null) }}
                 title="Add Member"
                 LAction="Cancel"
                 RAction="Add Member"
@@ -103,13 +109,20 @@ function Team() {
                         formfields={{ required: "Email is required", pattern: { value: /^\S+@\S+\.\S+$/, message: "Email is not valid" } }}
                         error={errors.email}
                     />
-                    <div className="w-fit">
+                    <div className="flex items-center gap-1">
                         <OptionButton
-                            title={<LuInfo className='inline ml-1' size={14} />}
+                            title={<LuInfo className='inline' size={14} />}
                             options={StatusOptions}
                             selected={selectedStatus}
-                            isOpen={isOpen}
-                            setIsOpen={setIsOpen}
+                            isOpen={isOpen === "status"}
+                            setIsOpen={(open) => setIsOpen(open ? 'status' : null)}
+                        />
+                        <OptionButton
+                            title={<LuLaptopMinimal className='inline' size={14} />}
+                            options={TeamOptions}
+                            selected={selectedTeam || "Select Team"}
+                            isOpen={isOpen === "team"}
+                            setIsOpen={(open) => setIsOpen(open ? 'team' : null)}
                         />
                     </div>
                 </form>

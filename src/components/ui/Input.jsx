@@ -12,7 +12,7 @@ function SearchInput({ register, error, formfields, ...props }) {
                 className={`pl-8 ${baseInputClasses}`}
                 {...props}
             />
-            <LuSearch className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />
+            <LuSearch className="absolute left-3 top-3 text-gray-400 dark:text-gray-400" size={15} />
         </div>
     )
 }
