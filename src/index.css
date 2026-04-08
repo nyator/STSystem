@@ -27,6 +27,7 @@ body {
 
 
 @theme {
+
   --animate-wiggle: wiggle 1s ease-in-out infinite;
   --color-mblack: #333333;
 
@@ -41,6 +42,11 @@ body {
       transform: rotate(10deg);
     }
   }
+
+
+  /* --breakpoint-xs: 30rem;
+  --breakpoint-2xl: 100rem; */
+  --breakpoint-xl: 1037px;
 }
 
 

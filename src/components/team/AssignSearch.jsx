@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import { useEffect } from 'react'
 import useDebounce from '../../Hooks/Tickets/useDebounce'
 import Input from '../ui/Input'
-import { getMember } from "../../utils/TeamUtil"
+import { getMembers } from "../../utils/TeamUtil"
 
 function AssignSearch({ onResults }) {
 
@@ -13,21 +13,21 @@ function AssignSearch({ onResults }) {
 
     const { data: members = [] } = useQuery({
         queryKey: ['team'],
-        queryFn: getMember
+        queryFn: getMembers
     })
 
-    useEffect(() => {
-        const filteredMembers = members.filter((member) =>
-            member.team.toLowerCase().includes(debouncedValue.toLowerCase()) ||
-            member.firstname.toLowerCase().includes(debouncedValue.toLowerCase()) ||
-            member.lastName.toLowerCase().includes(debouncedValue.toLowerCase())
-        )
-        if (debouncedValue) {
-            onResults?.(filteredMembers)
-        } else {
-            onResults?.(members)
-        }
-    }, [debouncedValue, members, onResults])
+   useEffect(() => {
+    if (!debouncedValue) {
+        onResults?.(null)  // reset to null so parent falls back to members
+        return
+    }
+    const filteredMembers = members.filter((member) =>
+        member.team.toLowerCase().includes(debouncedValue.toLowerCase()) ||
+        member.firstName.toLowerCase().includes(debouncedValue.toLowerCase()) ||
+        member.lastName.toLowerCase().includes(debouncedValue.toLowerCase())
+    )
+    onResults?.(filteredMembers)
+}, [debouncedValue, members])  // remove onResults from deps — it changes every render
 
     // console.log(onResults)
 

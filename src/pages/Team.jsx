@@ -33,8 +33,8 @@ function Team() {
     ]
 
     const onSubmit = (data) => {
-        console.log({ ...data, status: selectedStatus, team: selectedTeam })
-        createMember({ ...data, status: selectedStatus, team: selectedTeam }, {
+        // console.log({ ...data, team: selectedTeam })
+        createMember({ ...data, team: selectedTeam }, {
             onSuccess: () => {
                 toast.success("Member Created!")
                 reset()
@@ -75,7 +75,7 @@ function Team() {
 
             <TicketModal
                 isOpen={openModal}
-                onClose={() => { setOpenModal(false); reset(); setSelectedStatus("active"); setSelectedTeam(undefined); setIsOpen(null) }}
+                onClose={() => { setOpenModal(false); reset(); setSelectedTeam(undefined); setIsOpen(null) }}
                 title="Add Member"
                 LAction="Cancel"
                 RAction="Add Member"
@@ -110,13 +110,13 @@ function Team() {
                         error={errors.email}
                     />
                     <div className="flex items-center gap-1">
-                        <OptionButton
+                        {/* <OptionButton
                             title={<LuInfo className='inline' size={14} />}
                             options={StatusOptions}
                             selected={selectedStatus}
                             isOpen={isOpen === "status"}
                             setIsOpen={(open) => setIsOpen(open ? 'status' : null)}
-                        />
+                        /> */}
                         <OptionButton
                             title={<LuLaptopMinimal className='inline' size={14} />}
                             options={TeamOptions}

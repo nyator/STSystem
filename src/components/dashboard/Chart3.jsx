@@ -7,17 +7,14 @@ const Chart3 = () => {
 
     // 1. Memoize counts to optimize performance
     const counts = useMemo(() => {
-        const active = members.filter(t => t.status?.toLowerCase() === 'active').length;
+        const active = members.length;
         return {
             total: members.length,
             active: active,
-            // Calculate percentage for the progress bar (max 100)
             percentage: members.length > 0 ? (active / members.length) * 100 : 0,
         };
     }, [members]);
 
-    // 2. Data format must change for RadialBarChart
-    // We treat 'counts.total' as 100% and 'counts.active' as the progress.
     const chartData = [
         {
             name: 'Active Staff',

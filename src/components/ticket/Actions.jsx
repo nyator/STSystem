@@ -1,11 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
-import { LuSquarePen, LuEllipsis, LuTrash2, LuUserPlus, LuLink } from 'react-icons/lu'
+import { LuSquarePen, LuEllipsis, LuTrash2, LuUserPlus } from 'react-icons/lu'
 import { createPortalBody } from '../../utils/createPortal.jsx'
+
+
+import useTicket from '../../Hooks/Tickets/useTicket.js'
 
 import EditTicketModal from './EditTicketModal'
 import DeleteTicketModal from './DeleteTicketModal'
 import AssignTicketModal from './AssignTicketModal'
-import ChangeStatus from './ChangeStatusModal'
+// import ChangeStatusModal from './ChangeStatusModal'
 
 const EditAction = ({ setOpenModal }) => (
     <button
@@ -46,7 +49,11 @@ const OptionsPopover = ({ onDelete, onAssign, onChangeStatus, rowIndex, dataLeng
                     return (
                         <div onMouseDown={(e) => e.stopPropagation()}
                             className="fixed z-50 flex flex-col left-10 top-full min-w-32 p-3 rounded-sm border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden" style={{ left: `${rect.right - 139}px`, top: topPosition }}>
-                            <button className="popover-item " onClick={() => { setOpen(false); onAssign() }}>
+
+                            <button
+                                className="popover-item"
+                                onClick={() => { setOpen(false); onAssign() }}
+                            >
                                 <LuUserPlus size={14} /> Assign ticket
                             </button>
                             <button className="popover-item" onClick={() => { setOpen(false); onChangeStatus() }}>
@@ -73,6 +80,7 @@ export default function Actions({ ticketId, rowIndex, dataLength }) {
     const [openAssign, setOpenAssign] = useState(false)
     const [openChangeStatus, setOpenChangeStatus] = useState(false)
 
+
     return (
         <>
             <div className="flex gap-2">
@@ -82,13 +90,17 @@ export default function Actions({ ticketId, rowIndex, dataLength }) {
                     onAssign={() => setOpenAssign(true)}
                     onChangeStatus={() => setOpenChangeStatus(true)}
                     rowIndex={rowIndex}
-                    dataLength={dataLength} />
+                    dataLength={dataLength}
+                />
             </div>
+
+
 
             {openEdit && <EditTicketModal ticketId={ticketId} onClose={() => setOpenEdit(false)} />}
             {openDelete && <DeleteTicketModal ticketId={ticketId} onClose={() => setOpenDelete(false)} />}
             {openAssign && <AssignTicketModal ticketId={ticketId} onClose={() => setOpenAssign(false)} />}
-            {openChangeStatus && <ChangeStatus ticketId={ticketId} onClose={() => setOpenChangeStatus(false)} />}
+            {/* {openChangeStatus && <ChangeStatusModal ticketId={ticketId} onClose={() => setOpenChangeStatus(false)} />} */}
+            {openChangeStatus && <EditTicketModal ticketId={ticketId} onClose={() => setOpenChangeStatus(false)} />}
         </>
     )
 }

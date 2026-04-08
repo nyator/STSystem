@@ -9,8 +9,7 @@ export default function MemeberGroup() {
   // console.log("Members Data:", data);
   return (
     <div>
-      <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
+      <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 w-full">
 
         {data?.length === 0 && (
           <div className="col-span-full text-center text-gray-500">

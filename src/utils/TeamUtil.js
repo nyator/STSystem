@@ -4,13 +4,25 @@ export const getMembers = () => {
     return members
 }
 export const getMember = (memberId) => {
-    getMembers().find((item) => item.id === memberId) || null
+    return getMembers().find((item) => item.id === memberId) || null
+}
+
+export const deleteMembers = (memberId) => {
+    const members = getMembers()
+    const updated = members.filter((item) => item.id !== memberId)
+
+    localStorage.setItem("team", JSON.stringify(updated))
+    return memberId
+}
+
+export const updateAssign = () => {
+    return
 }
 
 export const createMember = async (memberData) => {
     const members = getMembers()
     const nextId = members.length + 1
-    const id = `M-${nextId.toString().padStart(3, '0')}`; // Results in M-001, M-002, etc.
+    const id = `M-${nextId.toString().padStart(3, '0')}`;
 
     const newMember = {
         id: id,
@@ -19,7 +31,6 @@ export const createMember = async (memberData) => {
         email: memberData.email,
         avatar: memberData.avatar || `https://i.pravatar.cc/150?img=${nextId}`,
         team: memberData.team || "",
-        status: memberData.status || "",
         ticketsAssigned: memberData.ticketsAssigned || 0,
         createdAt: new Date().toString()
     }

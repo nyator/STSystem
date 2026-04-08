@@ -37,7 +37,7 @@ function OptionButton({ options, selected, isOpen, setIsOpen, title }) {
 
       <button
         type="button"
-        onClick={setIsOpen}
+        onClick={() => setIsOpen(!isOpen)}
         className={`${optionBaseClasses} ${isOpen ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
       >
         {title && <p className="text-center mr-2 text-gray-500 dark:text-gray-400">{title}</p>}
@@ -56,7 +56,7 @@ function OptionButton({ options, selected, isOpen, setIsOpen, title }) {
               onClick={() => { setIsOpen(null); opt.onClick?.(); }}
             >
               {opt.label}
-              {selected === opt.value && <LuCheck size={12} />}
+              {/* {selected === opt.value && <LuCheck size={12} />} */}
             </button>
           ))}
         </div>

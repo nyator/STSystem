@@ -28,13 +28,13 @@ export const assignTicket = (ticketId, assigneeId) => {
 
     const updated = tickets.map((item) =>
         item.id === ticketId
-            ? { ...item, assignedTo: assigneeId, assignedAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
+            ? { ...item, status: "assigned", assignedTo: assigneeId, assignedAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
             : item
     )
+
     localStorage.setItem("tickets", JSON.stringify(updated))
     return updated.find((item) => item.id === ticketId)
 }
-
 
 export const editTicket = (ticketId, ticketData) => {
     const tickets = getTickets()

@@ -7,7 +7,11 @@ function useTicket(ticketId) {
         queryFn: () => getTicket(ticketId),
         enabled: !!ticketId,
     })
-    return { ticket: data, error, isLoading }
+    return {
+        ticket: data,
+        error,
+        isLoading
+    }
 }
 
 export default useTicket

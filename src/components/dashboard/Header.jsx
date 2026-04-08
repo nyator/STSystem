@@ -29,7 +29,7 @@ function Header({ icon, title, description }) {
     ]
 
     const onSubmit = (data) => {
-        console.log({ ...data, priority: selectedPriority })
+        // console.log({ ...data, priority: selectedPriority })
         createTicket({ ...data, priority: selectedPriority }, {
             onSuccess: () => {
                 toast.success("Tickets Created!")
@@ -116,9 +116,11 @@ function Header({ icon, title, description }) {
                             isOpen={isOpen}
                             setIsOpen={setIsOpen}
                         />
-                        <Button >
+                        {/* <Button
+                        variant='outline'
+                         >
                             Assign
-                        </Button>
+                        </Button> */}
                     </div>
                 </form>
             </TicketModal>
