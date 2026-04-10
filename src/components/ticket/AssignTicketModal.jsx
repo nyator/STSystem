@@ -17,20 +17,18 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
   const { updateTicket } = useEditTicket()
   const { ticket } = useTicket(ticketId)
 
-  const [selectedMembers, setSelectedMembers] = useState([])
+  const [selectedMember, setSelectedMember] = useState(null)
   const [searchedMembers, setSearchedMembers] = useState(null)
 
   const totalMembers = members?.length ?? 0
   const listToDisplay = searchedMembers || members || [];
 
   const toggleMember = (id) => {
-    setSelectedMembers(prev =>
-      prev.includes(id) ? prev.filter(e => e !== id) : [...prev, id]
-    )
+    setSelectedMember((prev) => (prev === id ? null : id))
   }
 
-  const removeMember = (id) => {
-    setSelectedMembers(prev => prev.filter(e => e !== id))
+  const removeMember = () => {
+    setSelectedMember(null)
   }
 
   useEffect(() => {
@@ -38,20 +36,21 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
       reset({
         assignedTo: ticket.assignedTo
       })
+      // setSelectedMember(ticket?.assignedTo || null)
     }
-  }, [ticket])
+  }, [ticket, reset])
 
 
   const handleAssignConfirm = () => {
-    selectedMembers.forEach((memberId) => {
-      assignTicket({
-        ticketId: ticketId,
-        assignedTo: memberId,
-      })
+    if (!selectedMember) return
 
-    });
-    onClose();
-    setSelectedMembers([]);
+    assignTicket({
+      ticketId: ticketId,
+      assignedTo: selectedMember,
+    })
+
+    onClose()
+    setSelectedMember(null)
   }
 
   return (
@@ -69,7 +68,7 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
         submit={handleAssignConfirm}
         // isLoading={isLoading}
         deleteError={errors.confirmDelete}
-        disabled={selectedMembers.length === 0}
+        disabled={!selectedMember}
       >
         <form>
           <div className='w-full'>
@@ -78,7 +77,7 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
             {/* Display selected members count and option to clear selection */}
             <div className='flex flex-col items-start gap-1 my-1'>
               <div className='flex flex-wrap items-center gap-1'>
-                {members?.filter(m => selectedMembers.includes(m.id)).map(m => (
+                {members?.filter(m => selectedMember === m.id).map(m => (
                   <div
                     key={m.id}
                     className="flex w-fit items-center pl-1 pr-2 py-1 rounded-full bg-gray-50 dark:bg-blue-900/50 border border-gray-200 dark:border-blue-700 text-gray-700 dark:text-blue-300 text-xs font-medium"
@@ -87,7 +86,7 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
                     {m.firstName} {m.lastName}
                     <button
                       type="button"
-                      onClick={() => removeMember(m.id)}
+                      onClick={removeMember}
                       className="ml-0.5 hover:text-blue-900 dark:hover:text-blue-100 transition-colors cursor-pointer"
                     >
                       <LuX size={11} />
@@ -96,13 +95,13 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
                 ))}
               </div>
 
-              {selectedMembers.length > 0 &&
+              {selectedMember &&
                 <button
                   type="button"
-                  onClick={() => setSelectedMembers([])}
+                  onClick={removeMember}
                   className="px-2 py-1 rounded-full text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
-                  Clear all
+                  Clear selection
                 </button>
               }
             </div>
@@ -117,7 +116,7 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
                     type="button"
                     onClick={() => toggleMember(m.id)}
                     className={`w-full text-left px-4 py-3 flex items-center justify-between transition-colors 
-        ${selectedMembers.includes(m.id) ? 'bg-blue-100 dark:bg-blue-900/20' : 'hover:bg-gray-50 dark:hover:bg-slate-700/50'}`}
+        ${selectedMember === m.id ? 'bg-blue-100 dark:bg-blue-900/20' : 'hover:bg-gray-50 dark:hover:bg-slate-700/50'}`}
                   >
                     <div className="flex items-center gap-3">
                       <img src={m.avatar} className="w-6 h-6 rounded-full" alt="" />
@@ -134,8 +133,8 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
                           <span className="text-xs text-gray-400">Unassigned</span>
                         )}
                       <div className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all
-          ${selectedMembers.includes(m.id) ? 'bg-blue-500 border-blue-500' : 'border-gray-300 dark:border-gray-600'}`}>
-                        {selectedMembers.includes(m.id) && <LuCheck size={12} className="text-white" />}
+          ${selectedMember === m.id ? 'bg-blue-500 border-blue-500' : 'border-gray-300 dark:border-gray-600'}`}>
+                        {selectedMember === m.id && <LuCheck size={12} className="text-white" />}
                       </div>
                     </div>
                   </button>
@@ -149,7 +148,7 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
             </div>
 
             <div className="inline-flex px-2 py-0.5  text-xs text-gray-400 mt-2 w-full justify-end">
-              {selectedMembers.length} of {totalMembers} selected
+              {selectedMember ? 1 : 0} of {totalMembers} selected
               {totalMembers === 1 ? " member" : " members"}
             </div>
 

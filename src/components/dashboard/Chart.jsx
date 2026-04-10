@@ -6,15 +6,23 @@ const Chart = () => {
   const { data: tickets = [] } = useTickets();
 
   const chartData = useMemo(() => {
+
     const openCount = tickets.filter(t => t.status?.toLowerCase() === 'open').length;
+    const allOpenedCount = tickets.filter(t =>
+      t.status?.toLowerCase() === 'open' || t.status?.toLowerCase() === 'reopened'
+    ).length;
+    const reopenCount = tickets.filter(t => t.status?.toLowerCase() === 'reopened').length;
     const inProgressCount = tickets.filter(t => t.status?.toLowerCase() === 'in-progress').length;
     const resolvedCount = tickets.filter(t => t.status?.toLowerCase() === 'resolved').length;
+    const closedCount = tickets.filter(t => t.status?.toLowerCase() === 'closed').length;
     const totalCount = tickets.length;
 
     return [
-      { name: "Open", value: openCount, color: "#fb2c36" },
+      { name: "All Opened", value: openCount, color: "#fb2c36" },
+      // { name: "reopened", value: reopenCount, color: "#ff6900" },
       { name: "In-Progress", value: inProgressCount, color: "#f0b100" },
       { name: "Resolved", value: resolvedCount, color: "#10b981" },
+      // { name: "closed", value: closedCount, color: "#c7c7c7 " },
       { name: "Total", value: totalCount, color: "#2b7fff" },
     ]
   }, [tickets]);

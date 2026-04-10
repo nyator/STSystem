@@ -45,13 +45,13 @@ function Dashboard() {
                     <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-full min-h-[calc(100vh-5.5rem)] m-1 rounded-2xl'>
                         <Cards />
                         <div className='flex flex-col sm:flex-col justify-around w-full mt-1 gap-5 '>
-                            <div className='hidden md:flex bg-gray-50/50 dark:bg-gray-900/50 h-fit py-2 rounded-2xl items-center justify-center border-[1.3px] border-[#e5e7eb] dark:border-gray-700'>
+                            <div className='hidden md:flex bg-gray-50/50 dark:bg-gray-900/50 h-fit py-2 rounded-2xl items-center justify-start border-[1.3px] border-[#e5e7eb] dark:border-gray-700'>
                                 <div className='w-3/6 flex justify-center items-center  pb-10'>
                                     <Chart />
                                 </div>
-                                <div className='w-3/6 flex justify-center '>
+                                {/* <div className='w-3/6 flex justify-center '>
                                     <Chart3 />
-                                </div>
+                                </div> */}
                             </div>
                             <div className='w-full relative'>
                                 <Table
