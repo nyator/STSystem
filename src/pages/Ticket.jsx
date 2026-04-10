@@ -16,6 +16,7 @@ import TicketSearch from '../components/ticket/TicketSearch';
 import TableSkeleton from "../components/ui/TableSkeleton";
 import DatePicker from "../components/ui/DatePicker";
 import TicketDrawer from "../components/ticket/TicketDrawer";
+import useMembers from "../Hooks/Team/useMembers";
 
 // Filter options
 const statusOptions = [
@@ -77,6 +78,7 @@ const filterGroups = [
 function Ticket() {
 
     const { data, error, isLoading } = useTickets()
+    const { data: members } = useMembers()
     const [isOpen, setIsOpen] = useState(null)
     const [searchedTickets, setSearchedTickets] = useState(null)
 
@@ -154,8 +156,8 @@ function Ticket() {
                                     }
                                 }}
                                 clearFilters={() => {
-                                    setSortState({ key: null, direction: 'asc' })
                                     clearSort()
+                                    setSortState({ key: null, direction: 'asc' })
                                 }}
                                 hasActiveFilters={!!sort.key}
                             />
@@ -188,19 +190,22 @@ function Ticket() {
                                 { key: 'id', title: 'ID' },
                                 { key: 'title', title: 'Title' },
                                 // {key: 'description', title: 'Description'},
-                                { key: 'customer', title: 'Customer' },
+                                // { key: 'customer', title: 'Customer' },
                                 { key: 'priority', title: 'Priority' },
                                 { key: 'status', title: 'Status' },
-                                { key: 'createdAt', title: 'Created At' },
+                                { key: 'assignedTo', title: 'AssignedTo' },
+                                // { key: 'createdAt', title: 'Created At' },
                                 { key: 'actions', title: 'Actions' },
                             ]}
                             data={
                                 paginatedTickets.map((t) => {
                                     const fmt = (s) => {
                                         if (!s) return '';
-                                        const replaced = String(s).replace("-", ' ');
-                                        return replaced.charAt(0).toLowerCase() + replaced.slice(1);
-                                    };
+                                        return String(s).replace(/-/g, ' ')
+                                    }
+
+                                    const assignedMember = members?.find(m => m.id === t.assignedTo)
+
                                     return {
                                         id: t.id,
                                         title: t.title,
@@ -209,7 +214,18 @@ function Ticket() {
                                         priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />,
                                         status: <StatusBadge status={fmt(t.status) || 'open'} />,
                                         createdAt: t.createdAt ? new Date(t.createdAt).toUTCString().slice(0, -13) : '',
-                                        actions: <Actions ticketId={t.id} rowIndex={paginatedTickets.findIndex(ticket => ticket.id === t.id)} dataLength={paginatedTickets.length} />
+                                        actions: <Actions ticketId={t.id} rowIndex={paginatedTickets.findIndex(ticket => ticket.id === t.id)} dataLength={paginatedTickets.length} />,
+                                        assignedTo: assignedMember ? (
+                                            <div className="flex items-center gap-1.5">
+                                                <img src={assignedMember.avatar} className="w-5 h-5 rounded-full" alt="" />
+                                                <span className="text-xs text-gray-700 dark:text-gray-300">
+                                                    {assignedMember.firstName} {assignedMember.lastName}
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <span className="text-xs text-gray-400">Unassigned</span>
+                                        ),
+
                                     };
                                 })
                             }

@@ -8,35 +8,20 @@ import { LuUserRoundPlus, LuCheck, LuUser, LuX } from 'react-icons/lu'
 
 import TicketModal from './TicketModal';
 import AssignSearch from '../team/AssignSearch';
+import useEditTicket from '../../Hooks/Tickets/useEditTicket'
 
 export default function AssignTicketModal({ ticketId, onClose, }) {
   const { register, setError, reset, control, formState: { errors } } = useForm()
   const { data: members } = useMembers()
   const { assignTicket } = useAssignTicket()
-  const { data: ticket } = useTicket()
+  const { updateTicket } = useEditTicket()
+  const { ticket } = useTicket(ticketId)
 
   const [selectedMembers, setSelectedMembers] = useState([])
   const [searchedMembers, setSearchedMembers] = useState(null)
 
   const totalMembers = members?.length ?? 0
-
   const listToDisplay = searchedMembers || members || [];
-
-  const chipMemeberOptions = members?.map(member => ({
-    label: `${member.firstName} ${member.lastName}`,
-    avatar: member.avatar,
-    value: member.id,
-    team: member.team,
-    ticketsAssigned: member.ticketsAssigned,
-  }))
-
-  const MemberOptions = listToDisplay.map(member => ({
-    label: `${member.firstName} ${member.lastName}`,
-    avatar: member.avatar,
-    value: member.id,
-    team: member.team,
-    ticketsAssigned: member.ticketsAssigned,
-  })) ?? []
 
   const toggleMember = (id) => {
     setSelectedMembers(prev =>
@@ -48,25 +33,26 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
     setSelectedMembers(prev => prev.filter(e => e !== id))
   }
 
-  const handleAssignConfirm = () => {
-    selectedMembers.forEach((memberId) => {
-      assignTicket({
-        ticketId: ticketId,
-        assigneeId: memberId,
-      })
-    });
-    onClose();
-    setSelectedMembers([]);
-  }
-
   useEffect(() => {
     if (ticket) {
       reset({
-        assigneeId: ticket.assigneeId
+        assignedTo: ticket.assignedTo
       })
     }
   }, [ticket])
 
+
+  const handleAssignConfirm = () => {
+    selectedMembers.forEach((memberId) => {
+      assignTicket({
+        ticketId: ticketId,
+        assignedTo: memberId,
+      })
+
+    });
+    onClose();
+    setSelectedMembers([]);
+  }
 
   return (
     <>
@@ -92,16 +78,16 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
             {/* Display selected members count and option to clear selection */}
             <div className='flex flex-col items-start gap-1 my-1'>
               <div className='flex flex-wrap items-center gap-1'>
-                {chipMemeberOptions?.filter(opt => selectedMembers.includes(opt.value)).map(opt => (
+                {members?.filter(m => selectedMembers.includes(m.id)).map(m => (
                   <div
-                    key={opt.value}
+                    key={m.id}
                     className="flex w-fit items-center pl-1 pr-2 py-1 rounded-full bg-gray-50 dark:bg-blue-900/50 border border-gray-200 dark:border-blue-700 text-gray-700 dark:text-blue-300 text-xs font-medium"
                   >
-                    <img src={opt.avatar} alt={opt.label} className="w-5 h-5 rounded-full mr-1" />
-                    {opt.label}
+                    <img src={m.avatar} alt={`${m.firstName} ${m.lastName}`} className="w-5 h-5 rounded-full mr-1" />
+                    {m.firstName} {m.lastName}
                     <button
                       type="button"
-                      onClick={() => removeMember(opt.value)}
+                      onClick={() => removeMember(m.id)}
                       className="ml-0.5 hover:text-blue-900 dark:hover:text-blue-100 transition-colors cursor-pointer"
                     >
                       <LuX size={11} />
@@ -119,36 +105,37 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
                   Clear all
                 </button>
               }
-
             </div>
 
 
             {/* Scrollable List Area */}
             <div className='h-52 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-100 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 flex flex-col divide-y divide-gray-100 dark:divide-slate-700'>
-              {MemberOptions.length > 0 ? (
-                MemberOptions.map(opt => (
+              {listToDisplay.length > 0 ? (
+                listToDisplay.map(m => (
                   <button
-                    key={opt.value}
+                    key={m.id}
                     type="button"
-                    onClick={() => toggleMember(opt.value)}
+                    onClick={() => toggleMember(m.id)}
                     className={`w-full text-left px-4 py-3 flex items-center justify-between transition-colors 
-                      ${selectedMembers.includes(opt.value) ? 'bg-blue-100 dark:bg-blue-900/20' : 'hover:bg-gray-50 dark:hover:bg-slate-700/50'
-                      }`}
+        ${selectedMembers.includes(m.id) ? 'bg-blue-100 dark:bg-blue-900/20' : 'hover:bg-gray-50 dark:hover:bg-slate-700/50'}`}
                   >
                     <div className="flex items-center gap-3">
-                      <img src={opt.avatar} className="w-6 h-6 rounded-full" alt="" />
+                      <img src={m.avatar} className="w-6 h-6 rounded-full" alt="" />
                       <div className="flex flex-col">
-                        <span className="text-xs font-semibold text-gray-700 dark:text-gray-200">{opt.label}</span>
-                        <span className="text-[9px] uppercase text-gray-400 tracking-wider">{opt.team}</span>
+                        <span className="text-xs font-medium text-gray-700 dark:text-gray-200">{m.firstName} {m.lastName}</span>
+                        <span className="text-[9px] uppercase text-gray-700 tracking-wider">{m.team}</span>
                       </div>
                     </div>
-
                     <div className="flex items-center gap-10">
-                      <span className="text-xs text-gray-900">{opt.ticketsAssigned || 0} Assigned</span>
+                      {m.ticketsAssigned > 0 ?
+                        (
+                          <span className="text-xs text-gray-800">{m.ticketsAssigned} Assigned</span>
+                        ) : (
+                          <span className="text-xs text-gray-400">Unassigned</span>
+                        )}
                       <div className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all
-                       ${selectedMembers.includes(opt.value) ? 'bg-blue-500 border-blue-500' : 'border-gray-300 dark:border-gray-600'
-                        }`}>
-                        {selectedMembers.includes(opt.value) && <LuCheck size={12} className="text-white" />}
+          ${selectedMembers.includes(m.id) ? 'bg-blue-500 border-blue-500' : 'border-gray-300 dark:border-gray-600'}`}>
+                        {selectedMembers.includes(m.id) && <LuCheck size={12} className="text-white" />}
                       </div>
                     </div>
                   </button>

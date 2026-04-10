@@ -39,7 +39,7 @@ function Header({ icon, title, description }) {
             },
             onError: () => {
                 toast.error("Error creating tickets!")
-                setOpenModal(false)
+                // setOpenModal(false) 
             }
         })
     }

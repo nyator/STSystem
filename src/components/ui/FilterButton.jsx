@@ -32,6 +32,15 @@ function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, s
 
             {isOpen && (
                 <div className="absolute right-0 top-full mt-4 w-38 bg-white dark:bg-gray-800 border-2 border-gray-100 dark:border-gray-700 rounded-b-lg shadow-lg p-2 max-h-96 overflow-y-auto z-20" onMouseDown={(e) => e.stopPropagation()}>
+                    {hasActiveFilters && (
+                        <button
+                            onClick={() => { clearFilters(); setIsOpen(false); }}
+                            className="w-full text-left px-3 py-2 text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-900 rounded-t-md transition-all ease-in-out duration-300 mb-2 border-b border-gray-200 dark:border-gray-700"
+                        >
+                            Clear all filters
+                        </button>
+                    )}
+
                     {filterGroups.map((group, groupIndex) => (
                         <div key={group.title} className={groupIndex > 0 ? 'border-t border-gray-200 dark:border-gray-700 pt-2' : ''}>
                             <div className="text-xs font-semibold text-gray-800 dark:text-gray-200 mb-1 px-1">{group.title}</div>
@@ -54,14 +63,7 @@ function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, s
                         <>{otherActions}</>
                     )}
 
-                    {hasActiveFilters && (
-                        <button
-                            onClick={() => { clearFilters(); setIsOpen(false); }}
-                            className="w-full text-left px-3 py-2 text-xs text-red-600 hover:bg-red-50 dark:hover:bg-red-900 rounded-b-md transition-all ease-in-out duration-300 mt-2 border-t border-gray-200 dark:border-gray-700"
-                        >
-                            Clear all filters
-                        </button>
-                    )}
+
                 </div>
             )}
         </div>

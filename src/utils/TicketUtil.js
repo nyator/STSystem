@@ -23,12 +23,12 @@ export const deleteTicket = (ticketId) => {
 }
 
 
-export const assignTicket = (ticketId, assigneeId) => {
+export const assignTicket = (ticketId, assignedTo) => {
     const tickets = getTickets()
 
     const updated = tickets.map((item) =>
         item.id === ticketId
-            ? { ...item, status: "assigned", assignedTo: assigneeId, assignedAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
+            ? { ...item, status: "assigned", assignedTo: assignedTo, assignedAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
             : item
     )
 
@@ -64,16 +64,23 @@ export const createTicket = async (ticketData) => {
         updatedAt: null,
         assignedTo: ticketData.assignedTo || null,
         assignedAt: ticketData.assignedTo ? new Date().toISOString() : null,
-        // ...(ticketData.comments && {
-        //     comments: [{
-        //         message: ticketData.comments.message || "",
-        //         author: ticketData.comments.author || "",
-        //         createdAt: new Date().toISOString()
-        //     }]
-        // })
         comments: ticketData.comments || []
+
+
     };
 
     localStorage.setItem("tickets", JSON.stringify([...tickets, newTicket]))
     return newTicket
 }
+
+export const STATUS_TRANSITIONS = {
+    open: ['assigned'],
+    assigned: ['in-progress'],
+    'in-progress': ['resolved'],
+    resolved: ['closed', 'reopened'],
+    reopened: ['in-progress'],
+    closed: ['reopened'],
+}
+
+export const getAvailableTransitions = (from) =>
+    STATUS_TRANSITIONS[from] ?? []

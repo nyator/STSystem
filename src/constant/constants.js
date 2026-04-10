@@ -2,8 +2,8 @@ export const variants = {
     success: "bg-green-100 text-green-700 border-green-200",
     error: "bg-red-100 text-red-700 border-red-200",
 }
-export const optionBaseClasses = "bg-gray-100 dark:bg-gray-700 mb-2 p-2 text-mblack dark:text-gray-200 font-medium rounded-lg items-center flex items-center justify-center text-xs transition-all ease-in-out duration-300 active:scale-[0.98]";
-export const baseClasses = "group border-1 gap-1 text-nowrap p-2 h-fit rounded-lg font-medium text-xs transition-all ease-in-out duration-300 flex items-center justify-between active:scale-[0.98]";
+export const optionBaseClasses = "bg-gray-100 dark:bg-gray-700 mb-2 p-2 text-mblack dark:text-gray-200 font-medium rounded-lg items-center flex items-center justify-center text-xs transition-all ease-in-out duration-300 active:scale-[0.97]";
+export const baseClasses = "group border-1 gap-1 text-nowrap p-2 h-fit rounded-lg font-medium text-xs transition-all ease-in-out duration-300 flex items-center justify-between active:scale-[0.97]";
 export const variantClasses = {
     default: "bg-gray-50 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 hover:border-gray-50 dark:hover:border-gray-600 border-gray-100 dark:border-gray-600 text-mblack dark:text-gray-200",
     primary: "bg-blue-500 text-white hover:bg-blue-600 border-blue-500",

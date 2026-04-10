@@ -3,21 +3,22 @@ import { editTicket } from "../../utils/TicketUtil"
 import toast from 'react-hot-toast'
 
 function useEditTicket() {
-
     const queryClient = useQueryClient()
 
     const mutation = useMutation({
         mutationFn: ({ ticketId, ...ticketData }) => editTicket(ticketId, ticketData),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["tickets"] })
+        onSuccess: (_, { ticketId }) => {
+            queryClient.invalidateQueries({ queryKey: ['tickets'] })
+            queryClient.invalidateQueries({ queryKey: ['ticket', ticketId] })
             toast.success("Ticket Updated Successfully")
-
         }
     })
+
     return {
         updateTicket: mutation.mutate,
-        isLoading: mutation.isLoading,
+        isLoading: mutation.isPending,
         error: mutation.error,
     }
 }
+
 export default useEditTicket

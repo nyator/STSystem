@@ -19,10 +19,10 @@ const MemberCard = ({ user }) => {
     const name = `${firstName} ${lastName}`;
 
     return (
-        <div className="group relative w-full items-center bg-gray-50/50 dark:bg-slate-3w00 rounded-2xl border border-slate-200 p-3 transition-all duration-300 hover:shadow-sm hover:border-slate-200 space-y-0.5">
+        <div className="group relative w-full items-center bg-gray-50/50 dark:bg-slate-500 rounded-2xl border border-slate-200 p-3 transition-all duration-300 hover:shadow-sm hover:border-slate-200 space-y-0.5">
             {/* Top Header: Avatar & Status */}
 
-            <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start justify-start gap-1">
                 {/* User Info */}
                 <img
                     src={avatar}
@@ -34,7 +34,7 @@ const MemberCard = ({ user }) => {
                     <div className="flex items-center text-xs text-slate-800">
                         {email}
                     </div>
-                    <p className="text-xs text-slate-400 leading-tight text-[10px] uppercase">{team}</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-700 leading-tight text-[10px] uppercase">{team}</p>
                 </div>
 
             </div>
@@ -46,31 +46,25 @@ const MemberCard = ({ user }) => {
 
             {/* Stats Grid */}
             <div className="">
-                <div className="flex items-center space-x-2">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
-                        <LuTicket size={16} />
-                    </div>
-                    <div>
+                <div className="flex items-center justify-around space-x-2">
+                    <div className='flex items-center gap-1'>
+                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600">
+                            <LuTicket size={16} />
+                        </div>
                         <p className="text-[12px] font-bold text-slate-700">{ticketsAssigned} Assigned</p>
                     </div>
+                    {ticketsAssigned <= 1 &&
+                        <button
+                            onClick={() => setShowModal(true)}
+                            className='cursor-pointer transition-all text-end'>
+                            <LuTrash2 size={14} className="text-red-500 text-sm cursor-pointer active:scale-[0.92]" />
+                        </button>
+                    }
                 </div>
 
             </div>
 
-            {/* Quick Action Button (Visible on Hover) */}
-            <div className="mt-2 overflow-hidden flex items-center justify-center relative">
-                <button className="w-2/3 text-xs hover:underline py-2 font-medium cursor-pointer  text-black transition-all ">
-                    Assign Ticket
-                </button>
-
-                {ticketsAssigned <= 1 &&
-                    <button
-                        onClick={() => setShowModal(true)}
-                        className='absolute right-0'>
-                        <LuTrash2 size={14} className="text-red-500 text-sm cursor-pointer active:scale-[0.92]" />
-                    </button>
-                }
-            </div>
+           
             {showModal && <DeleteMemberModal MemberId={id} onClose={() => setShowModal(false)} />}
         </div>
     );

@@ -8,6 +8,7 @@ import Chart3 from '../components/dashboard/Chart3';
 import useTickets from '../Hooks/Tickets/useTickets';
 
 import PriorityBadge from '../components/ui/PriorityBadge';
+import StatusBadge from '../components/ui/StatusBadge';
 import Actions from '../components/ticket/Actions';
 
 
@@ -59,8 +60,9 @@ function Dashboard() {
                                         { key: 'id', title: 'ID' },
                                         { key: 'title', title: 'Title' },
                                         // { key: 'description', title: 'Description' },
-                                        { key: 'customer', title: 'Customer' },
+                                        // { key: 'customer', title: 'Customer' },
                                         { key: 'priority', title: 'Priority' },
+                                        { key: 'status', title: 'Status' },
                                         { key: 'createdAt', title: 'Created At' },
                                         { key: 'actions', title: 'Actions' },
                                     ]}
@@ -77,6 +79,7 @@ function Dashboard() {
                                                 customer: t.customerEmail || '',
                                                 // description: t.description || '',
                                                 priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />,
+                                                status: <StatusBadge status={fmt(t.status) || 'open'} />,
                                                 createdAt: t.createdAt ? new Date(t.createdAt).toGMTString().slice(0, -13) : '',
                                                 actions: <Actions ticketId={t.id} />
                                             };

@@ -18,7 +18,7 @@ function MainButton({ variant = "default", children, type, onClick, disabled }) 
   )
 }
 
-function OptionButton({ options, selected, isOpen, setIsOpen, title }) {
+function OptionButton({ options, selected, isOpen, setIsOpen, title, disabled }) {
   const ref = useRef();
 
   useEffect(() => {
@@ -38,11 +38,14 @@ function OptionButton({ options, selected, isOpen, setIsOpen, title }) {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className={`${optionBaseClasses} ${isOpen ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+        disabled={disabled}
+        className={`${disabled ? "active:scale-[1]" : ""} ${optionBaseClasses} ${isOpen ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
       >
-        {title && <p className="text-center mr-2 text-gray-500 dark:text-gray-400">{title}</p>}
+        {title && <p className="text-center mr-2 text-gray-500 dark:text-gray-400">{title}:</p>}
         {displayText}
-        <LuChevronDown className={`inline ml-1 transition-transform ${isOpen ? 'rotate-180' : ''}`} size={12} />
+        {disabled ? null :
+          <LuChevronDown className={`inline ml-1 transition-transform ${isOpen ? 'rotate-180' : ''}`} size={12} />
+        }
       </button>
 
       {isOpen && (

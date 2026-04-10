@@ -5,18 +5,21 @@ import toast from "react-hot-toast";
 function useAssignTicket() {
     const queryClient = useQueryClient()
 
-    const Mutation = useMutation({
-        mutationFn: ({ ticketId, assigneeId }) => assignTicket(ticketId, assigneeId),
+    const mutation = useMutation({
+        mutationFn: ({ ticketId, assignedTo }) => assignTicket(ticketId, assignedTo),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["tickets"] })
+            queryClient.invalidateQueries({ queryKey: ['ticket', ticketId] })
+
             toast.success("Tasked Assigned Sucessfully")
 
         },
     })
 
     return {
-        assignTicket: Mutation.mutate,
-        isLoading: Mutation.isPending,
+        assignTicket: mutation.mutate,
+        isLoading: mutation.isPending,
+        error: mutation.error,
     }
 }
 
