@@ -53,7 +53,7 @@ const MemberCard = ({ user }) => {
                         </div>
                         <p className="text-[12px] font-bold text-slate-700">{ticketsAssigned} Assigned</p>
                     </div>
-                    {ticketsAssigned <= 1 &&
+                    {ticketsAssigned === 0 &&
                         <button
                             onClick={() => setShowModal(true)}
                             className='cursor-pointer transition-all text-end'>
@@ -64,7 +64,7 @@ const MemberCard = ({ user }) => {
 
             </div>
 
-           
+
             {showModal && <DeleteMemberModal MemberId={id} onClose={() => setShowModal(false)} />}
         </div>
     );

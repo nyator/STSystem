@@ -21,7 +21,7 @@ export default function DeleteMemberModal({ MemberId, onClose, }) {
         if (confirmDelete !== MemberId) {
             setError('confirmDelete', {
                 type: 'manual',
-                message: `Input must match Member ID: ${MemberId}`,
+                message: `Input mustd match Member ID: ${MemberId}`,
             })
             return
         }
@@ -31,12 +31,12 @@ export default function DeleteMemberModal({ MemberId, onClose, }) {
                 onClose();
                 reset()
             },
-            onError: () => {
+            onError: (err) => {
                 setError('confirmDelete', {
                     type: 'manual',
-                    message: 'Failed to delete member. Please try again.',
+                    message: err?.message || 'Failed to delete member. Please try again.',
                 })
-            },
+            }
         })
     }
 

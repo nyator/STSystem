@@ -3,14 +3,20 @@ export const getMembers = () => {
     const members = data ? JSON.parse(data) : []
     return members
 }
+
 export const getMember = (memberId) => {
     return getMembers().find((item) => item.id === memberId) || null
 }
 
 export const deleteMembers = (memberId) => {
     const members = getMembers()
-    const updated = members.filter((item) => item.id !== memberId)
+    const member = members.find((item) => item.id === memberId)
 
+    if (member?.ticketsAssigned > 0) {
+        throw new Error("Cannot delete a member with assigned tickets.")
+    }
+
+    const updated = members.filter((item) => item.id !== memberId)
     localStorage.setItem("team", JSON.stringify(updated))
     return memberId
 }
@@ -18,15 +24,20 @@ export const deleteMembers = (memberId) => {
 export const updateAssign = (memberId, ticketId) => {
     const members = getMembers()
 
-    const updated = members.map(() =>
+    const updated = members.map((item) =>
         item.id === memberId
-            ? { ...item, ticketsAssigned: ticketsAssigned++, ticketIDs: [] }
+            ? {
+                ...item,
+                ticketsAssigned: item.ticketsAssigned + 1,
+                ticketIDs: [...(item.ticketIDs || []), ticketId]
+            }
             : item
     )
 
-    localStorage.setItem("members", JSON.stringify(updated))
+    localStorage.setItem("team", JSON.stringify(updated))
     return updated.find((item) => item.id === memberId)
 }
+
 
 export const createMember = async (memberData) => {
     const members = getMembers()

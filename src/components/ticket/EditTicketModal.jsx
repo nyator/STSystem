@@ -125,12 +125,14 @@ export default function EditTicketModal({ ticketId, onClose }) {
                 <div className='text-xs mb-2.5'>
                     <p>Created: {" "}
                         <span className='font-semibold'>
-                            {ticket?.createdAt ? new Date(ticket.createdAt).toUTCString().slice(0, -13) : ""}
+                            {/* {ticket?.createdAt ? new Date(ticket.createdAt).toUTCString().slice(0, -13) : ""} */}
+                            {ticket?.createdAt ? new Date(ticket.createdAt).toLocaleDateString() : ""}
                         </span>
                     </p>
                     <p>Updated: {" "}
                         <span className='font-semibold'>
-                            {ticket?.updatedAt ? new Date(ticket.updatedAt).toUTCString().slice(0, -7) : ""}
+                            {/* {ticket?.updatedAt ? new Date(ticket.updatedAt).toUTCString().slice(0, -7) : ""} */}
+                            {ticket?.updatedAt ? new Date(ticket.updatedAt).toLocaleDateString() : ""}
                         </span>
                     </p>
                 </div>
@@ -191,7 +193,7 @@ export default function EditTicketModal({ ticketId, onClose }) {
 
 
 
-                   {/* Comments list */}
+                    {/* Comments list */}
                     <div className="flex flex-col gap-1 rounded-lg bg-blue-50 dark:bg-gray-700/30 p-2 overflow-y-auto scroll-auto">
                         {ticket?.comments?.length > 0 &&
                             <p className=" text-xs">comments</p>

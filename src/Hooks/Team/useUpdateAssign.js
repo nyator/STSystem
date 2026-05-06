@@ -7,11 +7,11 @@ function useUpdateAssign() {
     const mutation = useMutation({
         mutationFn: ({ memberId, ticketId }) => updateAssign(memberId, ticketId),
         onSuccess: () => {
-            
+            queryClient.invalidateQueries({ queryKey: ["members"] })
         }
-
     })
 
+    return mutation
 }
 
 export default useUpdateAssign

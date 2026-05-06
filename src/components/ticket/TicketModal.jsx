@@ -36,9 +36,11 @@ function TicketModal({ isOpen, onClose, title, LAction, RVariant, RAction, child
                     </h2>
                 </div>
 
+
                 <div className='text-gray-600 dark:text-gray-300 items-center'>
                     {children}
                 </div>
+
 
                 <div className='flex justify-center gap-2 mt-6 relative'>
                     {error &&

@@ -5,6 +5,7 @@ import Cards from '../components/dashboard/Cards';
 import Table from '../components/ui/Table';
 import Chart from '../components/dashboard/Chart';
 import Chart3 from '../components/dashboard/Chart3';
+import Chart2 from '../components/dashboard/Chart2';
 import useTickets from '../Hooks/Tickets/useTickets';
 
 import PriorityBadge from '../components/ui/PriorityBadge';
@@ -49,9 +50,9 @@ function Dashboard() {
                                 <div className='w-3/6 flex justify-center items-center  pb-10'>
                                     <Chart />
                                 </div>
-                                {/* <div className='w-3/6 flex justify-center '>
-                                    <Chart3 />
-                                </div> */}
+                                <div className='w-3/6 flex justify-center '>
+                                    <Chart2 />
+                                </div>
                             </div>
                             <div className='w-full relative'>
                                 <Table

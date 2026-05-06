@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import useMembers from '../../Hooks/Team/useMembers'
 import useTicket from '../../Hooks/Tickets/useTicket'
 import useAssignTicket from '../../Hooks/Tickets/useAssignTicket'
+import useUpdateAssign from '../../Hooks/Team/useUpdateAssign'
 import { DevTool } from "@hookform/devtools";
 import { LuUserRoundPlus, LuCheck, LuUser, LuX } from 'react-icons/lu'
 
@@ -14,6 +15,8 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
   const { register, setError, reset, control, formState: { errors } } = useForm()
   const { data: members } = useMembers()
   const { assignTicket } = useAssignTicket()
+  const { mutate: updateAssign } = useUpdateAssign()
+
   const { updateTicket } = useEditTicket()
   const { ticket } = useTicket(ticketId)
 
@@ -44,10 +47,8 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
   const handleAssignConfirm = () => {
     if (!selectedMember) return
 
-    assignTicket({
-      ticketId: ticketId,
-      assignedTo: selectedMember,
-    })
+    assignTicket({ ticketId, assignedTo: selectedMember })
+    updateAssign({ memberId: selectedMember, ticketId })  // <-- add this
 
     onClose()
     setSelectedMember(null)

@@ -6,6 +6,8 @@ import { Toaster } from 'react-hot-toast'
 import SideBar from './Layouts/SideBar'
 import { ThemeProvider } from './context/ThemeContext'
 
+// was doing the ticketId context before leaving 
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={new QueryClient()}>
