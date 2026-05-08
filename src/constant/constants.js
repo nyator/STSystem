@@ -70,3 +70,10 @@ export const filterGroups = [
         options: dateOptions
     }
 ];
+
+
+export const USER_ROLES = {
+    CLIENT: "client",
+    ADMIN: "admin",
+    ASSIGNEE: "assignee",
+};

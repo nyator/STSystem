@@ -46,6 +46,7 @@ body {
 
   /* --breakpoint-xs: 30rem;
   --breakpoint-2xl: 100rem; */
+  --breakpoint-xs: 30rem;
   --breakpoint-xl: 1037px;
 }
 

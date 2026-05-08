@@ -24,7 +24,7 @@ const Chart = () => {
       { name: "Resolved", value: resolvedCount, color: "#10b981" },
       { name: "closed", value: closedCount, color: "#c7c7c7 " },
       { name: "reopened", value: reopenCount, color: "#ff6900" },
-      // { name: "Total", value: totalCount, color: "#2b7fff" },
+      { name: "Total", value: totalCount, color: "#2b7fff" },
     ]
   }, [tickets]);
 
