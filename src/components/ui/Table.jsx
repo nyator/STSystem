@@ -1,7 +1,4 @@
-import { useState } from 'react'
 import Pagination from './Pagination'
-import EditTicketModal from '../ticket/EditTicketModal'
-import TicketDrawer from '../ticket/TicketDrawer'
 
 function Table({
     columns,
@@ -19,8 +16,6 @@ function Table({
             : data.length
                 ? Object.keys(data[0]).map((key) => ({ key, title: key }))
                 : []
-
-    const [selectedRowId, setSelectedRowId] = useState(null)
 
     const stickyHeaderClass =
         'sticky left-0 z-0 bg-gray-50 dark:bg-gray-700 rounded-tl-xl'
@@ -74,7 +69,6 @@ function Table({
                                     data.map((row, idx) => (
                                         <tr
                                             key={idx}
-                                            onClick={() => setSelectedRowId(row.id)}
                                             className={`group border-gray-200 dark:border-gray-700 text-nowrap hover:bg-gray-50 dark:hover:bg-gray-700 cursor-default transition-all duration-100 ease-in ${idx === data.length - 1
                                                 ? 'border-b-0'
                                                 : 'border-b'

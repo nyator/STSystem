@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import MainContent from './MainContent';
 
-import { LuChevronRight, LuLayoutDashboard, LuSettings, LuTicket, LuUsersRound } from 'react-icons/lu';
+import { LuChevronRight, LuLayoutDashboard, LuLogOut, LuSettings, LuTicket, LuUsersRound } from 'react-icons/lu';
 import logo from '../assets/logo.png'
+import { useAuth } from '../Hooks/useAuth';
+import { canManageTeam } from '../utils/AuthUtil';
 
 export default function SideBar() {
     const [isOpen, setIsOpen] = useState(true);
     const location = useLocation();
+    const navigate = useNavigate();
+    const { user, isAuthenticated, logout } = useAuth();
 
     const getActiveMenu = () => {
         const path = location.pathname;
@@ -32,11 +36,20 @@ export default function SideBar() {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
+    if (location.pathname === '/login') {
+        return <MainContent />
+    }
+
     const menuItems = [
         { icon: LuLayoutDashboard, label: 'Dashboard', path: '/' },
         { icon: LuTicket, label: 'Tickets', path: '/tickets' },
-        { icon: LuUsersRound, label: 'Team', path: '/team' }
+        ...(canManageTeam(user) ? [{ icon: LuUsersRound, label: 'Team', path: '/team' }] : [])
     ];
+
+    const handleLogout = () => {
+        logout()
+        navigate('/login', { replace: true })
+    }
 
     return (
         <div className="flex h-screen">
@@ -70,6 +83,18 @@ export default function SideBar() {
                 </nav>
 
                 <nav className={`flex ${isOpen ? 'items-start' : 'items-center'} flex-col justify-end flex-1 py-4 px-2 space-y-3`}>
+                    {isAuthenticated && (
+                        <div className={`px-2 py-1 ${isOpen ? 'w-full' : 'text-center'}`}>
+                            {isOpen ? (
+                                <>
+                                    <p className="text-[11px] font-semibold text-gray-700 dark:text-gray-200 truncate">{user.name}</p>
+                                    <p className="text-[10px] text-gray-400 capitalize">{user.role}</p>
+                                </>
+                            ) : (
+                                <span className="text-[10px] font-semibold text-gray-500 uppercase">{user.role?.slice(0, 1)}</span>
+                            )}
+                        </div>
+                    )}
                     <Link
                         to="/settings"
                         className={`flex space-x-2 p-2 items-start rounded-lg border ${isOpen ? 'justify-start' : 'justify-center'} ${activeMenu === 'Settings' ? 'bg-black dark:bg-gray-700 border-gray-600 dark:border-gray-500 text-white' : '  border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800'} ${activeMenu === "Settings" ? 'hover:bg-mblack dark:hover:bg-gray-600' : 'hover:bg-gray-100 dark:hover:bg-gray-700'} transition-all duration-300 ${isOpen ? 'w-full' : ''}`}
@@ -77,6 +102,14 @@ export default function SideBar() {
                         <LuSettings size={15} />
                         {isOpen ? <span className="text-xs font-medium">Settings</span> : null}
                     </Link>
+                    <button
+                        type="button"
+                        onClick={handleLogout}
+                        className={`flex space-x-2 p-2 items-start rounded-lg border ${isOpen ? 'justify-start' : 'justify-center'} border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 ${isOpen ? 'w-full' : ''}`}
+                    >
+                        <LuLogOut size={15} />
+                        {isOpen ? <span className="text-xs font-medium">Logout</span> : null}
+                    </button>
 
                 </nav>
             </div>

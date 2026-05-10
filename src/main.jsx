@@ -5,15 +5,18 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import { Toaster } from 'react-hot-toast'
 import SideBar from './Layouts/SideBar'
-import { ThemeProvider } from './context/ThemeContext'
+import { ThemeProvider } from './context/themeContext'
+import { AuthProvider } from './context/AuthContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={new QueryClient()}>
       <ThemeProvider>
-        <BrowserRouter>
-          <SideBar />
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <SideBar />
+          </BrowserRouter>
+        </AuthProvider>
       </ThemeProvider>
       <Toaster position='top-center' />
     </QueryClientProvider>

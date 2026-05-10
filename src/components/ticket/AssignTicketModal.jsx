@@ -8,13 +8,11 @@ import { LuUserRoundPlus, LuCheck, LuUser, LuX } from 'react-icons/lu'
 
 import TicketModal from './TicketModal';
 import AssignSearch from '../team/AssignSearch';
-import useEditTicket from '../../Hooks/Tickets/useEditTicket'
 
 export default function AssignTicketModal({ ticketId, onClose, }) {
-  const { register, setError, reset, control, formState: { errors } } = useForm()
+  const { reset, control, formState: { errors } } = useForm()
   const { data: members } = useMembers()
   const { assignTicket } = useAssignTicket()
-  const { updateTicket } = useEditTicket()
   const { ticket } = useTicket(ticketId)
 
   const [selectedMember, setSelectedMember] = useState(null)

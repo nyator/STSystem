@@ -28,6 +28,7 @@ function OptionButton({ options, selected, isOpen, setIsOpen, title, disabled })
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [setIsOpen]);
+  
 
   const selectedOption = options.find(opt => opt.value === selected);
   const displayText = selectedOption ? selectedOption.label : selected;

@@ -8,13 +8,8 @@ const Chart = () => {
   const chartData = useMemo(() => {
 
     const openCount = tickets.filter(t => t.status?.toLowerCase() === 'open').length;
-    const allOpenedCount = tickets.filter(t =>
-      t.status?.toLowerCase() === 'open' || t.status?.toLowerCase() === 'reopened'
-    ).length;
-    const reopenCount = tickets.filter(t => t.status?.toLowerCase() === 'reopened').length;
     const inProgressCount = tickets.filter(t => t.status?.toLowerCase() === 'in-progress').length;
     const resolvedCount = tickets.filter(t => t.status?.toLowerCase() === 'resolved').length;
-    const closedCount = tickets.filter(t => t.status?.toLowerCase() === 'closed').length;
     const totalCount = tickets.length;
 
     return [

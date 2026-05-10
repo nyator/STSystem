@@ -5,10 +5,10 @@ export function setLocalStorage(key, value) {
 
 export function getLocalStorage(key) {
     const item = localStorage.getItem(key)
-    if (!item === null) return null
+    if (item === null) return null
     try {
         return JSON.parse(item)
-    } catch (e) {
+    } catch {
         return item
     }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools'
 
@@ -8,11 +8,13 @@ import TicketModal from './TicketModal'
 import useTicket from '../../Hooks/Tickets/useTicket'
 import useEditTicket from '../../Hooks/Tickets/useEditTicket'
 import useMembers from '../../Hooks/Team/useMembers'
+import { useAuth } from '../../Hooks/useAuth'
 
 export default function AddCommentModal({ ticketId, onClose }) {
     const { ticket } = useTicket(ticketId)
     const { updateTicket, isLoading: isSubmitting } = useEditTicket()
     const { data: members } = useMembers()
+    const { user } = useAuth()
 
 
     const {
@@ -49,7 +51,7 @@ export default function AddCommentModal({ ticketId, onClose }) {
 
         const newComment = {
             message: data.comment.trim(),
-            author: 'Agent',
+            author: user?.name || 'User',
             createdAt: new Date().toISOString(),
         }
 
