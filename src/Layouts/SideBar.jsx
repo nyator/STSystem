@@ -1,17 +1,27 @@
 import { useEffect, useState } from 'react';
-import { getLocalStorage, setLocalStorage } from "../Hooks/useLocalStorage"
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import MainContent from './MainContent';
 
-import { LuChevronRight, LuLayoutDashboard, LuSettings, LuTicket, LuUsersRound } from 'react-icons/lu';
+import { LuChevronRight, LuLayoutDashboard, LuLogOut, LuSettings, LuTicket, LuUsersRound } from 'react-icons/lu';
 import logo from '../assets/logo.png'
+import { useAuth } from '../Hooks/useAuth';
+import { canManageTeam } from '../utils/AuthUtil';
 
 export default function SideBar() {
     const [isOpen, setIsOpen] = useState(true);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { user, isAuthenticated, logout } = useAuth();
 
-    const [activeMenu, setActiveMenu] = useState(() => {
-        const saved = getLocalStorage('activeMenu')
-        return saved || 'Dashboard'
-    });
+    const getActiveMenu = () => {
+        const path = location.pathname;
+        if (path.startsWith('/tickets')) return 'Tickets';
+        if (path.startsWith('/team')) return 'Team';
+        if (path.startsWith('/settings')) return 'Settings';
+        return 'Dashboard';
+    };
+
+    const activeMenu = getActiveMenu();
 
     useEffect(() => {
         const handleResize = () => {
@@ -26,15 +36,20 @@ export default function SideBar() {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
-    useEffect(() => {
-        setLocalStorage('activeMenu', activeMenu)
-    }, [activeMenu]);
+    if (location.pathname === '/login') {
+        return <MainContent />
+    }
 
     const menuItems = [
-        { icon: LuLayoutDashboard, label: 'Dashboard' },
-        { icon: LuTicket, label: 'Tickets' },
-        { icon: LuUsersRound, label: 'Team' }
+        { icon: LuLayoutDashboard, label: 'Dashboard', path: '/' },
+        { icon: LuTicket, label: 'Tickets', path: '/tickets' },
+        ...(canManageTeam(user) ? [{ icon: LuUsersRound, label: 'Team', path: '/team' }] : [])
     ];
+
+    const handleLogout = () => {
+        logout()
+        navigate('/login', { replace: true })
+    }
 
     return (
         <div className="flex h-screen">
@@ -56,31 +71,51 @@ export default function SideBar() {
 
                 <nav className={`flex ${isOpen ? 'items-start' : 'items-center'} flex-col justify-start flex-1 py-4 px-2 space-y-3`}>
                     {menuItems.map((item) => (
-                        <a
+                        <Link
                             key={item.label}
-                            onClick={() => setActiveMenu(item.label)}
+                            to={item.path}
                             className={`flex space-x-2 p-2 items-start rounded-lg border-1 ${isOpen ? 'justify-start' : 'justify-center'} ${activeMenu === item.label ? 'bg-blue-500 border-blue-500 text-white' : ' bg-gray-50/50 dark:bg-gray-800 border-gray-100 dark:border-gray-700'} ${activeMenu === item.label ? 'hover:bg-blue-600' : 'hover:bg-gray-100 dark:hover:bg-gray-700'} transition-all duration-300 ${isOpen ? 'w-full' : ''}`}
                         >
                             <item.icon size={15} />
                             {isOpen ? <span className="text-xs font-medium">{item.label}</span> : null}
-                        </a>
+                        </Link>
                     ))}
                 </nav>
 
                 <nav className={`flex ${isOpen ? 'items-start' : 'items-center'} flex-col justify-end flex-1 py-4 px-2 space-y-3`}>
-                    <a
-                        onClick={() => setActiveMenu('Settings')}
+                    {isAuthenticated && (
+                        <div className={`px-2 py-1 ${isOpen ? 'w-full' : 'text-center'}`}>
+                            {isOpen ? (
+                                <>
+                                    <p className="text-[11px] font-semibold text-gray-700 dark:text-gray-200 truncate">{user.name}</p>
+                                    <p className="text-[10px] text-gray-400 capitalize">{user.role}</p>
+                                </>
+                            ) : (
+                                <span className="text-[10px] font-semibold text-gray-500 uppercase">{user.role?.slice(0, 1)}</span>
+                            )}
+                        </div>
+                    )}
+                    <Link
+                        to="/settings"
                         className={`flex space-x-2 p-2 items-start rounded-lg border ${isOpen ? 'justify-start' : 'justify-center'} ${activeMenu === 'Settings' ? 'bg-black dark:bg-gray-700 border-gray-600 dark:border-gray-500 text-white' : '  border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800'} ${activeMenu === "Settings" ? 'hover:bg-mblack dark:hover:bg-gray-600' : 'hover:bg-gray-100 dark:hover:bg-gray-700'} transition-all duration-300 ${isOpen ? 'w-full' : ''}`}
                     >
                         <LuSettings size={15} />
                         {isOpen ? <span className="text-xs font-medium">Settings</span> : null}
-                    </a>
+                    </Link>
+                    <button
+                        type="button"
+                        onClick={handleLogout}
+                        className={`flex space-x-2 p-2 items-start rounded-lg border ${isOpen ? 'justify-start' : 'justify-center'} border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 ${isOpen ? 'w-full' : ''}`}
+                    >
+                        <LuLogOut size={15} />
+                        {isOpen ? <span className="text-xs font-medium">Logout</span> : null}
+                    </button>
 
                 </nav>
             </div>
 
             <div className="flex-1 overflow-auto h-full [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-gray-500 [&::-webkit-scrollbar-thumb]:rounded-sm">
-                <MainContent selectedMenu={activeMenu} />
+                <MainContent />
             </div>
         </div>
     );

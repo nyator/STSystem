@@ -24,15 +24,18 @@ export const deleteMembers = (memberId) => {
 export const updateAssign = (memberId, ticketId) => {
     const members = getMembers()
 
-    const updated = members.map((item) =>
-        item.id === memberId
-            ? {
-                ...item,
-                ticketsAssigned: item.ticketsAssigned + 1,
-                ticketIDs: [...(item.ticketIDs || []), ticketId]
-            }
-            : item
-    )
+    const updated = members.map((item) => {
+        if (item.id !== memberId) return item
+
+        const currentIds = Array.isArray(item.ticketIDs) ? item.ticketIDs : []
+        const ticketIDs = currentIds.includes(ticketId) ? currentIds : [...currentIds, ticketId]
+
+        return {
+            ...item,
+            ticketIDs,
+            ticketsAssigned: ticketIDs.length,
+        }
+    })
 
     localStorage.setItem("team", JSON.stringify(updated))
     return updated.find((item) => item.id === memberId)
@@ -41,7 +44,11 @@ export const updateAssign = (memberId, ticketId) => {
 
 export const createMember = async (memberData) => {
     const members = getMembers()
-    const nextId = members.length + 1
+    const highestId = members.reduce((highest, member) => {
+        const match = String(member.id || "").match(/^USR-(\d+)$/)
+        return match ? Math.max(highest, Number(match[1])) : highest
+    }, 0)
+    const nextId = highestId + 1
     const id = `USR-${nextId.toString().padStart(3, '0')}`;
 
     const newMember = {
@@ -49,10 +56,11 @@ export const createMember = async (memberData) => {
         firstName: memberData.firstName,
         lastName: memberData.lastName,
         email: memberData.email,
+        password: memberData.password || "assignee123",
         avatar: memberData.avatar || `https://i.pravatar.cc/150?img=${nextId}`,
         team: memberData.team || "",
         ticketsAssigned: memberData.ticketsAssigned || 0,
-        ticketIDs: memberData.ticketIDs || null,
+        ticketIDs: memberData.ticketIDs || [],
         createdAt: new Date().toString()
     }
 

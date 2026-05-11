@@ -1,5 +1,3 @@
-import { getLocalStorage } from "../Hooks/useLocalStorage"
-
 export const getTickets = () => {
     const data = localStorage.getItem("tickets")
     const tickets = data ? JSON.parse(data) : []
@@ -25,6 +23,7 @@ export const deleteTicket = (ticketId) => {
 
 export const assignTicket = (ticketId, assignedTo) => {
     const tickets = getTickets()
+    const previousTicket = tickets.find((item) => item.id === ticketId)
 
     const updated = tickets.map((item) =>
         item.id === ticketId
@@ -33,6 +32,26 @@ export const assignTicket = (ticketId, assignedTo) => {
     )
 
     localStorage.setItem("tickets", JSON.stringify(updated))
+
+    const membersData = localStorage.getItem("team")
+    const members = membersData ? JSON.parse(membersData) : []
+    const updatedMembers = members.map((member) => {
+        const currentIds = Array.isArray(member.ticketIDs) ? member.ticketIDs : []
+        const withoutTicket = currentIds.filter((id) => id !== ticketId)
+        const ticketIDs = member.id === assignedTo ? [...withoutTicket, ticketId] : withoutTicket
+
+        if (member.id === previousTicket?.assignedTo || member.id === assignedTo) {
+            return {
+                ...member,
+                ticketIDs,
+                ticketsAssigned: ticketIDs.length,
+            }
+        }
+
+        return member
+    })
+    localStorage.setItem("team", JSON.stringify(updatedMembers))
+
     return updated.find((item) => item.id === ticketId)
 }
 
@@ -60,6 +79,7 @@ export const createTicket = async (ticketData) => {
         customerEmail: ticketData.email || "",
         priority: ticketData.priority || "low",
         status: "open",
+        createdBy: ticketData.createdBy || null,
         createdAt: new Date().toISOString(),
         updatedAt: null,
         assignedTo: ticketData.assignedTo || null,

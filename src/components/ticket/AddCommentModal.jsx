@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { DevTool } from '@hookform/devtools'
 
-import { LuTicketSlash, LuMessagesSquare } from "react-icons/lu";
-import { FormInput, FormTextArea, FormCommentArea } from "../ui/Input";
-import TicketModal from "./TicketModal";
-import useTicket from "../../Hooks/Tickets/useTicket";
-import useEditTicket from "../../Hooks/Tickets/useEditTicket";
-import useMembers from "../../Hooks/Team/useMembers";
+import { LuTicketSlash, LuMessagesSquare } from 'react-icons/lu'
+import { FormInput, FormTextArea, FormCommentArea } from '../ui/Input'
+import TicketModal from './TicketModal'
+import useTicket from '../../Hooks/Tickets/useTicket'
+import useEditTicket from '../../Hooks/Tickets/useEditTicket'
+import useMembers from '../../Hooks/Team/useMembers'
+import { useAuth } from '../../Hooks/useAuth'
 
 export default function AddCommentModal({ ticketId, onClose }) {
-  const { ticket } = useTicket(ticketId);
-  const { updateTicket, isLoading: isSubmitting } = useEditTicket();
-  const { data: members } = useMembers();
+    const { ticket } = useTicket(ticketId)
+    const { updateTicket, isLoading: isSubmitting } = useEditTicket()
+    const { data: members } = useMembers()
+    const { user } = useAuth()
+
 
   const {
     register,
@@ -44,11 +47,11 @@ export default function AddCommentModal({ ticketId, onClose }) {
   const onSubmit = (data) => {
     if (!data.comment?.trim()) return;
 
-    const newComment = {
-      message: data.comment.trim(),
-      author: "Agent",
-      createdAt: new Date().toISOString(),
-    };
+        const newComment = {
+            message: data.comment.trim(),
+            author: user?.name || 'User',
+            createdAt: new Date().toISOString(),
+        }
 
     const updatedComments = [
       ...(Array.isArray(ticket?.comments) ? ticket.comments : []),

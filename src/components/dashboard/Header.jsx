@@ -10,6 +10,8 @@ import Button, { OptionButton } from '../ui/Button'
 import { ThemeToggle2 } from '../ui/ThemeToggles'
 import { LuPlus, LuMail } from 'react-icons/lu';
 import { FormInput, FormTextArea } from '../ui/Input'
+import { useAuth } from '../../Hooks/useAuth';
+import { canCreateTicket } from '../../utils/AuthUtil';
 
 
 
@@ -17,8 +19,9 @@ function Header({ icon, title, description }) {
     const [openModal, setOpenModal] = useState(false)
     const [selectedPriority, setSelectedPriority] = useState("low")
     const [isOpen, setIsOpen] = useState(null)
+    const { user } = useAuth()
 
-    const { createTicket, isLoading } = useCreateTicket();
+    const { createTicket } = useCreateTicket();
     const { register, handleSubmit, control, reset, formState: { errors } } = useForm()
 
 
@@ -30,7 +33,7 @@ function Header({ icon, title, description }) {
 
     const onSubmit = (data) => {
         // console.log({ ...data, priority: selectedPriority })
-        createTicket({ ...data, priority: selectedPriority }, {
+        createTicket({ ...data, priority: selectedPriority, createdBy: user.id }, {
             onSuccess: () => {
                 toast.success("Tickets Created!")
                 reset()
@@ -58,10 +61,12 @@ function Header({ icon, title, description }) {
                     <p className='text-gray-400 dark:text-gray-500 text-xs hidden sm:block'>{description}</p>
                 </div>
                 <div className='flex gap-2'>
-                    <Button variant="primary" onClick={() => setOpenModal(true)}>
-                        <LuPlus size={16} className="inline group-hover:animate-wiggle" />
-                        New Ticket
-                    </Button>
+                    {canCreateTicket(user) && (
+                        <Button variant="primary" onClick={() => setOpenModal(true)}>
+                            <LuPlus size={16} className="inline group-hover:animate-wiggle" />
+                            New Ticket
+                        </Button>
+                    )}
                     <ThemeToggle2 />
                 </div>
 

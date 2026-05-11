@@ -2,7 +2,7 @@ import { LuSearch, LuTextSelect, LuTextCursorInput, LuNotebookText, LuMessagesSq
 
 const baseInputClasses = "w-full p-2 text-mblack font-medium text-xs bg-gray-50/50 dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 h-10 rounded-lg focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-600 transition-colors duration-300 dark:text-gray-200"
 
-function SearchInput({ register, error, formfields, ...props }) {
+function SearchInput({ register, formfields, ...props }) {
     return (
         <div className="relative">
             <input
@@ -17,7 +17,7 @@ function SearchInput({ register, error, formfields, ...props }) {
     )
 }
 
-function FormInputEmpty({ register, readOnly, name, type, placeholder, error, formfields, ...props }) {
+function FormInputEmpty({ register, readOnly, name, placeholder, error, formfields, ...props }) {
     return (
         <div className="relative mb-2">
             <input
@@ -38,7 +38,7 @@ function FormInput({ register, readOnly, name, type, placeholder, error, formfie
             <input
                 {...register(name, formfields)}
                 placeholder={placeholder}
-                type={name === "email" ? "email" : "text"}
+                type={type || (name === "email" ? "email" : "text")}
                 className={`pl-8 ${baseInputClasses} ${error ? "outline-[1.4px] outline-red-500 bg-red-200" : ""} ${readOnly ? "cursor-not-allowed" : ""}`}
                 {...props}
                 {...(readOnly && { readOnly })}
