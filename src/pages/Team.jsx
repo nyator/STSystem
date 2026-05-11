@@ -37,19 +37,6 @@ function Team() {
     const { createMember } = useCreateMember()
     const { register, handleSubmit, control, reset, formState: { errors } } = useForm()
 
-  const StatusOptions = [
-    {
-      label: "Active",
-      value: "active",
-      onClick: () => setSelectedStatus("active"),
-    },
-    {
-      label: "Inactive",
-      value: "inactive",
-      onClick: () => setSelectedStatus("inactive"),
-    },
-  ];
-
     const TeamOptions = teamOptions.map((option) => ({
         ...option,
         onClick: () => setSelectedTeam(option.value),
@@ -162,13 +149,6 @@ function Team() {
                         error={errors.password}
                     />
                     <div className="flex items-center gap-1">
-                        {/* <OptionButton
-                            title={<LuInfo className='inline' size={14} />}
-                            options={StatusOptions}
-                            selected={selectedStatus}
-                            isOpen={isOpen === "status"}
-                            setIsOpen={(open) => setIsOpen(open ? 'status' : null)}
-                        /> */}
                         <OptionButton
                             title={<LuLaptopMinimal className='inline' size={14} />}
                             options={TeamOptions}

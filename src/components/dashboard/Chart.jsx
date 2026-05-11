@@ -10,15 +10,16 @@ const Chart = () => {
     const openCount = tickets.filter(t => t.status?.toLowerCase() === 'open').length;
     const inProgressCount = tickets.filter(t => t.status?.toLowerCase() === 'in-progress').length;
     const resolvedCount = tickets.filter(t => t.status?.toLowerCase() === 'resolved').length;
+    const closedCount = tickets.filter(t => t.status?.toLowerCase() === 'closed').length;
+    const reopenCount = tickets.filter(t => t.status?.toLowerCase() === 'reopened').length;
     const totalCount = tickets.length;
-
+    
     return [
       { name: "All Opened", value: openCount, color: "#fb2c36" },
-      // { name: "reopened", value: reopenCount, color: "#ff6900" },
       { name: "In-Progress", value: inProgressCount, color: "#f0b100" },
       { name: "Resolved", value: resolvedCount, color: "#10b981" },
-      { name: "closed", value: closedCount, color: "#c7c7c7 " },
-      { name: "reopened", value: reopenCount, color: "#ff6900" },
+      { name: "Closed", value: closedCount, color: "#c7c7c7 " },
+      { name: "Reopened", value: reopenCount, color: "#ff6900" },
       { name: "Total", value: totalCount, color: "#2b7fff" },
     ]
   }, [tickets]);

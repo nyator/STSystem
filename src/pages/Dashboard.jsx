@@ -11,6 +11,7 @@ import useTickets from "../Hooks/Tickets/useTickets";
 import PriorityBadge from "../components/ui/PriorityBadge";
 import StatusBadge from "../components/ui/StatusBadge";
 import Actions from "../components/ticket/Actions";
+import Banner from "../components/dashboard/Banner";
 
 function Dashboard() {
   const { data: tickets = [] } = useTickets();
@@ -44,7 +45,8 @@ function Dashboard() {
       <div>
         {/* <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'> */}
         <div className="mr-1">
-          <div className="flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-full min-h-[calc(100vh-5.5rem)] m-1 rounded-2xl">
+          <div className="flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-full min-h-[calc(100vh-5.5rem)] m-1 rounded-2xl space-y-2">
+          <Banner />
             <Cards />
             <div className="flex flex-col sm:flex-col justify-around w-full mt-1 gap-5 ">
               <div className="hidden md:flex bg-gray-50/50 dark:bg-gray-900/50 h-fit py-2 rounded-2xl items-center justify-start border-[1.3px] border-[#e5e7eb] dark:border-gray-700">

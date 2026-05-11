@@ -1,32 +1,28 @@
-// src/context/AuthContext.jsx
-import { createContext, useContext, useState } from "react";
-import { USER_ROLES } from "../constant/constants";
-
-const AuthContext = createContext(null);
-
-const defaultUser = {
-  id: "USR-ADMIN",
-  name: "Admin User",
-  email: "admin@test.com",
-  role: USER_ROLES.ADMIN,
-};
+import { useMemo, useState } from "react"
+import { getSession, loginWithCredentials, logoutSession, ensureDefaultAuthData } from "../utils/AuthUtil"
+import { AuthContext } from "./authContextObject"
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(() => {
-    const saved = localStorage.getItem("currentUser");
-    return saved ? JSON.parse(saved) : defaultUser;
-  });
+    ensureDefaultAuthData()
+    const [user, setUser] = useState(() => getSession())
 
-  const switchUser = (user) => {
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    setCurrentUser(user);
-  };
+    const value = useMemo(() => ({
+        user,
+        isAuthenticated: !!user,
+        login: (email, password) => {
+            const session = loginWithCredentials(email, password)
+            setUser(session)
+            return session
+        },
+        logout: () => {
+            logoutSession()
+            setUser(null)
+        },
+    }), [user])
 
-  return (
-    <AuthContext.Provider value={{ currentUser, switchUser }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    return (
+        <AuthContext.Provider value={value}>
+            {children}
+        </AuthContext.Provider>
+    )
 }
-
-export const useAuth = () => useContext(AuthContext);

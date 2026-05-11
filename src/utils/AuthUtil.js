@@ -32,7 +32,7 @@ const DEFAULT_TEAM_MEMBER = {
     id: "USR-001",
     firstName: "Assignee",
     lastName: "User",
-    email: "assignee@gmail.local",
+    email: "assignee@gmail.com",
     avatar: "https://i.pravatar.cc/150?img=12",
     team: "frontend",
     ticketsAssigned: 0,
@@ -147,13 +147,13 @@ export function canDeleteTicket(user, ticket) {
 
 export function canStartWork(user, ticket) {
     if (!ticket || !["assigned", "reopened"].includes(ticket.status)) return false
-    if (user?.role === ROLES.ADMIN) return true
+    if (user?.role === ROLES.ADMIN) return false // Admins cannot start work, only assignees can
     return user?.role === ROLES.ASSIGNEE && ticket.assignedTo === user.memberId
 }
 
 export function canMarkResolved(user, ticket) {
     if (ticket?.status !== "in-progress") return false
-    if (user?.role === ROLES.ADMIN) return true
+    if (user?.role === ROLES.ADMIN) return false // Admins cannot mark tickets as resolved, only assignees can
     return user?.role === ROLES.ASSIGNEE && ticket.assignedTo === user.memberId
 }
 

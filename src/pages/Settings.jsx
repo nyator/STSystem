@@ -42,7 +42,7 @@ function Settings() {
                             </div>
                         </div>
 
-                        <div>
+                        {/* <div>
                             <p className=" text-gray-400 dark:text-gray-500 text-md mb-3">Local demo users</p>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                 {loginUsers.map((demoUser) => (
@@ -54,7 +54,7 @@ function Settings() {
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

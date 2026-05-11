@@ -43,9 +43,9 @@ function TicketModal({
         </button>
 
         <div className="flex justify-center items-center mb-4 p-2">
-          <h2 className="flex flex-row items-center text-xl text-center font-semibold dark:text-white">
+          <h2 className="flex flex-row items-center text-lg text-center font-semibold dark:text-white">
             {title} {TitleIcon}
-            <span className="font-bold text-lg">{ticketId}</span>
+            <span className="font-bold text-md">{ticketId}</span>
           </h2>
         </div>
 
