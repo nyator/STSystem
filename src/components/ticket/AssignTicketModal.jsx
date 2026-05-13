@@ -59,7 +59,7 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
         isOpen={!!ticketId}
         onClose={onClose}
         ticketId={ticketId}
-        title="Assign:"
+        title="Assign Ticket"
         LAction="Cancel"
         RAction="Assign"
         RVariant="primary"

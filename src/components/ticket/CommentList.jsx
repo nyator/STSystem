@@ -1,4 +1,4 @@
-function CommentList({ comments = [], maxHeightClass = "max-h-40" }) {
+function CommentList({ comments = [], maxHeightClass = "max-h-32" }) {
   const hasComments = comments.length > 0;
 
   return (

@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
-import { LuSquarePen, LuMail, LuTicketSlash } from "react-icons/lu";
-import { FormInput, FormTextArea } from "../ui/Input";
+import { LuSquarePen, LuTicketSlash } from "react-icons/lu";
 import { OptionButton } from "../ui/Button";
 import TicketModal from "./TicketModal";
 import useTicket from "../../Hooks/Tickets/useTicket";
@@ -11,7 +10,8 @@ import useEditTicket from "../../Hooks/Tickets/useEditTicket";
 import useMembers from "../../Hooks/Team/useMembers";
 import { getAvailableTransitions } from "../../utils/TicketUtil";
 import CommentList from "./CommentList";
-import MemberPill from "../ui/MemberPill";
+import TicketAssigneeRow from "./TicketAssigneeRow";
+import TicketDetailsFields from "./TicketDetailsFields";
 
 const PRIORITY_OPTIONS = ["low", "medium", "high"];
 
@@ -114,10 +114,9 @@ export default function EditTicketModal({ ticketId, onClose }) {
     <TicketModal
       isOpen={!!ticketId}
       onClose={onClose}
-      TitleIcon={<LuTicketSlash className="mr-2" />}
-      // LAction="close"
-      // RAction="Update Ticket"
-      // RAction="Add comment"
+      title="View Ticket"
+      TitleIcon={<LuTicketSlash />}
+      LAction="Close"
       RIcon={
         <LuSquarePen
           size={16}
@@ -130,9 +129,9 @@ export default function EditTicketModal({ ticketId, onClose }) {
       error={hasErrors}
     >
       <DevTool control={control} />
-      <div className="w-full">
-        <div className="text-xs mb-2.5">
-          <div className="flex justify-between">
+      <div className="space-y-3">
+        <div className="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-xs dark:border-gray-700 dark:bg-gray-700/30">
+          <div className="flex justify-between gap-3">
             <p>
               Created:{" "}
               <span className="font-semibold">
@@ -158,52 +157,10 @@ export default function EditTicketModal({ ticketId, onClose }) {
           </div>
         </div>
 
-        {/* Assignedto  */}
-        <div className="flex gap-2 items-center text-xs my-2">
-          {/* <p>AssignedTo:</p> */}
-          {members
-            ?.filter((member) => ticket?.assignedTo === member.id)
-            .map((member) => <MemberPill key={member.id} member={member} />)}
-        </div>
+        <TicketAssigneeRow members={members} assignedTo={ticket?.assignedTo} />
 
-        <form id="edit-ticket-form" className="space-y-2">
-          <FormInput
-            name="title"
-            placeholder="Enter Ticket Title"
-            register={register}
-            formfields={{ required: "Title is required" }}
-            error={errors.title}
-            readOnly
-          />
-          <FormInput
-            name="email"
-            placeholder="Enter customer email"
-            icon={
-              <LuMail
-                className="absolute left-3 top-3 text-gray-700 dark:text-gray-400"
-                size={15}
-              />
-            }
-            register={register}
-            formfields={{
-              required: "Email is required",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Invalid email address",
-              },
-            }}
-            error={errors.email}
-            readOnly
-          />
-          <FormTextArea
-            name="description"
-            placeholder="Enter Ticket Description"
-            register={register}
-            formfields={{ required: "Description is required" }}
-            error={errors.description}
-            readOnly
-          />
-
+        <form id="edit-ticket-form" className="space-y-3">
+          <TicketDetailsFields register={register} errors={errors} showEmail />
           <CommentList comments={ticket?.comments} />
 
           <div className="flex flex-wrap space-x-2 justify-center">

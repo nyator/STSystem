@@ -3,7 +3,6 @@ import { useForm, useWatch } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools'
 
 import { LuTicketSlash, LuRefreshCcwDot, LuUserRoundPlus } from 'react-icons/lu'
-import { FormInput, FormTextArea } from '../ui/Input'
 import { OptionButton } from '../ui/Button'
 import TicketModal from './TicketModal'
 import AssignTicketModal from './AssignTicketModal'
@@ -12,7 +11,8 @@ import useEditTicket from '../../Hooks/Tickets/useEditTicket'
 import useMembers from '../../Hooks/Team/useMembers'
 import CustomInfoToast from '../ui/CustomInfoToast'
 import { getAvailableTransitions } from '../../utils/TicketUtil'
-import MemberPill from '../ui/MemberPill'
+import TicketAssigneeRow from './TicketAssigneeRow'
+import TicketDetailsFields from './TicketDetailsFields'
 
 export default function ChangeStatusModal({ ticketId, onClose }) {
     const { ticket } = useTicket(ticketId)
@@ -97,7 +97,8 @@ export default function ChangeStatusModal({ ticketId, onClose }) {
             <TicketModal
                 isOpen={!!ticketId}
                 onClose={onClose}
-                TitleIcon={<LuTicketSlash className="mr-2" />}
+                title="Change Status"
+                TitleIcon={<LuTicketSlash />}
                 LAction="Cancel"
                 RAction="Update Status"
                 RIcon={<LuRefreshCcwDot size={16} className="inline group-hover:animate-wiggle" />}
@@ -107,33 +108,10 @@ export default function ChangeStatusModal({ ticketId, onClose }) {
                 error={Object.keys(errors).length > 0}
             >
                 <DevTool control={control} />
-                <div className='w-full'>
-                    <form id="change-status-form" onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-                        <FormInput
-                            name="title"
-                            placeholder="Ticket Title"
-                            register={register}
-                            formfields={{}}
-                            error={errors.title}
-                            readOnly
-                        />
-                        <FormTextArea
-                            name="description"
-                            placeholder="Ticket Description"
-                            register={register}
-                            formfields={{}}
-                            error={errors.description}
-                            readOnly
-                        />
-
-                        {/* Display selected members count and option to clear selection */}
-                        <div className='flex flex-col items-start gap-1'>
-                            <div className='flex flex-wrap items-center gap-1'>
-                                {members
-                                    ?.filter((member) => ticket?.assignedTo === member.id)
-                                    .map((member) => <MemberPill key={member.id} member={member} />)}
-                            </div>
-                        </div>
+                <div className='space-y-3'>
+                    <form id="change-status-form" onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+                        <TicketDetailsFields register={register} errors={errors} />
+                        <TicketAssigneeRow members={members} assignedTo={ticket?.assignedTo} />
 
                         {isOpen && isUnassigned ? (
                             <div className="flex flex-col items-center gap-2 py-3 px-4 rounded-lg border border-yellow-200 bg-yellow-50 dark:bg-yellow-900/20 dark:border-yellow-800">
