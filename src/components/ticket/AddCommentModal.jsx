@@ -9,6 +9,8 @@ import useTicket from '../../Hooks/Tickets/useTicket'
 import useEditTicket from '../../Hooks/Tickets/useEditTicket'
 import useMembers from '../../Hooks/Team/useMembers'
 import { useAuth } from '../../Hooks/useAuth'
+import CommentList from './CommentList'
+import MemberPill from '../ui/MemberPill'
 
 export default function AddCommentModal({ ticketId, onClose }) {
     const { ticket } = useTicket(ticketId)
@@ -88,20 +90,8 @@ export default function AddCommentModal({ ticketId, onClose }) {
       <div className="flex gap-2 items-center text-xs mb-2">
         {/* <p className="mb-1">AssignedTo:</p> */}
         {members
-          ?.filter((m) => ticket?.assignedTo === m.id)
-          .map((m) => (
-            <div
-              key={m.id}
-              className="flex w-fit items-center pl-1 pr-2 py-1 rounded-full bg-gray-50 dark:bg-blue-900/50 border border-gray-200 dark:border-blue-700 text-gray-700 dark:text-blue-300 text-xs font-medium"
-            >
-              <img
-                src={m.avatar}
-                alt={`${m.firstName} ${m.lastName}`}
-                className="w-5 h-5 rounded-full mr-1"
-              />
-              {m.firstName} {m.lastName}
-            </div>
-          ))}
+          ?.filter((member) => ticket?.assignedTo === member.id)
+          .map((member) => <MemberPill key={member.id} member={member} />)}
       </div>
 
       <div className="w-full">
@@ -135,45 +125,7 @@ export default function AddCommentModal({ ticketId, onClose }) {
             readOnly
           />
 
-          {/* Comments list */}
-          <div className="flex flex-col gap-1 rounded-lg bg-blue-50 dark:bg-gray-700/30 p-2 overflow-y-auto scroll-auto">
-            {ticket?.comments?.length > 0 && (
-              <p className=" text-xs">comments</p>
-            )}
-            <div className="max-h-20 overflow-y-auto">
-              {ticket?.comments?.length > 0 ? (
-                ticket.comments
-                  .slice()
-                  .reverse()
-                  .map((comment, i) => (
-                    <div
-                      key={i}
-                      className="bg-white leading-2.75 border border-dashed border-gray-200 dark:border-gray-600 dark:bg-gray-700/50 rounded-md py-1 px-1.5 w-full min-h-5.5 flex flex-col gap-1 overflow-auto"
-                    >
-                      <p className="font-black text-[10px] text-blue-700">
-                        @{comment.author}
-                      </p>
-                      <div className="border-l border-gray-300 dark:border-gray-500 px-1 w-full h-full flex flex-col gap-0.5 text-[12px]">
-                        <p className="text-[11px] font-medium">
-                          {comment.message}
-                        </p>
-                        <p className="text-[9px] text-black/40 dark:text-gray-100">
-                          {comment.createdAt
-                            ? new Date(comment.createdAt)
-                                .toUTCString()
-                                .slice(0, -7)
-                            : ""}
-                        </p>
-                      </div>
-                    </div>
-                  ))
-              ) : (
-                <p className="text-xs text-gray-400 text-center">
-                  No comments yet
-                </p>
-              )}
-            </div>
-          </div>
+          <CommentList comments={ticket?.comments} maxHeightClass="max-h-20" />
 
           {/* Comment input */}
           <FormCommentArea

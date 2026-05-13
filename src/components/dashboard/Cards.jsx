@@ -23,10 +23,15 @@ const Cards = () => {
             colors: "bg-green-50 text-green-500"
         },
         {
-            id: 5, label: "Total Tickets",
-            value: tickets.length,
-            colors: "bg-blue-50 text-blue-500"
+            id: 6, label: "Reopened Tickets",
+            value: tickets.filter(t => (t.status || '').toLowerCase() === 'reopened').length,
+            colors: "bg-purple-50 text-purple-500"
         },
+        // {
+        //     id: 5, label: "Total Tickets",
+        //     value: tickets.length,
+        //     colors: "bg-blue-50 text-blue-500"
+        // },
     ]
 
     return (

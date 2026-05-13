@@ -85,13 +85,19 @@ function Header({ icon, title, description }) {
           </div>
 
           {isAuthenticated && (
-            <div className="px-2 py-1  leading-tight">
-              <p className="text-[11px] font-semibold text-gray-700 dark:text-gray-200 truncate">
-                {user.name}
-              </p>
-              <p className="text-[10px] text-gray-400 capitalize">
-                {user.role}
-              </p>
+            <div className="flex items-center gap-1 px-2 py-2 leading-tight">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-gray-100 text-xs font-medium dark:bg-gray-800">
+                {user.name?.charAt(0).toUpperCase()}
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[11px] font-semibold text-gray-700 dark:text-gray-200">
+                  {user.name}
+                </p>
+                <p className="text-[7px] text-gray-400 uppercase dark:text-gray-500">
+                  {user.role}
+                </p>
+              </div>
             </div>
           )}
         </div>

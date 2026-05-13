@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools'
 
 import { LuTicketSlash, LuRefreshCcwDot, LuUserRoundPlus } from 'react-icons/lu'
@@ -12,13 +12,13 @@ import useEditTicket from '../../Hooks/Tickets/useEditTicket'
 import useMembers from '../../Hooks/Team/useMembers'
 import CustomInfoToast from '../ui/CustomInfoToast'
 import { getAvailableTransitions } from '../../utils/TicketUtil'
+import MemberPill from '../ui/MemberPill'
 
 export default function ChangeStatusModal({ ticketId, onClose }) {
     const { ticket } = useTicket(ticketId)
     const { data: members } = useMembers()
     const { updateTicket, isLoading: isUpdating } = useEditTicket()
 
-    const [selectedStatus, setSelectedStatus] = useState('open')
     const [openDropdown, setOpenDropdown] = useState(null)
     const [openAssign, setOpenAssign] = useState(false)
 
@@ -36,6 +36,12 @@ export default function ChangeStatusModal({ ticketId, onClose }) {
             description: '',
             status: 'open',
         },
+    })
+
+    const selectedStatus = useWatch({
+        control,
+        name: 'status',
+        defaultValue: 'open',
     })
 
     const isOpen = ticket?.status === 'open'
@@ -61,12 +67,10 @@ export default function ChangeStatusModal({ ticketId, onClose }) {
                 description: ticket.description || '',
                 status: ticket.status || 'open',
             })
-            setSelectedStatus(ticket.status || 'open')
         }
     }, [ticket, reset])
 
     const handleStatusChange = (value) => {
-        setSelectedStatus(value)
         setValue('status', value, { shouldDirty: true })
     }
 
@@ -78,11 +82,11 @@ export default function ChangeStatusModal({ ticketId, onClose }) {
         }
 
         updateTicket(
-            { ticketId, comments: data },
+            { ticketId, status: data.status },
             {
                 onSuccess: () => {
-                    reset({ ...getValues(), comment: '' })
-                    setShowCommentBox(false)
+                    reset(getValues())
+                    onClose()
                 }
             }
         )
@@ -125,16 +129,9 @@ export default function ChangeStatusModal({ ticketId, onClose }) {
                         {/* Display selected members count and option to clear selection */}
                         <div className='flex flex-col items-start gap-1'>
                             <div className='flex flex-wrap items-center gap-1'>
-                                {members?.filter(m => ticket?.assignedTo === m.id).map(m => (
-                                    <div
-                                        key={m.id}
-                                        className="flex w-fit items-center pl-1 pr-2 py-1 rounded-full bg-gray-50 dark:bg-blue-900/50 border border-gray-200 dark:border-blue-700 text-gray-700 dark:text-blue-300 text-xs font-medium"
-                                    >
-                                        <img src={m.avatar} alt={`${m.firstName} ${m.lastName}`} className="w-5 h-5 rounded-full mr-1" />
-                                        {m.firstName} {m.lastName}
-
-                                    </div>
-                                ))}
+                                {members
+                                    ?.filter((member) => ticket?.assignedTo === member.id)
+                                    .map((member) => <MemberPill key={member.id} member={member} />)}
                             </div>
                         </div>
 

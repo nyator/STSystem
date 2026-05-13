@@ -183,7 +183,7 @@ function Ticket() {
                             <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-10rem)] py-20 text-gray-500">
                                 <LuTicket size={48} className="mb-4 opacity-50" />
                                 <p className="text-lg font-medium">No tickets found</p>
-                                <p className="text-sm mt-2">Try adjusting your search or filters</p>
+                                <p className="text-sm">Try adjusting your search or filters</p>
                             </div>
                         ) : <Table
                             columns={[

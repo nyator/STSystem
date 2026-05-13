@@ -5,15 +5,17 @@ import useTicket from '../../Hooks/Tickets/useTicket'
 import useAssignTicket from '../../Hooks/Tickets/useAssignTicket'
 import useUpdateAssign from '../../Hooks/Team/useUpdateAssign'
 import { DevTool } from "@hookform/devtools";
-import { LuUserRoundPlus, LuCheck, LuUser, LuX } from 'react-icons/lu'
+import { LuUserRoundPlus, LuCheck, LuUser } from 'react-icons/lu'
 
 import TicketModal from './TicketModal';
 import AssignSearch from '../team/AssignSearch';
+import MemberPill from '../ui/MemberPill';
 
 export default function AssignTicketModal({ ticketId, onClose, }) {
   const { reset, control, formState: { errors } } = useForm()
   const { data: members } = useMembers()
   const { assignTicket } = useAssignTicket()
+  const { updateAssign } = useUpdateAssign()
   const { ticket } = useTicket(ticketId)
 
   const [selectedMember, setSelectedMember] = useState(null)
@@ -74,22 +76,15 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
             {/* Display selected members count and option to clear selection */}
             <div className='flex flex-col items-start gap-1 my-1'>
               <div className='flex flex-wrap items-center gap-1'>
-                {members?.filter(m => selectedMember === m.id).map(m => (
-                  <div
-                    key={m.id}
-                    className="flex w-fit items-center pl-1 pr-2 py-1 rounded-full bg-gray-50 dark:bg-blue-900/50 border border-gray-200 dark:border-blue-700 text-gray-700 dark:text-blue-300 text-xs font-medium"
-                  >
-                    <img src={m.avatar} alt={`${m.firstName} ${m.lastName}`} className="w-5 h-5 rounded-full mr-1" />
-                    {m.firstName} {m.lastName}
-                    <button
-                      type="button"
-                      onClick={removeMember}
-                      className="ml-0.5 hover:text-blue-900 dark:hover:text-blue-100 transition-colors cursor-pointer"
-                    >
-                      <LuX size={11} />
-                    </button>
-                  </div>
-                ))}
+                {members
+                  ?.filter((member) => selectedMember === member.id)
+                  .map((member) => (
+                    <MemberPill
+                      key={member.id}
+                      member={member}
+                      onRemove={removeMember}
+                    />
+                  ))}
               </div>
 
               {selectedMember &&

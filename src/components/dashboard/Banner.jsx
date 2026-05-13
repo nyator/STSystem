@@ -69,7 +69,7 @@ function Banner() {
       <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-blue-500/10 blur-3xl" />
       <div className="absolute -bottom-10 right-20 h-40 w-40 rounded-full bg-purple-500/10 blur-3xl" />
 
-      <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="relative flex flex-col md:flex-row md:items-start justify-between gap-6">
         {/* Left Side: Content */}
         <div className="">
           <div className="inline-flex items-center gap-2 rounded-md bg-blue-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-blue-400 border border-blue-500/20">

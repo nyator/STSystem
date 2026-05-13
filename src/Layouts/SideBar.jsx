@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import MainContent from "./MainContent";
+import Toast from "react-hot-toast";
+import LogoutConfirmModal from "../components/ui/logoutConfirmModal";
 
 import {
   LuChevronRight,
@@ -20,6 +22,7 @@ export default function SideBar() {
 
   const [isOpen, setIsOpen] = useState(true);
   const { user, isAuthenticated, logout } = useAuth();
+  const [openLogoutConfirm, setOpenLogoutConfirm] = useState(false);
 
   const getActiveMenu = () => {
     const path = location.pathname;
@@ -57,6 +60,8 @@ export default function SideBar() {
   ];
 
   const handleLogout = () => {
+    setOpenLogoutConfirm(false);
+    Toast.success("Logged out");
     logout();
     navigate("/login", { replace: true });
   };
@@ -104,24 +109,6 @@ export default function SideBar() {
         <nav
           className={`flex ${isOpen ? "items-start" : "items-center"} flex-col justify-end flex-1 py-4 px-2 space-y-3`}
         >
-          {/* {isAuthenticated && (
-            <div className={`px-2 py-1 ${isOpen ? "w-full" : "text-center"}`}>
-              {isOpen ? (
-                <>
-                  <p className="text-[11px] font-semibold text-gray-700 dark:text-gray-200 truncate">
-                    {user.name}
-                  </p>
-                  <p className="text-[10px] text-gray-400 capitalize">
-                    {user.role}
-                  </p>
-                </>
-              ) : (
-                <span className="text-[10px] font-semibold text-gray-500 uppercase">
-                  {user.role?.slice(0, 1)}
-                </span>
-              )}
-            </div>
-          )} */}
           <Link
             to="/settings"
             className={`flex space-x-2 p-2 items-start rounded-lg border ${isOpen ? "justify-start" : "justify-center"} ${activeMenu === "Settings" ? "bg-black dark:bg-gray-700 border-gray-600 dark:border-gray-500 text-white" : "  border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800"} ${activeMenu === "Settings" ? "hover:bg-mblack dark:hover:bg-gray-600" : "hover:bg-gray-100 dark:hover:bg-gray-700"} transition-all duration-300 ${isOpen ? "w-full" : ""}`}
@@ -133,7 +120,7 @@ export default function SideBar() {
           </Link>
           <button
             type="button"
-            onClick={handleLogout}
+            onClick={() => setOpenLogoutConfirm(true)}
             className={`flex space-x-2 p-2 items-start rounded-lg border ${isOpen ? "justify-start" : "justify-center"} border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 ${isOpen ? "w-full" : ""}`}
           >
             <LuLogOut size={15} />
@@ -142,6 +129,17 @@ export default function SideBar() {
             ) : null}
           </button>
         </nav>
+      </div>
+
+      <div>
+        {openLogoutConfirm && (
+          <LogoutConfirmModal
+            isOpen={openLogoutConfirm}
+            onConfirm={handleLogout}
+            onCancel={() => setOpenLogoutConfirm(false)}
+            submit={() => handleLogout()}
+          />
+        )}
       </div>
 
       <div className="flex-1 overflow-auto h-full [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-gray-500 [&::-webkit-scrollbar-thumb]:rounded-sm">

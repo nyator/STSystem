@@ -82,7 +82,7 @@ function Table({
                       key={idx}
                       onClick={() => setSelectedRowId(row.id)}
                       className={`group border-gray-200 dark:border-gray-700 text-nowrap hover:bg-gray-50 dark:hover:bg-gray-700 cursor-default transition-all duration-100 ease-in ${
-                        idx === data.length - 1 ? "border-b-0" : "border-b"
+                        idx === data.length - 1 ? "border-b" : "border-b-0"
                       }`}
                     >
                       {cols.map((col, index) => (

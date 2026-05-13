@@ -61,7 +61,7 @@ const OptionsPopover = ({ user, ticket, onDelete, onAssign, onStartWork, onMarkR
                     if (rect) {
                         setPosition({
                             left: rect.right - 139,
-                            top: (rowIndex >= dataLength - 4) ? rect.bottom - 153 : rect.bottom + 8,
+                            top: (rowIndex >= dataLength - 4) ? rect.bottom - 75 : rect.bottom + 8,
                         })
                     }
                     setOpen((prev) => !prev)

@@ -6,13 +6,14 @@ import TableSkeleton from "../ui/TableSkeleton";
 import Table from "../ui/Table";
 import Pagination from "../ui/Pagination";
 // import DeleteModal from "../ui/DeleteModal"; // Assuming you have a modal component
+import DeleteMemberModal from "./DeleteMemberModal"; // Assuming you have a modal component for deleting members
 
 const ITEMS_PER_PAGE = 10;
 
 export default function MemberGroup() {
   const { data, isLoading } = useMembers();
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   // State for handling deletion
   const [showModal, setShowModal] = useState(false);
   const [selectedMemberId, setSelectedMemberId] = useState(null);
@@ -33,7 +34,8 @@ export default function MemberGroup() {
   }, [currentPage, data]);
 
   const handlePrev = () => setCurrentPage((prev) => Math.max(1, prev - 1));
-  const handleNext = () => setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+  const handleNext = () =>
+    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
 
   const openDeleteModal = (id) => {
     setSelectedMemberId(id);
@@ -46,7 +48,10 @@ export default function MemberGroup() {
       <div className="mt-5 grid grid-cols-1 xs:grid-cols-2 gap-6 md:hidden">
         {isLoading
           ? Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-32 bg-gray-100 animate-pulse rounded-xl" />
+              <div
+                key={i}
+                className="h-32 bg-gray-100 animate-pulse rounded-xl"
+              />
             ))
           : paginatedMembers.map((member) => (
               <MemberCard key={member.id} user={member} />
@@ -70,6 +75,12 @@ export default function MemberGroup() {
       <div className="hidden md:block mt-3">
         {isLoading ? (
           <TableSkeleton rows={5} />
+        ) : data.length === 0 ? (
+          <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-10rem)] py-20 text-gray-500">
+            <LuTicket size={48} className="mb-4 opacity-50" />
+            <p className="text-lg font-medium">No team members found</p>
+            <p className="text-sm">Add a new member to the team</p>
+          </div>
         ) : (
           <Table
             itemLabel="Members"
@@ -94,7 +105,9 @@ export default function MemberGroup() {
                     alt={`${member.firstName}`}
                     className="w-6 h-6 rounded-full object-cover"
                   />
-                  <span>{member.firstName} {member.lastName}</span>
+                  <span>
+                    {member.firstName} {member.lastName}
+                  </span>
                 </div>
               ),
               email: member.email,
@@ -113,7 +126,15 @@ export default function MemberGroup() {
                       />
                     </button>
                   ) : (
-                    <span className="text-xs text-gray-400 italic">Active Tasks</span>
+                    <span className="text-xs text-gray-400 italic">
+                      Active Tasks
+                    </span>
+                  )}
+                  {showModal && (
+                    <DeleteMemberModal
+                      MemberId={member.id}
+                      onClose={() => setShowModal(false)}
+                    />
                   )}
                 </div>
               ),
@@ -121,14 +142,6 @@ export default function MemberGroup() {
           />
         )}
       </div>
-
-      {/* Example Modal Integration */}
-      {/* {showModal && (
-        <DeleteModal 
-          memberId={selectedMemberId} 
-          onClose={() => setShowModal(false)} 
-        />
-      )} */}
     </div>
   );
 }

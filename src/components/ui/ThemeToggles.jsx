@@ -24,7 +24,7 @@ function ThemeToggle() {
 function ThemeToggle2() {
     const { theme, toggleTheme } = useContext(ThemeContext);
     return (
-        <button type="button" onClick={toggleTheme} aria-label="Toggle dark mode" className="bg-gray-100 hover:bg-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700 p-2 rounded-full hover:animate-wiggle">
+        <button type="button" onClick={toggleTheme} aria-label="Toggle dark mode" className=" hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full hover:animate-wiggle">
             {theme === 'dark' ? <LuSunMedium size={18} color="#fbc32b" /> : <LuMoon size={18} color="#007FFF" />}
         </button>
     );
