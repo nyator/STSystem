@@ -24,7 +24,6 @@ const teamOptionValue = (label) => label.trim().toLowerCase().replace(/\s+/g, "-
 
 function Team() {
     const [openModal, setOpenModal] = useState(false)
-    const [selectedStatus, setSelectedStatus] = useState("active")
     const [selectedTeam, setSelectedTeam] = useState()
     const [isOpen, setIsOpen] = useState(null)
     const [isAddingTeamOption, setIsAddingTeamOption] = useState(false)
@@ -70,7 +69,6 @@ function Team() {
         onSuccess: () => {
           toast.success("Member Created!");
           reset();
-          setSelectedStatus("active");
           setSelectedTeam(undefined);
           setOpenModal(false);
         },
@@ -84,7 +82,7 @@ function Team() {
 
   return (
     <div>
-      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 p-4 w-full">
+      <div className="sticky top-0 z-10 w-full border-b border-gray-200 bg-[#f6f7f9]/95 p-4 backdrop-blur dark:border-gray-800 dark:bg-[#0f141b]/95">
         <Header
           icon={<LuUsersRound size={20} className="inline" />}
           title="Team"
@@ -93,7 +91,7 @@ function Team() {
       </div>
 
       <div>
-        <div className="flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-0.5rem)] min-h-[calc(100vh-5.5rem)] m-1 rounded-2xl space-y-2">
+        <div className="m-1 flex min-h-[calc(100vh-5.5rem)] w-[calc(100%-0.5rem)] flex-col items-start space-y-3 rounded-lg border border-gray-200 bg-white p-4 shadow-sm shadow-gray-200/60 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none">
           <Button variant="primary" onClick={() => setOpenModal(true)}>
             <LuUserRoundPlus size={15} />
             Add Member
@@ -159,7 +157,7 @@ function Team() {
                         <button
                             type="button"
                             onClick={() => setIsAddingTeamOption((open) => !open)}
-                            className="bg-gray-100 dark:bg-gray-700 mb-2 p-2 text-mblack dark:text-gray-200 font-medium rounded-lg flex items-center justify-center text-xs transition-all ease-in-out duration-300 active:scale-[0.97] hover:bg-gray-200 dark:hover:bg-gray-600"
+                            className="mb-2 flex items-center justify-center rounded-md border border-gray-200 bg-white p-2 text-xs font-medium text-gray-700 transition-all duration-200 hover:bg-gray-50 active:scale-[0.98] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
                             aria-label="Add team option"
                             title="Add team option"
                         >
@@ -179,7 +177,7 @@ function Team() {
                                     }
                                 }}
                                 placeholder="New option"
-                                className="w-full p-2 text-mblack font-medium text-xs bg-gray-50/50 dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 h-10 rounded-lg focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-600 transition-colors duration-300 dark:text-gray-200"
+                                className="h-10 w-full rounded-md border border-gray-200 bg-white p-2 text-xs font-medium text-gray-900 transition-colors duration-200 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:ring-blue-500/20"
                             />
                             <Button variant="primary" type="button" onClick={addTeamOption}>
                                 <LuPlus size={14} />

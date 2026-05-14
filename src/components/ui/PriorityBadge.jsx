@@ -1,15 +1,12 @@
-import React from 'react'
-import { LuDot } from 'react-icons/lu';
-
 function PriorityBadge({ priority = "Low" }) {
 
     const varaintColors = {
-        low: "text-blue-700 dark:text-blue-400",
-        medium: "text-yellow-600 dark:text-yellow-500",
-        high: "text-red-700 dark:text-red-400",
+        low: "bg-slate-100 text-slate-700 ring-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:ring-slate-700",
+        medium: "bg-amber-50 text-amber-700 ring-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20",
+        high: "bg-red-50 text-red-700 ring-red-200 dark:bg-red-500/10 dark:text-red-300 dark:ring-red-500/20",
     }
 
-    const baseClass = "max-w-sm w-fit rounded-md py-1 mx-auto font-medium flex items-center justify-center text-xs"
+    const baseClass = "w-fit rounded-full px-2.5 py-1 font-semibold flex items-center justify-center text-[11px] ring-1"
     const classes = varaintColors[priority] ?? "gray";
 
     return (

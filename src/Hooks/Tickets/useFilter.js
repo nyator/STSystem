@@ -6,6 +6,8 @@ function useFilter(tickets) {
     const [filters, setFilters] = useState({
         status: null,
         priority: null,
+        category: null,
+        assignment: null,
         dateRange: null
     })
 
@@ -26,6 +28,20 @@ function useFilter(tickets) {
             result = result.filter(ticket =>
                 ticket.priority?.toLowerCase() === filters.priority.toLowerCase()
             )
+        }
+
+        if (filters.category) {
+            result = result.filter(ticket =>
+                (ticket.category || "general").toLowerCase() === filters.category.toLowerCase()
+            )
+        }
+
+        if (filters.assignment === "unassigned") {
+            result = result.filter(ticket => !ticket.assignedTo)
+        }
+
+        if (filters.assignment === "assigned") {
+            result = result.filter(ticket => ticket.assignedTo)
         }
 
         // Filter by date
@@ -65,12 +81,14 @@ function useFilter(tickets) {
         setFilters({
             status: null,
             priority: null,
+            category: null,
+            assignment: null,
             // date: null
             dateRange: null
         })
     }
 
-const hasActiveFilters = filters.status || filters.priority || filters.dateRange
+const hasActiveFilters = filters.status || filters.priority || filters.category || filters.assignment || filters.dateRange
 
     return {
         filteredTickets,

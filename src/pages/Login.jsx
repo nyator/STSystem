@@ -2,10 +2,8 @@ import { useForm } from "react-hook-form";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { LuLockKeyhole, LuLogIn, LuMail } from "react-icons/lu";
 import toast from "react-hot-toast";
-import Button from "../components/ui/Button";
 import { FormInput } from "../components/ui/Input";
 import { useAuth } from "../Hooks/useAuth";
-import logo from "../assets/logo.png";
 
 function Login() {
   const { login, isAuthenticated } = useAuth();

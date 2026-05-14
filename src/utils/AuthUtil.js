@@ -142,7 +142,7 @@ export function canAssignTicket(user, ticket) {
 }
 
 export function canDeleteTicket(user, ticket) {
-    return user?.role === ROLES.ADMIN  || ROLES.CLIENT && ticket?.status === "closed"
+    return user?.role === ROLES.ADMIN || (user?.role === ROLES.CLIENT && ticket?.status === "closed")
 }
 
 export function canStartWork(user, ticket) {

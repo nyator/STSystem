@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ThemeContext } from "../../context/themeContext.jsx";
+import { ThemeContext } from "../../context/themeContextObject";
 import { LuSunMedium, LuMoon } from "react-icons/lu";
 
 function ThemeToggle() {

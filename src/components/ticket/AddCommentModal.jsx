@@ -12,6 +12,8 @@ import CommentList from './CommentList'
 import TicketAssigneeRow from './TicketAssigneeRow'
 import TicketDetailsFields from './TicketDetailsFields'
 import NewTicketModal from './NewTicketModal'
+import { createActivity } from '../../utils/TicketUtil'
+import { addNotification } from '../../utils/NotificationUtil'
 
 export default function AddCommentModal({ ticketId, onClose }) {
     const { ticket } = useTicket(ticketId)
@@ -62,9 +64,28 @@ export default function AddCommentModal({ ticketId, onClose }) {
     ];
 
     updateTicket(
-      { ticketId, comments: updatedComments },
+      {
+        ticketId,
+        comments: updatedComments,
+        actor: user,
+        activity: [
+          ...(ticket?.activity || []),
+          createActivity({
+            type: "comment",
+            actor: user,
+            message: "Added a comment",
+          }),
+        ],
+      },
       { onSuccess: () => reset() },
     );
+    addNotification({
+      title: "New comment",
+      message: `${user?.name || "Someone"} commented on ${ticketId}`,
+      ticketId,
+      targetUserId: user?.role === "assignee" ? ticket?.createdBy : ticket?.assignedTo,
+      type: "comment",
+    })
   };
 
   return (

@@ -10,6 +10,8 @@ import { LuUserRoundPlus, LuCheck, LuUser } from 'react-icons/lu'
 import NewTicketModal from './NewTicketModal';
 import AssignSearch from '../team/AssignSearch';
 import MemberPill from '../ui/MemberPill';
+import { useAuth } from '../../Hooks/useAuth';
+import { addNotification } from '../../utils/NotificationUtil';
 
 export default function AssignTicketModal({ ticketId, onClose, }) {
   const { reset, control, formState: { errors } } = useForm()
@@ -17,6 +19,7 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
   const { assignTicket } = useAssignTicket()
   const { updateAssign } = useUpdateAssign()
   const { ticket } = useTicket(ticketId)
+  const { user } = useAuth()
 
   const [selectedMember, setSelectedMember] = useState(null)
   const [searchedMembers, setSearchedMembers] = useState(null)
@@ -45,8 +48,15 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
   const handleAssignConfirm = () => {
     if (!selectedMember) return
 
-    assignTicket({ ticketId, assignedTo: selectedMember })
+    assignTicket({ ticketId, assignedTo: selectedMember, actor: user })
     updateAssign({ memberId: selectedMember, ticketId })  // <-- add this
+    addNotification({
+      title: "Ticket assigned",
+      message: `${ticketId} was assigned to you`,
+      ticketId,
+      targetUserId: selectedMember,
+      type: "assignment",
+    })
 
     onClose()
     setSelectedMember(null)

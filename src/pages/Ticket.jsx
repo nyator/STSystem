@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LuTicket, LuSlidersHorizontal, LuArrowDownUp, LuTicketSlash } from "react-icons/lu"
+import { LuTicket, LuSlidersHorizontal, LuArrowDownUp, LuDownload, LuKanban, LuTable2, LuBookmarkPlus } from "react-icons/lu"
 
 import Header from '../components/dashboard/Header';
 import FilterButton from '../components/ui/FilterButton';
@@ -17,12 +17,19 @@ import TableSkeleton from "../components/ui/TableSkeleton";
 import DatePicker from "../components/ui/DatePicker";
 import TicketDrawer from "../components/ticket/TicketDrawer";
 import useMembers from "../Hooks/Team/useMembers";
+import Button from "../components/ui/Button";
+import TicketKanban from "../components/ticket/TicketKanban";
+import { TICKET_CATEGORIES, formatLabel, getTicketSlaState } from "../utils/TicketUtil";
+import { getLocalStorage, setLocalStorage } from "../Hooks/useLocalStorage";
 
 // Filter options
 const statusOptions = [
     { value: 'open', label: 'Open' },
+    { value: 'assigned', label: 'Assigned' },
     { value: 'in-progress', label: 'In Progress' },
-    { value: 'resolved', label: 'Resolved' }
+    { value: 'resolved', label: 'Resolved' },
+    { value: 'closed', label: 'Closed' },
+    { value: 'reopened', label: 'Reopened' }
 ]
 
 const priorityOptions = [
@@ -31,9 +38,14 @@ const priorityOptions = [
     { value: 'low', label: 'Low' }
 ]
 
-const dateOptions = [
-    { value: 'newest', label: 'Newest' },
-    { value: 'oldest', label: 'Oldest' }
+const categoryOptions = TICKET_CATEGORIES.map((category) => ({
+    value: category,
+    label: formatLabel(category),
+}))
+
+const assignmentOptions = [
+    { value: 'assigned', label: 'Assigned' },
+    { value: 'unassigned', label: 'Unassigned' },
 ]
 
 // Sort options for the sort menu
@@ -71,16 +83,29 @@ const filterGroups = [
         title: 'Priority',
         filterType: 'priority',
         options: priorityOptions
+    },
+    {
+        title: 'Category',
+        filterType: 'category',
+        options: categoryOptions
+    },
+    {
+        title: 'Assignment',
+        filterType: 'assignment',
+        options: assignmentOptions
     }
 ]
 
 
 function Ticket() {
 
-    const { data, error, isLoading } = useTickets()
+    const { data, isLoading } = useTickets()
     const { data: members } = useMembers()
     const [isOpen, setIsOpen] = useState(null)
     const [searchedTickets, setSearchedTickets] = useState(null)
+    const [viewMode, setViewMode] = useState("table")
+    const [selectedTicketId, setSelectedTicketId] = useState(null)
+    const [savedFilters, setSavedFilters] = useState(() => getLocalStorage("savedTicketFilters") || [])
 
     // Use the filter hook
     const { filteredTickets, filters, setFilter, clearFilters, hasActiveFilters } = useFilter(data || []);
@@ -111,16 +136,61 @@ function Ticket() {
     const handleNext = () => setCurrentPage((prev) => Math.min(totalPages, prev + 1));
 
     useEffect(() => {
-        setCurrentPage(1)
+        const timer = setTimeout(() => setCurrentPage(1), 0)
+        return () => clearTimeout(timer)
     }, [searchedTickets, filters])
 
+    const saveCurrentFilter = () => {
+        const activeFilter = {
+            id: `filter-${Date.now()}`,
+            label: `Filter ${savedFilters.length + 1}`,
+            filters,
+            sortState,
+        }
+        const updated = [...savedFilters, activeFilter].slice(-4)
+        setSavedFilters(updated)
+        setLocalStorage("savedTicketFilters", updated)
+    }
 
-    // Render Drawer
-    const [openDrawer, setOpenDrawer] = useState(false);
+    const applySavedFilter = (savedFilter) => {
+        Object.entries(savedFilter.filters || {}).forEach(([key, value]) => {
+            if (value) setFilter(key, value)
+        })
+        if (savedFilter.sortState) setSortState(savedFilter.sortState)
+    }
+
+    const exportTickets = () => {
+        const headers = ["ID", "Title", "Customer", "Company", "Category", "Priority", "Status", "Assigned To", "Created At", "Due At"]
+        const rows = ticketsToDisplay.map((ticket) => {
+            const member = members?.find((m) => m.id === ticket.assignedTo)
+            return [
+                ticket.id,
+                ticket.title,
+                ticket.customerName || ticket.customerEmail || "",
+                ticket.company || "",
+                ticket.category || "general",
+                ticket.priority,
+                ticket.status,
+                member ? `${member.firstName} ${member.lastName}` : "Unassigned",
+                ticket.createdAt || "",
+                ticket.dueAt || "",
+            ]
+        })
+        const csv = [headers, ...rows]
+            .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+            .join("\n")
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement("a")
+        link.href = url
+        link.download = "tickets.csv"
+        link.click()
+        URL.revokeObjectURL(url)
+    }
 
     return (
         <div>
-            <div className='sticky top-0 z-10 bg-white dark:bg-gray-800 p-4 w-full'>
+            <div className='sticky top-0 z-10 w-full border-b border-gray-200 bg-[#f6f7f9]/95 p-4 backdrop-blur dark:border-gray-800 dark:bg-[#0f141b]/95'>
                 <Header
                     icon={<LuTicket size={20} className="inline" />}
                     title="Tickets"
@@ -130,11 +200,34 @@ function Ticket() {
 
             <div className="flex min-h-[calc(100vh-5.5rem)] m-1 gap-1">
 
-                <div className='flex flex-col items-start bg-white dark:bg-gray-800 px-4 w-full h-[calc(100vh-5.5rem)] rounded-2xl'>
-                    <div className='sticky top-5 z-5 bg-white dark:bg-gray-800 flex justify-between items-center gap-2 w-full border-b-2 border-gray-100 dark:border-gray-700 mb-4 py-4'>
+                <div className='flex h-[calc(100vh-5.5rem)] w-full flex-col items-start rounded-lg border border-gray-200 bg-white px-4 shadow-sm shadow-gray-200/60 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none'>
+                    <div className='sticky top-5 z-5 mb-4 flex w-full items-center justify-between gap-2 border-b border-gray-100 bg-white py-4 dark:border-gray-800 dark:bg-gray-900'>
                         <TicketSearch onResults={setSearchedTickets} />
                         {/* <DatePicker /> */}
                         <div className='flex items-center gap-2'>
+                            <div className="hidden lg:flex items-center gap-1">
+                                {savedFilters.map((savedFilter) => (
+                                    <button
+                                        key={savedFilter.id}
+                                        onClick={() => applySavedFilter(savedFilter)}
+                                        className="h-10 rounded-lg border-2 border-gray-100 bg-gray-50/50 px-2 text-xs font-medium text-gray-500 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                                    >
+                                        {savedFilter.label}
+                                    </button>
+                                ))}
+                            </div>
+                            {/* <Button variant="default" onClick={saveCurrentFilter}>
+                                <LuBookmarkPlus size={15} />
+                                <span className="hidden lg:inline">Save Filter</span>
+                            </Button> */}
+                            <Button variant="default" onClick={exportTickets}>
+                                <LuDownload size={15} />
+                                <span className="hidden lg:inline">Export</span>
+                            </Button>
+                            <Button variant="default" onClick={() => setViewMode((mode) => mode === "table" ? "kanban" : "table")}>
+                                {viewMode === "table" ? <LuKanban size={15} /> : <LuTable2 size={15} />}
+                                <span className="hidden lg:inline">{viewMode === "table" ? "Kanban" : "Table"}</span>
+                            </Button>
                             {/* Sorting Button */}
                             <FilterButton
                                 title="Sort"
@@ -185,16 +278,18 @@ function Ticket() {
                                 <p className="text-lg font-medium">No tickets found</p>
                                 <p className="text-sm">Try adjusting your search or filters</p>
                             </div>
+                        ) : viewMode === "kanban" ? (
+                            <TicketKanban tickets={ticketsToDisplay} members={members || []} onSelectTicket={setSelectedTicketId} />
                         ) : <Table
                             columns={[
                                 { key: 'id', title: 'ID' },
                                 { key: 'title', title: 'Title' },
-                                // {key: 'description', title: 'Description'},
                                 // { key: 'customer', title: 'Customer' },
+                                // { key: 'category', title: 'Category' },
                                 { key: 'priority', title: 'Priority' },
                                 { key: 'status', title: 'Status' },
-                                { key: 'assignedTo', title: 'AssignedTo' },
-                                // { key: 'createdAt', title: 'Created At' },
+                                { key: 'assignedTo', title: 'Assigned To' },
+                                // { key: 'sla', title: 'SLA' },
                                 { key: 'actions', title: 'Actions' },
                             ]}
                             data={
@@ -208,17 +303,24 @@ function Ticket() {
 
                                     return {
                                         id: t.id,
-                                        title: t.title,
-                                        customer: t.customerEmail || '',
+                                        // title: t.title,
+                                        title: <span className="font-medium text-gray-800 dark:text-gray-100 truncate">{t.title}</span>,
+                                        // customer: t.customerName || t.company || t.customerEmail || '',
                                         description: t.description || '',
+                                        category: <span className="text-xs capitalize text-gray-500 dark:text-gray-300">{formatLabel(t.category || "general")}</span>,
                                         priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />,
                                         status: <StatusBadge status={fmt(t.status) || 'open'} />,
                                         createdAt: t.createdAt ? new Date(t.createdAt).toUTCString().slice(0, -13) : '',
+                                        // sla: (() => {
+                                        //     const slaState = getTicketSlaState(t)
+                                        //     if (slaState === "none") return <span className="text-xs text-gray-400">Done</span>
+                                        //     return <span className={`text-xs font-semibold ${slaState === "overdue" ? "text-red-500" : slaState === "due-soon" ? "text-yellow-500" : "text-green-500"}`}>{formatLabel(slaState)}</span>
+                                        // })(),
                                         actions: <Actions ticketId={t.id} rowIndex={paginatedTickets.findIndex(ticket => ticket.id === t.id)} dataLength={paginatedTickets.length} />,
                                         assignedTo: assignedMember ? (
                                             <div className="flex items-center gap-1.5">
                                                 <img src={assignedMember.avatar} className="w-5 h-5 rounded-full" alt="" />
-                                                <span className="text-xs text-gray-700 dark:text-gray-300">
+                                                <span className="text-xs text-gray-700 dark:text-gray-300 truncate">
                                                     {assignedMember.firstName} {assignedMember.lastName}
                                                 </span>
                                             </div>
@@ -234,12 +336,11 @@ function Ticket() {
                             totalItems={totalItems}
                             onPrev={handlePrev}
                             onNext={handleNext}
+                            onRowClick={setSelectedTicketId}
                         />
                     }
                 </div>
-                {/* <div className="w-1/5">
-                    <TicketDrawer onClose={() => { }} />
-                </div> */}
+                <TicketDrawer ticketId={selectedTicketId} onClose={() => setSelectedTicketId(null)} />
             </div>
         </div>
 

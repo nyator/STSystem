@@ -2,29 +2,27 @@ import Header from "../components/dashboard/Header"
 import { LuSettings, LuUserRound } from "react-icons/lu"
 import ThemeToggle from "../components/ui/ThemeToggles"
 import { useAuth } from "../Hooks/useAuth"
-import { getUsers } from "../utils/AuthUtil"
 
 function Settings() {
     const { user } = useAuth()
-    const loginUsers = getUsers()
 
     return (
         <div>
-            <div className='sticky top-0 z-10 bg-white dark:bg-gray-800 p-4 w-full'>
+            <div className='sticky top-0 z-10 w-full border-b border-gray-200 bg-[#f6f7f9]/95 p-4 backdrop-blur dark:border-gray-800 dark:bg-[#0f141b]/95'>
                 <Header
                     icon={<LuSettings size={20} className="inline" />}
-                    title="Setting"
-                    description="Team members and project assigned to them"
+                    title="Settings"
+                    description="Account, appearance, and local demo data."
                 />
             </div>
 
             <div>
-                <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'>
+                <div className='m-2 flex w-[calc(100%-1rem)] flex-col items-start rounded-lg border border-gray-200 bg-white p-4 shadow-sm shadow-gray-200/60 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none lg:min-h-[calc(100vh-6rem)]'>
                     <div className="w-full space-y-5">
                         <div>
                             <p className=" text-gray-400 dark:text-gray-500 text-md mb-3">Signed in</p>
-                            <div className="flex items-center gap-2 p-3 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/30 w-fit">
-                                <div className="rounded-lg bg-blue-50 dark:bg-blue-900 p-2 text-blue-500">
+                            <div className="flex w-fit items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-800 dark:bg-gray-950/50">
+                                <div className="rounded-md bg-blue-50 p-2 text-blue-600 dark:bg-blue-500/10 dark:text-blue-300">
                                     <LuUserRound size={16} />
                                 </div>
                                 <div>

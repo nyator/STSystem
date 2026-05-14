@@ -9,7 +9,7 @@ import {
 } from "react-icons/lu";
 
 const baseInputClasses =
-  "w-full p-2 text-mblack font-medium text-xs bg-gray-50/50 dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 h-10 rounded-lg focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-600 transition-colors duration-300 dark:text-gray-200";
+  "w-full p-2 text-gray-900 font-medium text-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 h-10 rounded-md focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors duration-200 dark:text-gray-100 placeholder:text-gray-400";
 
 function SearchInput({ register, formfields, ...props }) {
   return (
@@ -44,7 +44,7 @@ function FormInputEmpty({
         {...register(name, formfields)}
         placeholder={placeholder}
         type={name === "email" ? "email" : "text"}
-        className={`text-center ${baseInputClasses} ${error ? "outline-[1.4px] outline-red-500 bg-red-200" : ""}`}
+        className={`text-center ${baseInputClasses} ${error ? "border-red-400 bg-red-50 focus:ring-red-100 dark:bg-red-500/10" : ""}`}
         {...props}
         {...(readOnly && { readOnly })}
       />
@@ -76,7 +76,7 @@ function FormInput({
         {...register(name, formfields)}
         placeholder={placeholder}
         type={resolvedType}
-        className={`pl-8 ${isPassword ? "pr-8" : ""} ${baseInputClasses} ${error ? "outline-[1.4px] outline-red-500 bg-red-200" : ""} ${readOnly ? "cursor-not-allowed" : ""}`}
+        className={`pl-8 ${isPassword ? "pr-8" : ""} ${baseInputClasses} ${error ? "border-red-400 bg-red-50 focus:ring-red-100 dark:bg-red-500/10" : ""} ${readOnly ? "cursor-not-allowed bg-gray-50 dark:bg-gray-800" : ""}`}
         {...props}
         {...(readOnly && { readOnly })}
       />
@@ -121,7 +121,7 @@ function FormTextArea({
       <textarea
         {...register(name, formfields)}
         placeholder={placeholder}
-        className={`${error ? "outline-[1.4px] outline-red-500 bg-red-200" : ""} w-full p-2 pl-8 text-mblack font-medium text-xs bg-gray-50/50 dark:bg-gray-700 border-2 border-gray-100 dark:border-gray-600 min-h-14 max-h-42 rounded-lg focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-600 transition-colors duration-300 dark:text-gray-200 ${readOnly ? "cursor-not-allowed" : ""}`}
+        className={`${error ? "border-red-400 bg-red-50 focus:ring-red-100 dark:bg-red-500/10" : ""} w-full p-2 pl-8 text-gray-900 font-medium text-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 min-h-20 max-h-42 rounded-md focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors duration-200 dark:text-gray-100 placeholder:text-gray-400 ${readOnly ? "cursor-not-allowed bg-gray-50 dark:bg-gray-800" : ""}`}
         {...props}
         {...(readOnly && { readOnly })}
       />
@@ -147,7 +147,7 @@ function FormCommentArea({
       <textarea
         {...register(name, formfields)}
         placeholder={placeholder}
-        className={`flex items-center gap-2 w-full px-3 py-2 rounded-md h-8.5 text-xs text-gray-700 dark:text-gray-400 border border-dashed border-gray-300 dark:border-gray-600 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-600 transition-colors ${error ? "outline-[1.4px] outline-red-500 bg-red-200" : ""} w-full p-2 pl-8 font-medium text-xs bg-gray-50/50 dark:bg-gray-700 dark:border-gray-600 max-h-42 rounded-lg transition-colors duration-300 ${readOnly ? "cursor-not-allowed" : ""}`}
+        className={`w-full p-2 pl-8 rounded-md min-h-16 text-xs text-gray-800 dark:text-gray-100 border border-dashed border-gray-300 dark:border-gray-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors ${error ? "border-red-400 bg-red-50 dark:bg-red-500/10" : "bg-white dark:bg-gray-900"} max-h-42 ${readOnly ? "cursor-not-allowed" : ""}`}
         {...props}
         {...(readOnly && { readOnly })}
       />

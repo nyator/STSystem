@@ -34,7 +34,7 @@ function Dashboard() {
 
   return (
     <div>
-      <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 p-4 w-full">
+      <div className="sticky top-0 z-10 w-full border-b border-gray-200 bg-[#f6f7f9]/95 p-4 backdrop-blur dark:border-gray-800 dark:bg-[#0f141b]/95">
         <Header
           icon={<LuLayoutDashboard size={20} className="inline" />}
           title="Dashboard"
@@ -45,11 +45,11 @@ function Dashboard() {
       <div>
         {/* <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'> */}
         <div className="mr-1">
-          <div className="flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-full min-h-[calc(100vh-5.5rem)] m-1 rounded-2xl space-y-2">
+          <div className="m-1 flex min-h-[calc(100vh-5.5rem)] w-full flex-col items-start space-y-2 p-3 md:p-4">
             <Banner />
             <Cards />
             <div className="flex flex-col sm:flex-col justify-around w-full mt-1 gap-5 ">
-              <div className="hidden md:flex bg-gray-50/50 dark:bg-gray-900/50 h-fit py-2 rounded-2xl items-center justify-start border-[1.3px] border-[#e5e7eb] dark:border-gray-700">
+                <div className="hidden h-fit items-center justify-start rounded-lg border border-gray-200 bg-white py-3 shadow-sm shadow-gray-200/50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none md:flex">
                 <div className="w-3/6 flex justify-center items-center  pb-10">
                   <Chart />
                 </div>

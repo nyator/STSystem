@@ -6,7 +6,7 @@ function useAssignTicket() {
     const queryClient = useQueryClient()
 
     const mutation = useMutation({
-        mutationFn: ({ ticketId, assignedTo }) => assignTicket(ticketId, assignedTo),
+        mutationFn: ({ ticketId, assignedTo, actor }) => assignTicket(ticketId, assignedTo, actor),
         onSuccess: (_, { ticketId }) => {
             queryClient.invalidateQueries({ queryKey: ["tickets"] })
             queryClient.invalidateQueries({ queryKey: ['ticket', ticketId] })

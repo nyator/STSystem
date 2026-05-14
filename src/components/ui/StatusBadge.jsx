@@ -1,20 +1,18 @@
-import { LuDot } from 'react-icons/lu';
-
 function StatusBadge({ status = "open" }) {
 
     const variantColors = {
-        open:          "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
-        assigned:      "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-        "in progress": "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
-        resolved:      "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-        closed:        "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400",
-        reopened:      "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
+        open:          "bg-rose-50 text-rose-700 ring-rose-200 dark:bg-rose-500/10 dark:text-rose-300 dark:ring-rose-500/20",
+        assigned:      "bg-sky-50 text-sky-700 ring-sky-200 dark:bg-sky-500/10 dark:text-sky-300 dark:ring-sky-500/20",
+        "in progress": "bg-amber-50 text-amber-700 ring-amber-200 dark:bg-amber-500/10 dark:text-amber-300 dark:ring-amber-500/20",
+        resolved:      "bg-emerald-50 text-emerald-700 ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/20",
+        closed:        "bg-gray-100 text-gray-600 ring-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:ring-gray-700",
+        reopened:      "bg-orange-50 text-orange-700 ring-orange-200 dark:bg-orange-500/10 dark:text-orange-300 dark:ring-orange-500/20",
     }
 
     const formatLabel = (s) =>
         s.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
 
-    const baseClass = "w-20  px-2 py-1 rounded-md font-medium flex items-center justify-center text-xs text-nowrap"
+    const baseClass = "min-w-20 px-2.5 py-1 rounded-full font-semibold flex items-center justify-center text-[11px] text-nowrap ring-1"
     const colorClass = variantColors[status] ?? "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
 
     return (

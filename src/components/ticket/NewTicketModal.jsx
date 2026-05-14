@@ -15,7 +15,6 @@ function NewTicketModal({
   submit,
   error,
   disabled,
-  TitleIcon,
   ticketTitle,
   LIcon,
   RIcon,
@@ -25,7 +24,9 @@ function NewTicketModal({
 
   // Handle animation out before unmounting
   useEffect(() => {
-    if (isOpen) setShouldRender(true);
+    if (!isOpen) return;
+    const frame = requestAnimationFrame(() => setShouldRender(true));
+    return () => cancelAnimationFrame(frame);
   }, [isOpen]);
 
   const sizeClasses = {
@@ -40,7 +41,7 @@ function NewTicketModal({
   return createPortal(
     <div
       onClick={onClose}
-      className={`fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 ${
+      className={`fixed inset-0 z-50 flex justify-end bg-gray-950/40 backdrop-blur-[2px] transition-opacity duration-300 ${
         isOpen ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
     >
@@ -48,17 +49,17 @@ function NewTicketModal({
         onClick={(e) => e.stopPropagation()}
         className={`relative flex h-screen w-full  ${
           sizeClasses[size] || sizeClasses.md
-        } transform flex-col bg-white shadow-2xl transition-transform duration-300 ease-out dark:bg-gray-800 ${
+        } transform flex-col border-l border-gray-200 bg-white shadow-2xl shadow-gray-950/10 transition-transform duration-300 ease-out dark:border-gray-800 dark:bg-gray-900 ${
           isOpen ? "translate-x-0" : "translate-x-full"
-        } border-l border-gray-200 dark:border-gray-700`}
+        }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-100 px-6 py-5 dark:border-gray-700">
+        <div className="flex items-center justify-between border-b border-gray-100 px-6 py-5 dark:border-gray-800">
           <div className="w-full flex justify-center items-center">
             <button
               type="button"
               onClick={onClose}
-              className="absolute top-4 left-5 rounded-xl p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-700 dark:hover:text-white"
+              className="absolute top-4 left-5 rounded-md p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
             >
               <IoChevronBackOutline size={20} />
             </button>
@@ -80,7 +81,7 @@ function NewTicketModal({
         </div>
 
         {/* Footer */}
-        <div className="bg-gray-50/50 dark:bg-gray-900/20 px-6 py-2 border-t border-gray-100 dark:border-gray-700 mb-4">
+        <div className="mb-4 border-t border-gray-100 bg-gray-50 px-6 py-3 dark:border-gray-800 dark:bg-gray-950/50">
           {error && (
             <div className="mb-4 flex items-center gap-2 rounded-lg bg-red-50 p-3 text-xs text-red-600 dark:bg-red-900/20">
               <LuBadgeInfo className="shrink-0" />

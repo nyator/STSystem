@@ -28,6 +28,7 @@ import {
   canReopenTicket,
   canStartWork,
 } from "../../utils/AuthUtil.js";
+import { addNotification } from "../../utils/NotificationUtil.js";
 
 const EditAction = ({ setOpenModal }) => (
   <button
@@ -214,7 +215,14 @@ export default function Actions({ ticketId, rowIndex, dataLength }) {
 
   const updateTicketStatus = (status) => {
     if (!ticket || ticket.status === status) return;
-    updateTicket({ ticketId, status });
+    updateTicket({ ticketId, status, actor: user });
+    addNotification({
+      title: "Ticket status changed",
+      message: `${ticket.id} moved to ${status.replace(/-/g, " ")}`,
+      ticketId,
+      targetUserId: ticket.createdBy,
+      type: "status",
+    });
   };
 
   useEffect(() => {
@@ -228,7 +236,7 @@ export default function Actions({ ticketId, rowIndex, dataLength }) {
   return (
     <>
       <div className="flex gap-2">
-        <EditAction setOpenModal={setOpenEdit} />
+        {/* <EditAction setOpenModal={setOpenEdit} /> */}
         <OptionsPopover
           user={user}
           ticket={ticket}

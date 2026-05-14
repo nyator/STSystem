@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { LuTrash2 } from "react-icons/lu"; // Ensure this is installed
+import { LuTrash2, LuUsersRound } from "react-icons/lu";
 import useMembers from "../../Hooks/Team/useMembers";
 import MemberCard from "./MemberCard";
 import TableSkeleton from "../ui/TableSkeleton";
@@ -23,7 +23,8 @@ export default function MemberGroup() {
 
   useEffect(() => {
     if (currentPage > totalPages && totalPages > 0) {
-      setCurrentPage(totalPages);
+      const timer = setTimeout(() => setCurrentPage(totalPages), 0);
+      return () => clearTimeout(timer);
     }
   }, [currentPage, totalPages]);
 
@@ -77,7 +78,7 @@ export default function MemberGroup() {
           <TableSkeleton rows={5} />
         ) : data.length === 0 ? (
           <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-10rem)] py-20 text-gray-500">
-            <LuTicket size={48} className="mb-4 opacity-50" />
+            <LuUsersRound size={48} className="mb-4 opacity-50" />
             <p className="text-lg font-medium">No team members found</p>
             <p className="text-sm">Add a new member to the team</p>
           </div>
@@ -130,9 +131,9 @@ export default function MemberGroup() {
                       Active Tasks
                     </span>
                   )}
-                  {showModal && (
+                  {showModal && selectedMemberId === member.id && (
                     <DeleteMemberModal
-                      MemberId={member.id}
+                      MemberId={selectedMemberId}
                       onClose={() => setShowModal(false)}
                     />
                   )}

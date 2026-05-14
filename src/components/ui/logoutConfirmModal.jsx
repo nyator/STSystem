@@ -1,9 +1,6 @@
 import TicketModal from "../ticket/TicketModal";
-import Button, { OptionButton } from "./Button";
-import { FormInputEmpty } from "./Input";
-import { LuTrash2 } from "react-icons/lu";
 
-function LogoutConfirmModal({ onConfirm, onCancel, isOpen, submit }) {
+function LogoutConfirmModal({ onCancel, isOpen, submit }) {
   return (
     <>
       <TicketModal

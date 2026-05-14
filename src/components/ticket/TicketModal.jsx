@@ -34,22 +34,22 @@ function TicketModal({
   return createPortalBody(
     <div
       onClick={onClose}
-      className="fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-black/40 px-3 py-6 backdrop-blur-[1px]"
+      className="fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-gray-950/40 px-3 py-6 backdrop-blur-[1px]"
     >
       <div
         onClick={handleContentClick}
-        className={`relative flex max-h-[85vh] w-full ${sizeClasses[size] || sizeClasses.md} flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl shadow-black/10 dark:border-gray-700 dark:bg-gray-800`}
+        className={`relative flex max-h-[85vh] w-full ${sizeClasses[size] || sizeClasses.md} flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-2xl shadow-gray-950/10 dark:border-gray-800 dark:bg-gray-900`}
       >
         <button
           type="button"
           onClick={onClose}
-          className="group absolute right-4 top-4 rounded-lg bg-gray-100 p-2 text-2xl leading-none text-gray-600 transition duration-300 ease-in-out hover:bg-gray-200 active:scale-[0.9] dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
+          className="group absolute right-4 top-4 rounded-md bg-gray-100 p-2 text-2xl leading-none text-gray-600 transition duration-200 ease-in-out hover:bg-gray-200 active:scale-[0.95] dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
           aria-label="Close modal"
         >
           <LuX className="group-hover:rotate-90 text-sm transition-transform duration-300 ease-in-out group-hover:text-black dark:group-hover:text-white text-gray-600 dark:text-gray-100" />
         </button>
 
-        <div className="border-b border-gray-100 px-6 py-4 pr-14 dark:border-gray-700">
+        <div className="border-b border-gray-100 px-6 py-4 pr-14 dark:border-gray-800">
           <h2 className="flex items-center gap-2 text-base font-semibold text-gray-900 dark:text-white">
             {TitleIcon}
             <span>{title}</span>
@@ -65,7 +65,7 @@ function TicketModal({
           {children}
         </div>
 
-        <div className="relative flex justify-end gap-2 border-t border-gray-100 px-6 py-4 dark:border-gray-700">
+        <div className="relative flex justify-end gap-2 border-t border-gray-100 bg-gray-50 px-6 py-4 dark:border-gray-800 dark:bg-gray-950/50">
           {error && (
             <div className="absolute -top-6 left-0 flex w-full items-center justify-center space-x-1.5 rounded-2xl px-2 text-[12px] text-red-600">
               <LuBadgeInfo />
