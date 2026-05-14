@@ -107,6 +107,7 @@ function Banner() {
       </div>
 
       <TicketModal
+        size="sm"
         isOpen={openModal}
         onClose={() => {
           setOpenModal(false);

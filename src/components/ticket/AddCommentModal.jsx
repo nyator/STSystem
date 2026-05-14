@@ -4,7 +4,6 @@ import { DevTool } from '@hookform/devtools'
 
 import { LuTicketSlash, LuMessagesSquare } from 'react-icons/lu'
 import { FormCommentArea } from '../ui/Input'
-import TicketModal from './TicketModal'
 import useTicket from '../../Hooks/Tickets/useTicket'
 import useEditTicket from '../../Hooks/Tickets/useEditTicket'
 import useMembers from '../../Hooks/Team/useMembers'
@@ -12,6 +11,7 @@ import { useAuth } from '../../Hooks/useAuth'
 import CommentList from './CommentList'
 import TicketAssigneeRow from './TicketAssigneeRow'
 import TicketDetailsFields from './TicketDetailsFields'
+import NewTicketModal from './NewTicketModal'
 
 export default function AddCommentModal({ ticketId, onClose }) {
     const { ticket } = useTicket(ticketId)
@@ -68,7 +68,7 @@ export default function AddCommentModal({ ticketId, onClose }) {
   };
 
   return (
-    <TicketModal
+    <NewTicketModal
       isOpen={!!ticketId}
       onClose={onClose}
       title="Add Comment"
@@ -104,6 +104,6 @@ export default function AddCommentModal({ ticketId, onClose }) {
           />
         </form>
       </div>
-    </TicketModal>
+    </NewTicketModal>
   );
 }

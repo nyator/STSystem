@@ -6,7 +6,7 @@ function MemberPill({ member, onRemove }) {
   const fullName = `${member.firstName} ${member.lastName}`;
 
   return (
-    <div className="flex w-fit items-center pl-1 pr-2 py-1 rounded-full bg-gray-50 dark:bg-blue-900/50 border border-gray-200 dark:border-blue-700 text-gray-700 dark:text-blue-300 text-xs font-medium">
+    <div className="flex w-fit items-center pl-1 pr-2 text-gray-700 dark:text-blue-300 text-xs font-medium">
       <img
         src={member.avatar}
         alt={fullName}

@@ -7,7 +7,7 @@ import useUpdateAssign from '../../Hooks/Team/useUpdateAssign'
 import { DevTool } from "@hookform/devtools";
 import { LuUserRoundPlus, LuCheck, LuUser } from 'react-icons/lu'
 
-import TicketModal from './TicketModal';
+import NewTicketModal from './NewTicketModal';
 import AssignSearch from '../team/AssignSearch';
 import MemberPill from '../ui/MemberPill';
 
@@ -55,7 +55,7 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
   return (
     <>
       <DevTool control={control} />
-      <TicketModal
+      <NewTicketModal
         isOpen={!!ticketId}
         onClose={onClose}
         ticketId={ticketId}
@@ -100,7 +100,7 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
 
 
             {/* Scrollable List Area */}
-            <div className='h-52 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-100 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 flex flex-col divide-y divide-gray-100 dark:divide-slate-700'>
+            <div className='h-4/6 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-100 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 flex flex-col divide-y divide-gray-100 dark:divide-slate-700'>
               {listToDisplay.length > 0 ? (
                 listToDisplay.map(m => (
                   <button
@@ -146,7 +146,7 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
 
           </div>
         </form>
-      </TicketModal>
+      </NewTicketModal>
     </>
   )
 }

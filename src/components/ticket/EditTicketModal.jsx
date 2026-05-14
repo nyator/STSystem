@@ -2,9 +2,17 @@ import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
-import { LuSquarePen, LuTicketSlash } from "react-icons/lu";
+import {
+  LuSquarePen,
+  LuTicketSlash,
+  LuCalendarDays,
+  LuMail,
+  LuFlag,
+} from "react-icons/lu";
+import { RxLightningBolt } from "react-icons/rx";
+
 import { OptionButton } from "../ui/Button";
-import TicketModal from "./TicketModal";
+import NewTicketModal from "./NewTicketModal";
 import useTicket from "../../Hooks/Tickets/useTicket";
 import useEditTicket from "../../Hooks/Tickets/useEditTicket";
 import useMembers from "../../Hooks/Team/useMembers";
@@ -111,10 +119,11 @@ export default function EditTicketModal({ ticketId, onClose }) {
   // }
 
   return (
-    <TicketModal
+    <NewTicketModal
+      size="lg"
       isOpen={!!ticketId}
       onClose={onClose}
-      title="View Ticket"
+      // titleID={ticketId}
       TitleIcon={<LuTicketSlash />}
       LAction="Close"
       RIcon={
@@ -123,45 +132,87 @@ export default function EditTicketModal({ ticketId, onClose }) {
           className="inline mr-2 group-hover:animate-wiggle"
         />
       }
-      ticketId={ticketId}
+      ticketTitle={ticket.title}
       // submit={handleSubmit(onSubmit)}
       disabled={isUpdating}
       error={hasErrors}
     >
       <DevTool control={control} />
-      <div className="space-y-3">
-        <div className="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-xs dark:border-gray-700 dark:bg-gray-700/30">
-          <div className="flex justify-between gap-3">
+      <div className="space-y-2">
+        <div className="space-x-3 text-xs flex items-start justify-start divide-x divide-gray-200 dark:divide-gray-600">
+          <div className="space-y-3 pr-2">
+            <TicketAssigneeRow
+              members={members}
+              assignedTo={ticket?.assignedTo}
+            />
+
             <p>
+              <LuMail size={12} className="inline mb-0.5 mr-1" />
+              Customer:{" "}
+              <span className="font-semibold">
+                {ticket?.customerEmail || "N/A"}
+              </span>
+            </p>
+            <p className="text-xs">
+              <LuCalendarDays size={12} className="inline mb-0.5 mr-1" />
               Created:{" "}
               <span className="font-semibold">
                 {ticket?.createdAt
                   ? new Date(ticket.createdAt).toUTCString().slice(5, -13)
                   : ""}
-                {/* {ticket?.createdAt
-                  ? new Date(ticket.createdAt).toLocaleDateString()
-                  : ""} */}
-              </span>
-            </p>
-            <p>
-              Updated:{" "}
-              <span className="font-semibold">
-                {ticket?.updatedAt
-                  ? new Date(ticket.updatedAt).toUTCString().slice(5, -7)
-                  : ""}
-                {/* {ticket?.updatedAt
-                  ? new Date(ticket.updatedAt).toLocaleDateString()
-                  : ""} */}
               </span>
             </p>
           </div>
+
+          <div className="space-y-3">
+            <p>
+              <RxLightningBolt size={12} className="inline mb-0.5 mr-1" />
+              Priority:{" "}
+              <span className="font-semibold">{ticket?.priority || "N/A"}</span>
+            </p>
+
+            <p>
+              <LuFlag size={12} className="inline mb-0.5 mr-1" />
+              Status:{" "}
+              <span className="font-semibold">{ticket?.status || "N/A"}</span>
+            </p>
+
+            {ticket?.updatedAt && (
+              <p className="text-xs">
+                {" "}
+                <LuCalendarDays size={12} className="inline mb-0.5 mr-1" />
+                Updated:{" "}
+                <span className="font-semibold">
+                  {ticket?.updatedAt
+                    ? new Date(ticket.updatedAt).toUTCString().slice(5, -7)
+                    : ""}
+                </span>
+              </p>
+            )}
+
+          </div>
         </div>
 
-        <TicketAssigneeRow members={members} assignedTo={ticket?.assignedTo} />
+        <div className="space-y-6 mt-4 text-xs">
+          <div>
+            <p className="font-semibold">Description</p>
+            <p>{ticket.description}</p>
+          </div>
+
+          <div>
+            <p className="font-semibold">Comments</p>
+            <CommentList
+              comments={ticket?.comments}
+              maxHeightClass="max-h-2xl"
+            />
+          </div>
+
+          <div></div>
+        </div>
 
         <form id="edit-ticket-form" className="space-y-3">
-          <TicketDetailsFields register={register} errors={errors} showEmail />
-          <CommentList comments={ticket?.comments} />
+          {/* <TicketDetailsFields register={register} errors={errors} showEmail /> */}
+          {/* <CommentList comments={ticket?.comments} /> */}
 
           <div className="flex flex-wrap space-x-2 justify-center">
             <OptionButton
@@ -183,6 +234,6 @@ export default function EditTicketModal({ ticketId, onClose }) {
           </div>
         </form>
       </div>
-    </TicketModal>
+    </NewTicketModal>
   );
 }

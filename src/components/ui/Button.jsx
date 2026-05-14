@@ -34,7 +34,7 @@ function OptionButton({ options, selected, isOpen, setIsOpen, title, disabled })
   const displayText = selectedOption ? selectedOption.label : selected;
 
   return (
-    <div className="relative h-full" ref={ref} onMouseDown={(e) => e.stopPropagation()}>
+    <div className="relative" ref={ref} onMouseDown={(e) => e.stopPropagation()}>
 
       <button
         type="button"
@@ -48,7 +48,7 @@ function OptionButton({ options, selected, isOpen, setIsOpen, title, disabled })
           <LuChevronDown className={`inline ml-1 transition-transform ${isOpen ? 'rotate-180' : ''}`} size={12} />
         }
       </button>
-
+  
       {isOpen && (
         <div className="absolute bottom-full mb-1 left-0 w-full min-w-24 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10">
           {options.map((opt) => (

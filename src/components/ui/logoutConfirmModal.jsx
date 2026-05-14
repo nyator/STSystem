@@ -7,6 +7,7 @@ function LogoutConfirmModal({ onConfirm, onCancel, isOpen, submit }) {
   return (
     <>
       <TicketModal
+        size="sm"
         isOpen={isOpen}
         onClose={onCancel}
         title="Confirm Logout"
