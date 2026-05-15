@@ -162,9 +162,14 @@ export function canCloseTicket(user, ticket) {
 }
 
 export function canReopenTicket(user, ticket) {
-    return [ROLES.CLIENT, ROLES.ADMIN].includes(user?.role) && ticket?.status === "resolved"
+    return [ROLES.CLIENT, ROLES.ADMIN].includes(user?.role) && ["resolved", "closed"].includes(ticket?.status)
 }
 
 export function canAddComment(user, ticket) {
     return canViewTicket(user, ticket) && ticket?.status !== "closed"
+}
+
+export function canUpdatePriority(user, ticket) {
+    if (!ticket || ticket.status === "closed") return false
+    return user?.role === ROLES.ADMIN
 }

@@ -130,7 +130,7 @@ function Banner() {
         error={errors.title || errors.email || errors.description}
       >
         <DevTool control={control} /> {/* set up the dev tool */}
-        <form className="space-y-4">
+        <form className="space-y-2">
           <FormInput
             name="title"
             placeholder="Enter Ticket Title"
@@ -180,24 +180,7 @@ function Banner() {
             formfields={{ required: "Description is required" }}
             error={errors.description}
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <FormInput
-              name="tags"
-              placeholder="Tags: bug, mobile"
-              icon={<LuTags className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />}
-              register={register}
-              formfields={{}}
-            />
-            <FormInput
-              name="dueAt"
-              type="datetime-local"
-              placeholder="Due date"
-              icon={<LuCalendarClock className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />}
-              register={register}
-              formfields={{}}
-            />
-          </div>
-          <div className="flex space-x-2">
+           <div className="flex space-x-2">
             <OptionButton
               title="Priority"
               options={priorityOptions}
@@ -218,6 +201,24 @@ function Banner() {
                             Assign
                         </Button> */}
           </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {/* <FormInput
+              name="tags"
+              placeholder="Tags: bug, mobile"
+              icon={<LuTags className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />}
+              register={register}
+              formfields={{}}
+            /> */}
+            <FormInput
+              name="dueAt"
+              type="datetime-local"
+              placeholder="Due date"
+              icon={<LuCalendarClock className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />}
+              register={register}
+              formfields={{}}
+            />
+          </div>
+         
         </form>
       </TicketModal>
     </div>

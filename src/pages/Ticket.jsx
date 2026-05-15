@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LuTicket, LuSlidersHorizontal, LuArrowDownUp, LuDownload, LuKanban, LuTable2, LuBookmarkPlus } from "react-icons/lu"
+import { LuTicket, LuSlidersHorizontal, LuArrowDownUp, LuDownload, LuKanban, LuTable2 } from "react-icons/lu"
 
 import Header from '../components/dashboard/Header';
 import FilterButton from '../components/ui/FilterButton';
@@ -19,8 +19,7 @@ import TicketDrawer from "../components/ticket/TicketDrawer";
 import useMembers from "../Hooks/Team/useMembers";
 import Button from "../components/ui/Button";
 import TicketKanban from "../components/ticket/TicketKanban";
-import { TICKET_CATEGORIES, formatLabel, getTicketSlaState } from "../utils/TicketUtil";
-import { getLocalStorage, setLocalStorage } from "../Hooks/useLocalStorage";
+import { TICKET_CATEGORIES, formatLabel } from "../utils/TicketUtil";
 
 // Filter options
 const statusOptions = [
@@ -105,7 +104,6 @@ function Ticket() {
     const [searchedTickets, setSearchedTickets] = useState(null)
     const [viewMode, setViewMode] = useState("table")
     const [selectedTicketId, setSelectedTicketId] = useState(null)
-    const [savedFilters, setSavedFilters] = useState(() => getLocalStorage("savedTicketFilters") || [])
 
     // Use the filter hook
     const { filteredTickets, filters, setFilter, clearFilters, hasActiveFilters } = useFilter(data || []);
@@ -140,24 +138,6 @@ function Ticket() {
         return () => clearTimeout(timer)
     }, [searchedTickets, filters])
 
-    const saveCurrentFilter = () => {
-        const activeFilter = {
-            id: `filter-${Date.now()}`,
-            label: `Filter ${savedFilters.length + 1}`,
-            filters,
-            sortState,
-        }
-        const updated = [...savedFilters, activeFilter].slice(-4)
-        setSavedFilters(updated)
-        setLocalStorage("savedTicketFilters", updated)
-    }
-
-    const applySavedFilter = (savedFilter) => {
-        Object.entries(savedFilter.filters || {}).forEach(([key, value]) => {
-            if (value) setFilter(key, value)
-        })
-        if (savedFilter.sortState) setSortState(savedFilter.sortState)
-    }
 
     const exportTickets = () => {
         const headers = ["ID", "Title", "Customer", "Company", "Category", "Priority", "Status", "Assigned To", "Created At", "Due At"]
@@ -205,21 +185,6 @@ function Ticket() {
                         <TicketSearch onResults={setSearchedTickets} />
                         {/* <DatePicker /> */}
                         <div className='flex items-center gap-2'>
-                            <div className="hidden lg:flex items-center gap-1">
-                                {savedFilters.map((savedFilter) => (
-                                    <button
-                                        key={savedFilter.id}
-                                        onClick={() => applySavedFilter(savedFilter)}
-                                        className="h-10 rounded-lg border-2 border-gray-100 bg-gray-50/50 px-2 text-xs font-medium text-gray-500 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
-                                    >
-                                        {savedFilter.label}
-                                    </button>
-                                ))}
-                            </div>
-                            {/* <Button variant="default" onClick={saveCurrentFilter}>
-                                <LuBookmarkPlus size={15} />
-                                <span className="hidden lg:inline">Save Filter</span>
-                            </Button> */}
                             <Button variant="default" onClick={exportTickets}>
                                 <LuDownload size={15} />
                                 <span className="hidden lg:inline">Export</span>
@@ -311,11 +276,6 @@ function Ticket() {
                                         priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />,
                                         status: <StatusBadge status={fmt(t.status) || 'open'} />,
                                         createdAt: t.createdAt ? new Date(t.createdAt).toUTCString().slice(0, -13) : '',
-                                        // sla: (() => {
-                                        //     const slaState = getTicketSlaState(t)
-                                        //     if (slaState === "none") return <span className="text-xs text-gray-400">Done</span>
-                                        //     return <span className={`text-xs font-semibold ${slaState === "overdue" ? "text-red-500" : slaState === "due-soon" ? "text-yellow-500" : "text-green-500"}`}>{formatLabel(slaState)}</span>
-                                        // })(),
                                         actions: <Actions ticketId={t.id} rowIndex={paginatedTickets.findIndex(ticket => ticket.id === t.id)} dataLength={paginatedTickets.length} />,
                                         assignedTo: assignedMember ? (
                                             <div className="flex items-center gap-1.5">

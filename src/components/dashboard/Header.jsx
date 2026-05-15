@@ -1,23 +1,41 @@
 import { ThemeToggle2 } from "../ui/ThemeToggles";
 import { useAuth } from "../../Hooks/useAuth";
 import NotificationCenter from "../ui/NotificationCenter";
+import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
+import { useSidebar } from "../../context/sidebarContext";
 
 function Header({ icon, title, description }) {
   const { user, isAuthenticated } = useAuth();
+  const { isSidebarOpen, toggleSidebar } = useSidebar();
 
   return (
     <div>
       <div className="z-0 flex items-center justify-between">
-        <div className="block">
+        <div className="flex min-w-0 items-center gap-3">
+          <button
+            type="button"
+            onClick={toggleSidebar}
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-white text-gray-600 shadow-sm shadow-gray-200/40 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:shadow-none dark:hover:bg-gray-800"
+            aria-label={isSidebarOpen ? "Hide sidebar" : "Show sidebar"}
+            title={isSidebarOpen ? "Hide sidebar" : "Show sidebar"}
+          >
+            {isSidebarOpen ? (
+              <LuPanelLeftClose size={17} />
+            ) : (
+              <LuPanelLeftOpen size={17} />
+            )}
+          </button>
+          <div className="block min-w-0">
           <div className="flex justify-start w-full items-end space-x-2">
             <div className="w-fit rounded-md bg-blue-50 p-1.5 text-blue-600 ring-1 ring-blue-100 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-500/20">
               {icon}
             </div>
-            <h1 className="text-xl font-semibold text-gray-950 dark:text-white">{title}</h1>
+            <h1 className="truncate text-xl font-semibold text-gray-950 dark:text-white">{title}</h1>
           </div>
           <p className="hidden text-xs text-gray-500 dark:text-gray-400 sm:block">
             {description}
           </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">

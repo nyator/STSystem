@@ -70,7 +70,7 @@ export default function SideBar() {
     <div className="flex h-screen">
       <div
         className={`${
-          isOpen ? "w-44" : "w-14"
+          isOpen ? "w-34" : "w-14"
         } h-full flex flex-col overflow-hidden border-r border-gray-200 bg-white transition-all duration-300 dark:border-gray-800 dark:bg-gray-950`}
       >
         {/* Header */}

@@ -219,7 +219,7 @@ export default function EditTicketModal({ ticketId, onClose }) {
             <p className="font-semibold">Description</p>
             <p>{ticket.description}</p>
           </div>
-          {ticket?.tags?.length > 0 && (
+          {/* {ticket?.tags?.length > 0 && (
             <div>
               <p className="font-semibold">Tags</p>
               <div className="mt-1 flex flex-wrap gap-1">
@@ -230,7 +230,7 @@ export default function EditTicketModal({ ticketId, onClose }) {
                 ))}
               </div>
             </div>
-          )}
+          )} */}
 
           <div>
             <p className="font-semibold">Comments</p>

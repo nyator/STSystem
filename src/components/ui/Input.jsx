@@ -147,7 +147,7 @@ function FormCommentArea({
       <textarea
         {...register(name, formfields)}
         placeholder={placeholder}
-        className={`w-full p-2 pl-8 rounded-md min-h-16 text-xs text-gray-800 dark:text-gray-100 border border-dashed border-gray-300 dark:border-gray-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors ${error ? "border-red-400 bg-red-50 dark:bg-red-500/10" : "bg-white dark:bg-gray-900"} max-h-42 ${readOnly ? "cursor-not-allowed" : ""}`}
+        className={`w-full p-2 pl-8 rounded-md min-h-9 h-9 text-xs text-gray-800 dark:text-gray-100 border border-dashed border-gray-300 dark:border-gray-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors ${error ? "border-red-400 bg-red-50 dark:bg-red-500/10" : "bg-white dark:bg-gray-900"} max-h-42 ${readOnly ? "cursor-not-allowed" : ""}`}
         {...props}
         {...(readOnly && { readOnly })}
       />

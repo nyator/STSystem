@@ -15,12 +15,12 @@ const Cards = () => {
         : 0
 
     const ticketCards = [
-        { id: 1, label: "High Priority", value: tickets.filter(t => (t.priority || '').toLowerCase() === 'high').length, colors: "bg-red-100 text-red-600" },
-        {
-            id: 2, label: "Progress Tickets",
-            value: tickets.filter(t => (t.status || '').toLowerCase() === 'in-progress').length,
-            colors: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-300"
-        },
+        // { id: 1, label: "High Priority", value: tickets.filter(t => (t.priority || '').toLowerCase() === 'high').length, colors: "bg-red-100 text-red-600" },
+        // {
+        //     id: 2, label: "Progress Tickets",
+        //     value: tickets.filter(t => (t.status || '').toLowerCase() === 'in-progress').length,
+        //     colors: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-300"
+        // },
         {
             id: 3, label: "Opened Tickets",
             value: tickets.filter(t => (t.status || '').toLowerCase() === 'open').length,
@@ -48,7 +48,7 @@ const Cards = () => {
         },
         {
             id: 8, label: "Avg Resolution",
-            value: averageResolutionHours ? `${averageResolutionHours}h` : "N/A",
+            value: averageResolutionHours ? `${averageResolutionHours}h` : "-",
             colors: "bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-300"
         },
     ]

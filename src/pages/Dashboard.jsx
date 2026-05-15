@@ -49,7 +49,7 @@ function Dashboard() {
             <Banner />
             <Cards />
             <div className="flex flex-col sm:flex-col justify-around w-full mt-1 gap-5 ">
-                <div className="hidden h-fit items-center justify-start rounded-lg border border-gray-200 bg-white py-3 shadow-sm shadow-gray-200/50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none md:flex">
+              <div className="hidden h-fit items-center justify-start rounded-lg border border-gray-200 bg-white py-3 shadow-sm shadow-gray-200/50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none md:flex">
                 <div className="w-3/6 flex justify-center items-center  pb-10">
                   <Chart />
                 </div>

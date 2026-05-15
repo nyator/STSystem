@@ -1,42 +1,81 @@
-import { LuCircleDot, LuMessageSquare, LuRefreshCcwDot, LuUserPlus, LuFlag, LuTicketPlus } from "react-icons/lu"
+import {
+  LuCircleDot,
+  LuMessageSquare,
+  LuRefreshCcwDot,
+  LuUser,
+  LuFlag,
+  LuPlus,
+} from "react-icons/lu";
 
 const iconByType = {
-    created: LuTicketPlus,
-    assignment: LuUserPlus,
-    status: LuRefreshCcwDot,
-    priority: LuFlag,
-    comment: LuMessageSquare,
-}
+  created: LuPlus,
+  assignment: LuUser,
+  status: LuRefreshCcwDot,
+  priority: LuFlag,
+  comment: LuMessageSquare,
+};
 
 function ActivityTimeline({ activity = [], emptyText = "No activity yet" }) {
-    if (!activity.length) {
-        return <p className="text-xs text-gray-400">{emptyText}</p>
-    }
+  if (!activity.length) {
+    return <p className="text-xs text-gray-400 p-2">{emptyText}</p>;
+  }
 
-    return (
-        <div className="space-y-2">
-            {activity
-                .slice()
-                .reverse()
-                .map((event) => {
-                    const Icon = iconByType[event.type] || LuCircleDot
-                    return (
-                        <div key={event.id} className="relative flex gap-2 rounded-lg border border-gray-200 bg-white p-2 dark:border-gray-800 dark:bg-gray-900">
-                            <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-300">
-                                <Icon size={13} />
-                            </div>
-                            <div className="min-w-0">
-                                <p className="text-xs font-semibold text-gray-700 dark:text-gray-200">{event.message}</p>
-                                <p className="text-[10px] text-gray-400">
-                                    {event.actor ? `by ${event.actor} • ` : ""}
-                                    {event.createdAt ? new Date(event.createdAt).toUTCString().slice(5, -7) : ""}
-                                </p>
-                            </div>
-                        </div>
-                    )
-                })}
-        </div>
-    )
+  // Define reversed list here so it's accessible for index checks
+  const reversedActivity = [...activity].reverse();
+
+  return (
+    <div className="mt-2 flex flex-col">
+      {reversedActivity.map((event, index) => {
+        const Icon = iconByType[event.type] || LuCircleDot;
+        const isLast = index === reversedActivity.length - 1;
+
+        return (
+          <div
+            key={event.id || index}
+            className="relative flex gap-2 px-2 pb-2"
+          >
+            {!isLast && (
+              <span
+                className="absolute left-[20px] top-[26px] h-[calc(100%-14px)] w-[1px] bg-gray-200 dark:bg-gray-700"
+                aria-hidden="true"
+              />
+            )}
+
+            <div className="relative z-10 mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-blue-300 bg-blue-50 text-blue-500 dark:border-blue-600 dark:bg-blue-900 dark:text-gray-400">
+              <Icon size={12} strokeWidth={2.5} />
+            </div>
+
+            {/* Content Area */}
+            <div className="min-w-0 flex-1 pt-0.5">
+              <p className="leading-tight text-gray-600 dark:text-gray-400">
+                {event.actor ? (
+                  <div className="flex flex-col text-[10px]">
+                    <span className="font-medium text-gray-900 dark:text-gray-200">
+                      {event.actor}
+                    </span>{" "}
+                    <span>
+                      {event.type === "comment"
+                        ? "added a comment"
+                        : event.message.replace(event.actor, "").trim()}
+                    </span>
+                  </div>
+                ) : (
+                  event.message
+                )}
+              </p>
+
+              <p className="mt-1 text-[10px] text-gray-400 dark:text-gray-500">
+                {event.timeAgo ||
+                  (event.createdAt
+                    ? new Date(event.createdAt).toLocaleDateString()
+                    : "")}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
-export default ActivityTimeline
+export default ActivityTimeline;

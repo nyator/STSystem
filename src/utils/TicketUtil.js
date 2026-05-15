@@ -71,12 +71,12 @@ const normalizeTicket = (ticket) => {
         createdAt,
         priority,
         comments: Array.isArray(ticket.comments) ? ticket.comments : [],
-        tags: Array.isArray(ticket.tags)
-            ? ticket.tags
-            : String(ticket.tags || "")
-                .split(",")
-                .map((tag) => tag.trim())
-                .filter(Boolean),
+        // tags: Array.isArray(ticket.tags)
+        //     ? ticket.tags
+        //     : String(ticket.tags || "")
+        //         .split(",")
+        //         .map((tag) => tag.trim())
+        //         .filter(Boolean),
         activity,
     }
 }
@@ -203,10 +203,10 @@ export const createTicket = async (ticketData) => {
     const tickets = getTickets()
     const createdAt = new Date().toISOString()
     const priority = ticketData.priority || "low"
-    const tags = String(ticketData.tags || "")
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter(Boolean)
+    // const tags = String(ticketData.tags || "")
+    //     .split(",")
+    //     .map((tag) => tag.trim())
+    //     .filter(Boolean)
 
     const newTicket = {
         id: `T-${Math.floor(Math.random() * 900) + 100}`,
@@ -216,7 +216,6 @@ export const createTicket = async (ticketData) => {
         customerName: ticketData.customerName || "",
         company: ticketData.company || "",
         category: ticketData.category || "general",
-        tags,
         priority,
         status: "open",
         createdBy: ticketData.createdBy || null,

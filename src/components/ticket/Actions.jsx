@@ -27,6 +27,7 @@ import {
   canMarkResolved,
   canReopenTicket,
   canStartWork,
+  canUpdatePriority,
 } from "../../utils/AuthUtil.js";
 import { addNotification } from "../../utils/NotificationUtil.js";
 
@@ -52,6 +53,7 @@ const OptionsPopover = ({
   onCloseTicket,
   onReopenTicket,
   onAddComment,
+  onChangePriority,
   rowIndex,
   dataLength,
 }) => {
@@ -66,6 +68,7 @@ const OptionsPopover = ({
   const allowReopenTicket = canReopenTicket(user, ticket);
   const allowDelete = canDeleteTicket(user, ticket);
   const allowAddComment = canAddComment(user, ticket);
+  const allowUpdatePriority = canUpdatePriority(user, ticket);
   const hasActions =
     canAssign ||
     allowStartWork ||
@@ -73,6 +76,7 @@ const OptionsPopover = ({
     allowCloseTicket ||
     allowReopenTicket ||
     allowAddComment ||
+    allowUpdatePriority ||
     allowDelete;
 
   useEffect(() => {
@@ -178,6 +182,26 @@ const OptionsPopover = ({
               </button>
             )}
 
+            {allowUpdatePriority && (
+              <>
+                <div className="border-t border-gray-100 dark:border-gray-700 my-1" />
+                {["high", "medium", "low"]
+                  .filter((priority) => priority !== ticket?.priority)
+                  .map((priority) => (
+                    <button
+                      key={priority}
+                      className="popover-item capitalize"
+                      onClick={() => {
+                        setOpen(false);
+                        onChangePriority(priority);
+                      }}
+                    >
+                      <LuRefreshCcwDot size={14} /> Set {priority} priority
+                    </button>
+                  ))}
+              </>
+            )}
+
             {!hasActions && (
               <p className="text-gray-300 text-center">no actions</p>
             )}
@@ -225,6 +249,18 @@ export default function Actions({ ticketId, rowIndex, dataLength }) {
     });
   };
 
+  const updateTicketPriority = (priority) => {
+    if (!ticket || ticket.priority === priority) return;
+    updateTicket({ ticketId, priority, actor: user });
+    addNotification({
+      title: "Ticket priority changed",
+      message: `${ticket.id} priority changed to ${priority}`,
+      ticketId,
+      targetUserId: ticket.assignedTo || ticket.createdBy,
+      type: "priority",
+    });
+  };
+
   useEffect(() => {
     if (ticket) {
       reset({
@@ -235,7 +271,7 @@ export default function Actions({ ticketId, rowIndex, dataLength }) {
 
   return (
     <>
-      <div className="flex gap-2">
+      <div className="flex gap-2 justify-center">
         {/* <EditAction setOpenModal={setOpenEdit} /> */}
         <OptionsPopover
           user={user}
@@ -247,6 +283,7 @@ export default function Actions({ ticketId, rowIndex, dataLength }) {
           onCloseTicket={() => updateTicketStatus("closed")}
           onReopenTicket={() => updateTicketStatus("reopened")}
           onAddComment={() => setOpenAddComment(true)}
+          onChangePriority={updateTicketPriority}
           rowIndex={rowIndex}
           dataLength={dataLength}
         />
