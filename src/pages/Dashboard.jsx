@@ -1,22 +1,46 @@
-import React, { useState } from "react";
-import { LuLayoutDashboard, LuPlus, LuTicket } from "react-icons/lu";
+import { useState } from "react";
+import { LuLayoutDashboard, LuTicket } from "react-icons/lu";
 import Header from "../components/dashboard/Header";
 import Cards from "../components/dashboard/Cards";
 import Table from "../components/ui/Table";
 import Chart from "../components/dashboard/Chart";
-import Chart3 from "../components/dashboard/Chart3";
 import Chart2 from "../components/dashboard/Chart2";
 import useTickets from "../Hooks/Tickets/useTickets";
 
 import PriorityBadge from "../components/ui/PriorityBadge";
 import StatusBadge from "../components/ui/StatusBadge";
-import Actions from "../components/ticket/Actions";
 import Banner from "../components/dashboard/Banner";
+import { useAuth } from "../Hooks/useAuth";
+import { ROLES } from "../utils/AuthUtil";
+
+const dashboardViewByRole = {
+  [ROLES.ADMIN]: {
+    title: "Triage Queue",
+    emptyTitle: "No tickets need triage",
+    emptyHint: "New customer requests will appear here.",
+    statuses: ["open"],
+  },
+  [ROLES.ASSIGNEE]: {
+    title: "My Work Queue",
+    emptyTitle: "No assigned work right now",
+    emptyHint: "Assigned and reopened tickets will appear here.",
+    statuses: ["assigned", "in-progress", "reopened"],
+  },
+  [ROLES.CLIENT]: {
+    title: "My Recent Requests",
+    emptyTitle: "No requests yet",
+    emptyHint: "Create a ticket to start tracking support progress.",
+    statuses: ["open", "assigned", "in-progress", "resolved", "reopened"],
+  },
+};
 
 function Dashboard() {
   const { data: tickets = [] } = useTickets();
-  const filteredData = tickets.filter(
-    (t) => (t.status || "").toLowerCase() === "open",
+  const { user } = useAuth();
+  const dashboardView =
+    dashboardViewByRole[user?.role] || dashboardViewByRole[ROLES.CLIENT];
+  const filteredData = tickets.filter((t) =>
+    dashboardView.statuses.includes((t.status || "").toLowerCase()),
   );
 
   // Pagination logic
@@ -36,9 +60,15 @@ function Dashboard() {
     <div>
       <div className="sticky top-0 z-10 w-full border-b border-gray-200 bg-[#f6f7f9]/95 p-4 backdrop-blur dark:border-gray-800 dark:bg-[#0f141b]/95">
         <Header
-          icon={<LuLayoutDashboard size={20} className="inline" />}
+          icon={<LuLayoutDashboard size={16} className="inline" />}
           title="Dashboard"
-          description="Overview of tickets and system performance."
+          description={
+            user?.role === ROLES.ADMIN
+              ? "Operational overview across visible support work."
+              : user?.role === ROLES.ASSIGNEE
+                ? "Your assigned tickets, workload, and resolution progress."
+                : "Track your submitted requests and support progress."
+          }
         />
       </div>
 
@@ -61,12 +91,14 @@ function Dashboard() {
                 {filteredData.length === 0 ? (
                   <div className="flex flex-col items-center justify-center w-full py-5 text-gray-500">
                     <LuTicket size={48} className="mb-4 opacity-50" />
-                    <p className="text-lg font-medium">No open tickets found</p>
-                    <p className="text-sm">Add a new ticket</p>
+                    <p className="text-lg font-medium">
+                      {dashboardView.emptyTitle}
+                    </p>
+                    <p className="text-sm">{dashboardView.emptyHint}</p>
                   </div>
                 ) : (
                   <Table
-                    title="Opened Tickets"
+                    title={dashboardView.title}
                     columns={[
                       { key: "id", title: "ID" },
                       { key: "title", title: "Title" },
@@ -75,7 +107,6 @@ function Dashboard() {
                       { key: "priority", title: "Priority" },
                       { key: "status", title: "Status" },
                       { key: "createdAt", title: "Created At" },
-                      { key: "actions", title: "Actions" },
                     ]}
                     data={paginatedData.map((t) => {
                       const fmt = (s) => {
@@ -99,7 +130,6 @@ function Dashboard() {
                         createdAt: t.createdAt
                           ? new Date(t.createdAt).toGMTString().slice(0, -13)
                           : "",
-                        actions: <Actions ticketId={t.id} />,
                       };
                     })}
                     currentPage={currentPage}

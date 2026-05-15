@@ -17,8 +17,8 @@ function Table({
     columns && columns.length
       ? columns
       : data.length
-      ? Object.keys(data[0]).map((key) => ({ key, title: key }))
-      : [];
+        ? Object.keys(data[0]).map((key) => ({ key, title: key }))
+        : [];
 
   const stickyHeaderClass =
     "sticky left-0 z-0 bg-gray-50 dark:bg-gray-800 rounded-tl-lg";
@@ -41,7 +41,9 @@ function Table({
 
       <div className="flex-col flex items-center w-full">
         {title && (
-          <h1 className="mb-3 text-lg font-semibold text-gray-950 dark:text-white">{title}</h1>
+          <h1 className="mb-3 text-lg font-semibold text-gray-950 dark:text-white">
+            {title}
+          </h1>
         )}
 
         <div className="flex w-full max-h-screen flex-col items-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm shadow-gray-200/50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none">
@@ -51,7 +53,7 @@ function Table({
             }`}
           >
             <table className="w-full border-collapse">
-              <thead className="border-b border-gray-200 bg-gray-50 text-[11px] font-semibold uppercase tracking-wide text-gray-500 text-nowrap sticky top-0 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-400">
+              <thead className="border-b z-5 border-gray-200 bg-gray-50 text-[11px] font-semibold uppercase tracking-wide text-gray-500 text-nowrap sticky top-0 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-400">
                 <tr className="w-full">
                   {cols.map((col, index) => (
                     <th
@@ -68,7 +70,10 @@ function Table({
               <tbody>
                 {data.length === 0 ? (
                   <tr>
-                    <td colSpan={cols.length} className="p-3 text-center dark:text-gray-400">
+                    <td
+                      colSpan={cols.length}
+                      className="p-3 text-center dark:text-gray-400"
+                    >
                       No data
                     </td>
                   </tr>
@@ -93,7 +98,9 @@ function Table({
                               : undefined
                           }
                         >
-                          {col.render ? col.render(row, idx, data.length) : row[col.key] ?? ""}
+                          {col.render
+                            ? col.render(row, idx, data.length)
+                            : (row[col.key] ?? "")}
                         </td>
                       ))}
                     </tr>
@@ -119,4 +126,3 @@ function Table({
 }
 
 export default Table;
-

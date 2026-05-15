@@ -27,7 +27,7 @@ function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, s
                     <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-blue-500 ring-2 ring-white dark:ring-gray-800"></span>
                 )}
                 {icon}
-                <span className="hidden md:block font-medium">{title}</span>
+                <span className="hidden lg:block font-medium">{title}</span>
             </button>
 
             {isOpen && (
@@ -48,7 +48,7 @@ function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, s
                                 <button
                                     key={option.value}
                                     onClick={() => handleOptionClick(group.filterType, option.value)}
-                                    className={`w-full text-left text-nowrap flex items-center justify-between px-3 py-2 text-xs rounded-md transition-all ease-in-out duration-200 focus:outline-none ${filters[group.filterType] === option.value
+                                    className={`z-10 w-full text-left text-nowrap flex items-center justify-between px-3 py-2 text-xs rounded-md transition-all ease-in-out duration-200 focus:outline-none ${filters[group.filterType] === option.value
                                         ? 'bg-blue-500 text-white'
                                         : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
                                         }`}

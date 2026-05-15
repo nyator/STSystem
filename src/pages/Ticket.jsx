@@ -4,7 +4,6 @@ import { LuTicket, LuSlidersHorizontal, LuArrowDownUp, LuDownload, LuKanban, LuT
 import Header from '../components/dashboard/Header';
 import FilterButton from '../components/ui/FilterButton';
 import Table from '../components/ui/Table';
-import Actions from '../components/ticket/Actions';
 import StatusBadge from '../components/ui/StatusBadge';
 import PriorityBadge from '../components/ui/PriorityBadge';
 
@@ -172,7 +171,7 @@ function Ticket() {
         <div>
             <div className='sticky top-0 z-10 w-full border-b border-gray-200 bg-[#f6f7f9]/95 p-4 backdrop-blur dark:border-gray-800 dark:bg-[#0f141b]/95'>
                 <Header
-                    icon={<LuTicket size={20} className="inline" />}
+                    icon={<LuTicket size={16} className="inline" />}
                     title="Tickets"
                     description="Manage tickets and track performance."
                 />
@@ -254,8 +253,6 @@ function Ticket() {
                                 { key: 'priority', title: 'Priority' },
                                 { key: 'status', title: 'Status' },
                                 { key: 'assignedTo', title: 'Assigned To' },
-                                // { key: 'sla', title: 'SLA' },
-                                { key: 'actions', title: 'Actions' },
                             ]}
                             data={
                                 paginatedTickets.map((t) => {
@@ -276,7 +273,6 @@ function Ticket() {
                                         priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />,
                                         status: <StatusBadge status={fmt(t.status) || 'open'} />,
                                         createdAt: t.createdAt ? new Date(t.createdAt).toUTCString().slice(0, -13) : '',
-                                        actions: <Actions ticketId={t.id} rowIndex={paginatedTickets.findIndex(ticket => ticket.id === t.id)} dataLength={paginatedTickets.length} />,
                                         assignedTo: assignedMember ? (
                                             <div className="flex items-center gap-1.5">
                                                 <img src={assignedMember.avatar} className="w-5 h-5 rounded-full" alt="" />

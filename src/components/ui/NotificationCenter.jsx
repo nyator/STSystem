@@ -36,7 +36,7 @@ function NotificationCenter() {
     }
 
     return (
-        <div className="relative" ref={ref}>
+        <div className="relative z-10" ref={ref}>
             <button
                 type="button"
                 onClick={toggleOpen}

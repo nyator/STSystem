@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button, { OptionButton } from "../ui/Button";
-import { canCreateTicket } from "../../utils/AuthUtil";
+import { canCreateTicket, ROLES } from "../../utils/AuthUtil";
 import { useAuth } from "../../Hooks/useAuth";
 import { LuPlus, LuMail, LuBuilding2, LuUserRound, LuTags, LuCalendarClock } from "react-icons/lu";
 
@@ -22,6 +22,31 @@ function Banner() {
 
   const { user } = useAuth();
   const { createTicket } = useCreateTicket();
+  const bannerContent = {
+    [ROLES.ADMIN]: {
+      eyebrow: "Admin Overview",
+      title: "Support operations",
+      description:
+        "Triage new requests, monitor SLA risk, and keep the support queue moving.",
+    },
+    [ROLES.ASSIGNEE]: {
+      eyebrow: "Assignee Workspace",
+      title: "Your ticket queue",
+      description:
+        "Focus on assigned work, update ticket progress, and resolve requests from your queue.",
+    },
+    [ROLES.CLIENT]: {
+      eyebrow: "Request Portal",
+      title: "Your support requests",
+      description:
+        "Create requests, follow status updates, and continue conversations with the support team.",
+    },
+  }[user?.role] || {
+    eyebrow: "STSYSTEM Overview",
+    title: "Welcome to ST-SYSTEM",
+    description:
+      "Manage tickets, track real-time progress, and streamline your support workflow.",
+  };
 
   const {
     register,
@@ -76,16 +101,15 @@ function Banner() {
         <div className="">
           <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-blue-700 ring-1 ring-blue-100 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-500/20">
             {/* <LuSparkles size={12} className="animate-pulse" /> */}
-            <span>STSYSTEM Overview</span>
+            <span>{bannerContent.eyebrow}</span>
           </div>
 
           <div>
             <h2 className="mt-2 text-xl font-semibold tracking-normal text-gray-950 dark:text-white">
-              Welcome to <span className="text-blue-600 dark:text-blue-300">ST-SYSTEM</span>
+              {bannerContent.title}
             </h2>
             <p className="max-w-xl text-sm leading-5 text-gray-500 dark:text-gray-400">
-              Manage tickets, track real-time progress, and streamline your
-              support workflow from one central hub.
+              {bannerContent.description}
             </p>
           </div>
         </div>

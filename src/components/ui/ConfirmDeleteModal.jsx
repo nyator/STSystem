@@ -63,6 +63,7 @@ function ConfirmDeleteModal({
     <>
       <DevTool control={control} />
       <TicketModal
+      size="sm"
         isOpen={isOpen}
         onClose={closeModal}
         title={title}

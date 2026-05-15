@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom"; // Standard portal usage
 import Button from "../ui/Button";
-import { LuArrowLeft, LuBadgeInfo, LuX } from "react-icons/lu";
+import { LuBadgeInfo } from "react-icons/lu";
 import { IoChevronBackOutline } from "react-icons/io5";
 
 function NewTicketModal({
   isOpen,
   onClose,
+  title,
+  ticketId,
   titleID,
   LAction,
   RVariant,
@@ -66,10 +68,12 @@ function NewTicketModal({
 
             <div>
               <h2 className="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-white">
-                <span className="text-xs px-2 border rounded-md text-gray-500 dark:text-gray-400">
-                  {titleID}
-                </span>
-                <span className="">{ticketTitle}</span>
+                {(titleID || ticketId) && (
+                  <span className="rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-500 dark:border-gray-700 dark:text-gray-400">
+                    {titleID || ticketId}
+                  </span>
+                )}
+                <span>{ticketTitle || title}</span>
               </h2>
             </div>
           </div>

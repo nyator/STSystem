@@ -171,5 +171,5 @@ export function canAddComment(user, ticket) {
 
 export function canUpdatePriority(user, ticket) {
     if (!ticket || ticket.status === "closed") return false
-    return user?.role === ROLES.ADMIN
+    return user?.role === ROLES.CLIENT
 }

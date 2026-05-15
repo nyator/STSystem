@@ -26,15 +26,17 @@ function Header({ icon, title, description }) {
             )}
           </button>
           <div className="block min-w-0">
-          <div className="flex justify-start w-full items-end space-x-2">
-            <div className="w-fit rounded-md bg-blue-50 p-1.5 text-blue-600 ring-1 ring-blue-100 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-500/20">
-              {icon}
+            <div className="flex w-full items-end justify-start space-x-2">
+              <div className="w-fit rounded-md bg-blue-50 p-1.5 text-blue-600 ring-1 ring-blue-100 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-500/20">
+                {icon}
+              </div>
+              <h1 className="truncate text-xl font-semibold text-gray-950 dark:text-white">
+                {title}
+              </h1>
             </div>
-            <h1 className="truncate text-xl font-semibold text-gray-950 dark:text-white">{title}</h1>
-          </div>
-          <p className="hidden text-xs text-gray-500 dark:text-gray-400 sm:block">
-            {description}
-          </p>
+            <p className="hidden text-xs text-gray-500 dark:text-gray-400 sm:block">
+              {description}
+            </p>
           </div>
         </div>
 

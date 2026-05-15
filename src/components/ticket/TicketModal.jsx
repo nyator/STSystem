@@ -43,13 +43,13 @@ function TicketModal({
         <button
           type="button"
           onClick={onClose}
-          className="group absolute right-4 top-4 rounded-md bg-gray-100 p-2 text-2xl leading-none text-gray-600 transition duration-200 ease-in-out hover:bg-gray-200 active:scale-[0.95] dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
+          className="group absolute right-4 top-1.5 rounded-md bg-gray-100 p-2 text-xl leading-none text-gray-600 transition duration-200 ease-in-out hover:bg-gray-200 active:scale-[0.95] dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700"
           aria-label="Close modal"
         >
-          <LuX className="group-hover:rotate-90 text-sm transition-transform duration-300 ease-in-out group-hover:text-black dark:group-hover:text-white text-gray-600 dark:text-gray-100" />
+          <LuX className="group-hover:rotate-90 text-xs transition-transform duration-300 ease-in-out group-hover:text-black dark:group-hover:text-white text-gray-600 dark:text-gray-100" />
         </button>
 
-        <div className="border-b border-gray-100 px-6 py-4 pr-14 dark:border-gray-800">
+        <div className="border-b border-gray-100 px-6 py-2 pr-14 dark:border-gray-800 flex item-center justify-center">
           <h2 className="flex items-center gap-2 text-base font-semibold text-gray-900 dark:text-white">
             {TitleIcon}
             <span>{title}</span>
@@ -61,11 +61,11 @@ function TicketModal({
           )}
         </div>
 
-        <div className="flex-1 overflow-y-auto px-6 py-4 text-gray-600 dark:text-gray-300">
+        <div className="flex-1 overflow-y-auto px-6 py-2 text-gray-600 dark:text-gray-300">
           {children}
         </div>
 
-        <div className="relative flex justify-end gap-2 border-t border-gray-100 bg-gray-50 px-6 py-4 dark:border-gray-800 dark:bg-gray-950/50">
+        <div className="relative flex justify-center gap-2 border-t border-gray-100 bg-gray-50 px-6 py-2 dark:border-gray-800 dark:bg-gray-950/50">
           {error && (
             <div className="absolute -top-6 left-0 flex w-full items-center justify-center space-x-1.5 rounded-2xl px-2 text-[12px] text-red-600">
               <LuBadgeInfo />

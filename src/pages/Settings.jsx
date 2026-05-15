@@ -10,7 +10,7 @@ function Settings() {
         <div>
             <div className='sticky top-0 z-10 w-full border-b border-gray-200 bg-[#f6f7f9]/95 p-4 backdrop-blur dark:border-gray-800 dark:bg-[#0f141b]/95'>
                 <Header
-                    icon={<LuSettings size={20} className="inline" />}
+                    icon={<LuSettings size={16} className="inline" />}
                     title="Settings"
                     description="Account, appearance, and local demo data."
                 />

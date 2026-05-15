@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react'
 import useMembers from '../../Hooks/Team/useMembers'
 import useTicket from '../../Hooks/Tickets/useTicket'
 import useAssignTicket from '../../Hooks/Tickets/useAssignTicket'
-import useUpdateAssign from '../../Hooks/Team/useUpdateAssign'
-import { DevTool } from "@hookform/devtools";
 import { LuUserRoundPlus, LuCheck, LuUser } from 'react-icons/lu'
 
 import NewTicketModal from './NewTicketModal';
@@ -14,10 +12,9 @@ import { useAuth } from '../../Hooks/useAuth';
 import { addNotification } from '../../utils/NotificationUtil';
 
 export default function AssignTicketModal({ ticketId, onClose, }) {
-  const { reset, control, formState: { errors } } = useForm()
+  const { reset, formState: { errors } } = useForm()
   const { data: members } = useMembers()
-  const { assignTicket } = useAssignTicket()
-  const { updateAssign } = useUpdateAssign()
+  const { assignTicket, isLoading } = useAssignTicket()
   const { ticket } = useTicket(ticketId)
   const { user } = useAuth()
 
@@ -40,7 +37,8 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
       reset({
         assignedTo: ticket.assignedTo
       })
-      // setSelectedMember(ticket?.assignedTo || null)
+      const timer = setTimeout(() => setSelectedMember(ticket?.assignedTo || null), 0)
+      return () => clearTimeout(timer)
     }
   }, [ticket, reset])
 
@@ -49,7 +47,6 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
     if (!selectedMember) return
 
     assignTicket({ ticketId, assignedTo: selectedMember, actor: user })
-    updateAssign({ memberId: selectedMember, ticketId })  // <-- add this
     addNotification({
       title: "Ticket assigned",
       message: `${ticketId} was assigned to you`,
@@ -64,8 +61,8 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
 
   return (
     <>
-      <DevTool control={control} />
       <NewTicketModal
+        size="md"
         isOpen={!!ticketId}
         onClose={onClose}
         ticketId={ticketId}
@@ -75,16 +72,15 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
         RVariant="primary"
         RIcon={<LuUserRoundPlus size={16} className={`inline mr-1`} />}
         submit={handleAssignConfirm}
-        // isLoading={isLoading}
-        deleteError={errors.confirmDelete}
-        disabled={!selectedMember}
+        error={errors.confirmDelete}
+        disabled={!selectedMember || selectedMember === ticket?.assignedTo || isLoading}
       >
-        <form>
-          <div className='w-full'>
+        <form className="flex min-h-0 flex-col">
+          <div className='w-full space-y-3'>
             <AssignSearch onResults={setSearchedMembers} />
 
             {/* Display selected members count and option to clear selection */}
-            <div className='flex flex-col items-start gap-1 my-1'>
+            <div className='min-h-8 rounded-lg border border-gray-100 bg-gray-50 p-2 dark:border-gray-800 dark:bg-gray-950/40'>
               <div className='flex flex-wrap items-center gap-1'>
                 {members
                   ?.filter((member) => selectedMember === member.id)
@@ -95,6 +91,9 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
                       onRemove={removeMember}
                     />
                   ))}
+                {!selectedMember && (
+                  <span className="text-xs text-gray-400">Select one team member</span>
+                )}
               </div>
 
               {selectedMember &&
@@ -110,31 +109,31 @@ export default function AssignTicketModal({ ticketId, onClose, }) {
 
 
             {/* Scrollable List Area */}
-            <div className='h-4/6 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-100 bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-700 flex flex-col divide-y divide-gray-100 dark:divide-slate-700'>
+            <div className='max-h-[52vh] min-h-72 overflow-y-auto rounded-lg border border-gray-200 bg-white scrollbar-thin scrollbar-thumb-gray-200 dark:border-gray-800 dark:bg-gray-900 dark:scrollbar-thumb-gray-700'>
               {listToDisplay.length > 0 ? (
                 listToDisplay.map(m => (
                   <button
                     key={m.id}
                     type="button"
                     onClick={() => toggleMember(m.id)}
-                    className={`w-full text-left px-4 py-3 flex items-center justify-between transition-colors 
-        ${selectedMember === m.id ? 'bg-blue-100 dark:bg-blue-900/20' : 'hover:bg-gray-50 dark:hover:bg-slate-700/50'}`}
+                    className={`flex w-full items-center justify-between gap-3 border-b border-gray-100 px-4 py-3 text-left transition-colors last:border-b-0 dark:border-gray-800 
+        ${selectedMember === m.id ? 'bg-blue-50 dark:bg-blue-500/10' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}`}
                   >
-                    <div className="flex items-center gap-3">
-                      <img src={m.avatar} className="w-6 h-6 rounded-full" alt="" />
-                      <div className="flex flex-col">
-                        <span className="text-xs font-medium text-gray-700 dark:text-gray-200">{m.firstName} {m.lastName}</span>
-                        <span className="text-[9px] uppercase text-gray-700 tracking-wider">{m.team}</span>
+                    <div className="flex min-w-0 items-center gap-3">
+                      <img src={m.avatar} className="h-8 w-8 rounded-full object-cover" alt="" />
+                      <div className="flex min-w-0 flex-col">
+                        <span className="truncate text-xs font-semibold text-gray-800 dark:text-gray-100">{m.firstName} {m.lastName}</span>
+                        <span className="truncate text-[10px] uppercase tracking-wide text-gray-400">{m.team || "No team"}</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-10">
+                    <div className="flex shrink-0 items-center gap-3">
                       {m.ticketsAssigned > 0 ?
                         (
-                          <span className="text-xs text-gray-800">{m.ticketsAssigned} Assigned</span>
+                          <span className="text-xs text-gray-500 dark:text-gray-400">{m.ticketsAssigned} assigned</span>
                         ) : (
                           <span className="text-xs text-gray-400">Unassigned</span>
                         )}
-                      <div className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all
+                      <div className={`flex h-4 w-4 items-center justify-center rounded-full border transition-all
           ${selectedMember === m.id ? 'bg-blue-500 border-blue-500' : 'border-gray-300 dark:border-gray-600'}`}>
                         {selectedMember === m.id && <LuCheck size={12} className="text-white" />}
                       </div>

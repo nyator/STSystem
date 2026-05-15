@@ -32,7 +32,7 @@ function ActivityTimeline({ activity = [], emptyText = "No activity yet" }) {
         return (
           <div
             key={event.id || index}
-            className="relative flex gap-2 px-2 pb-2"
+            className="relative flex gap-2 px-2 pb-1"
           >
             {!isLast && (
               <span
@@ -64,7 +64,7 @@ function ActivityTimeline({ activity = [], emptyText = "No activity yet" }) {
                 )}
               </p>
 
-              <p className="mt-1 text-[10px] text-gray-400 dark:text-gray-500">
+              <p className="text-[10px] text-gray-400 dark:text-gray-500">
                 {event.timeAgo ||
                   (event.createdAt
                     ? new Date(event.createdAt).toLocaleDateString()

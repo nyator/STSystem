@@ -1,4 +1,3 @@
-import Actions from "./Actions"
 import PriorityBadge from "../ui/PriorityBadge"
 import StatusBadge from "../ui/StatusBadge"
 import { formatLabel, getTicketSlaState } from "../../utils/TicketUtil"
@@ -41,9 +40,6 @@ function TicketKanban({ tickets = [], members = [], onSelectTicket }) {
                                             <div className="min-w-0">
                                                 <p className="text-[10px] font-semibold text-gray-400">{ticket.id}</p>
                                                 <h3 className="line-clamp-2 text-xs font-bold text-gray-800 dark:text-gray-100">{ticket.title}</h3>
-                                            </div>
-                                            <div onClick={(event) => event.stopPropagation()}>
-                                                <Actions ticketId={ticket.id} />
                                             </div>
                                         </div>
 
