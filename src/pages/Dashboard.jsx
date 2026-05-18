@@ -15,8 +15,8 @@ import { ROLES } from "../utils/AuthUtil";
 
 const dashboardViewByRole = {
   [ROLES.ADMIN]: {
-    title: "Triage Queue",
-    emptyTitle: "No tickets need triage",
+    title: "Queue",
+    emptyTitle: "No tickets right now",
     emptyHint: "New customer requests will appear here.",
     statuses: ["open"],
   },
@@ -104,6 +104,7 @@ function Dashboard() {
                       { key: "title", title: "Title" },
                       // { key: 'description', title: 'Description' },
                       // { key: 'customer', title: 'Customer' },
+                      
                       { key: "priority", title: "Priority" },
                       { key: "status", title: "Status" },
                       { key: "createdAt", title: "Created At" },

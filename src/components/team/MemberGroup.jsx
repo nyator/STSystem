@@ -13,10 +13,7 @@ import Table from "../ui/Table";
 import DeleteMemberModal from "./DeleteMemberModal";
 import StatusBadge from "../ui/StatusBadge";
 import PriorityBadge from "../ui/PriorityBadge";
-
-import Input from "../ui/Input";
-
-import { useForm } from "react-hook-form";
+import { OptionButton } from "../ui/Button";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -191,14 +188,44 @@ export default function MemberGroup() {
   const [search, setSearch] = useState("");
   const [teamFilter, setTeamFilter] = useState("all");
   const [workloadFilter, setWorkloadFilter] = useState("all");
-
-  const { register } = useForm();
+  const [openFilter, setOpenFilter] = useState(null);
 
   const teamOptions = useMemo(
-    () =>
-      Array.from(new Set(data.map((member) => member.team).filter(Boolean))),
+    () => [
+      {
+        label: "All teams",
+        value: "all",
+        onClick: () => {
+          setTeamFilter("all");
+          setCurrentPage(1);
+        },
+      },
+      ...Array.from(
+        new Set(data.map((member) => member.team).filter(Boolean)),
+      ).map((team) => ({
+        label: formatTeam(team),
+        value: team,
+        onClick: () => {
+          setTeamFilter(team);
+          setCurrentPage(1);
+        },
+      })),
+    ],
     [data],
   );
+  const workloadOptions = [
+    { label: "All workloads", value: "all" },
+    { label: "Available", value: "available" },
+    { label: "Light", value: "light" },
+    { label: "Busy", value: "busy" },
+    { label: "Overloaded", value: "overloaded" },
+  ].map((option) => ({
+    ...option,
+    onClick: () => {
+      setWorkloadFilter(option.value);
+      setCurrentPage(1);
+    },
+  }));
 
   const enrichedMembers = useMemo(
     () =>
@@ -308,35 +335,20 @@ export default function MemberGroup() {
               type="search"
             />
           </div>
-          <select
-            value={teamFilter}
-            onChange={(event) => {
-              setTeamFilter(event.target.value);
-              setCurrentPage(1);
-            }}
-            className="h-10 rounded-md border border-gray-200 bg-white px-3 text-xs font-medium text-gray-700 outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
-          >
-            <option value="all">All teams</option>
-            {teamOptions.map((team) => (
-              <option key={team} value={team}>
-                {formatTeam(team)}
-              </option>
-            ))}
-          </select>
-          <select
-            value={workloadFilter}
-            onChange={(event) => {
-              setWorkloadFilter(event.target.value);
-              setCurrentPage(1);
-            }}
-            className="h-10 rounded-md border border-gray-200 bg-white px-3 text-xs font-medium text-gray-700 outline-none dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
-          >
-            <option value="all">All workloads</option>
-            <option value="available">Available</option>
-            <option value="light">Light</option>
-            <option value="busy">Busy</option>
-            <option value="overloaded">Overloaded</option>
-          </select>
+          <OptionButton
+            title="Team"
+            options={teamOptions}
+            selected={teamFilter}
+            isOpen={openFilter === "team"}
+            setIsOpen={(open) => setOpenFilter(open ? "team" : null)}
+          />
+          <OptionButton
+            title="Workload"
+            options={workloadOptions}
+            selected={workloadFilter}
+            isOpen={openFilter === "workload"}
+            setIsOpen={(open) => setOpenFilter(open ? "workload" : null)}
+          />
         </div>
 
         {isLoading ? (

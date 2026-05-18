@@ -91,7 +91,7 @@ function TicketDrawer({ ticketId, onClose }) {
 
   if (!ticketId) {
     return (
-      <div className="hidden h-[calc(100vh-5.5rem)] w-80 flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-4 text-center text-gray-400 shadow-sm shadow-gray-200/60 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none xl:flex">
+      <div className="hidden h-[calc(100vh-5.5rem)] w-md flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-4 text-center text-gray-400 shadow-sm shadow-gray-200/60 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none xl:flex">
         <LuTicketSlash size={28} className="mb-2 opacity-50" />
         <p className="text-xs font-medium">
           Select a ticket to preview details

@@ -252,6 +252,7 @@ function Ticket() {
                                 // { key: 'category', title: 'Category' },
                                 { key: 'priority', title: 'Priority' },
                                 { key: 'status', title: 'Status' },
+                                { key: 'stl', title: 'Status' },
                                 { key: 'assignedTo', title: 'Assigned To' },
                             ]}
                             data={
@@ -267,12 +268,12 @@ function Ticket() {
                                         id: t.id,
                                         // title: t.title,
                                         title: <span className="font-medium text-gray-800 dark:text-gray-100 truncate">{t.title}</span>,
-                                        // customer: t.customerName || t.company || t.customerEmail || '',
-                                        description: t.description || '',
+                                        // customer: t.customerName || t.company || t.customerEmail || '',                                        description: t.description || '',
                                         category: <span className="text-xs capitalize text-gray-500 dark:text-gray-300">{formatLabel(t.category || "general")}</span>,
                                         priority: <PriorityBadge priority={fmt(t.priority) || 'low'} />,
                                         status: <StatusBadge status={fmt(t.status) || 'open'} />,
                                         createdAt: t.createdAt ? new Date(t.createdAt).toUTCString().slice(0, -13) : '',
+
                                         assignedTo: assignedMember ? (
                                             <div className="flex items-center gap-1.5">
                                                 <img src={assignedMember.avatar} className="w-5 h-5 rounded-full" alt="" />
