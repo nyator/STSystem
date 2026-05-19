@@ -91,7 +91,7 @@ const Cards = () => {
 
     return (
         // <div className='bg-amber-500 items-center gap-4 w-full '>
-        <div className='mb-4 grid w-full grid-cols-2 items-center gap-3 border-b border-gray-200 pb-4 dark:border-gray-800 sm:grid-cols-3 xl:grid-cols-4'>
+        <div className='mb-4 grid w-full grid-cols-2 items-center gap-3 border-b border-gray-200 pb-4 dark:border-gray-800 sm:grid-cols-4 xl:grid-cols-6'>
             {ticketCards.map((card) => (
                 <Card
                     key={card.id}

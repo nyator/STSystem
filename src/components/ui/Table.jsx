@@ -22,7 +22,7 @@ function Table({
 
   // FIXED: Adjusted z-index strategies for proper overlapping hierarchy
   const stickyHeaderClass =
-    "sticky left-0 z-30 bg-gray-50 dark:bg-gray-800 rounded-tl-lg";
+    "sticky left-0 z-30 bg-gray-50 dark:bg-gray-800 rounded-tl-lg text-nowrap transition-all duration-100 ease-in";
   const stickyClass =
     "sticky left-0 z-10 bg-white dark:bg-gray-900 group-hover:bg-gray-50 dark:group-hover:bg-gray-800 text-nowrap transition-all duration-100 ease-in";
   const stickyEndHeaderClass =
@@ -32,9 +32,9 @@ function Table({
 
   return (
     <>
-      <div className="flex-col flex items-center w-full">
+      <div className="flex-col flex items-start w-full">
         {title && (
-          <h1 className="mb-3 text-lg font-semibold text-gray-950 dark:text-white">
+          <h1 className="pl-2 text-lg font-medium text-gray-950 dark:text-white">
             {title}
           </h1>
         )}

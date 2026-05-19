@@ -127,23 +127,18 @@ function Banner() {
           </div>
         </div>
 
-        {/* Right Side: Action Button */}
-        <div className="shrink-0">
-          {canCreateTicket(user) && (
-            <Button
-              variant="primary"
-              onClick={() => setOpenModal(true)}
-              className="group flex items-center gap-2"
-            >
-              <LuPlus
-                size={18}
-                className="transition-transform group-hover:rotate-90 duration-300"
-              />
-              <span className="font-bold text-[13px]">New Ticket</span>
-            </Button>
-          )}
-        </div>
       </div>
+
+      {canCreateTicket(user) && (
+        <button
+          type="button"
+          onClick={() => setOpenModal(true)}
+          className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg shadow-blue-500/30 transition-transform active:scale-95 dark:bg-blue-500 md:hidden"
+          aria-label="New ticket"
+        >
+          <LuPlus size={20} />
+        </button>
+      )}
 
       <TicketModal
         size="sm"

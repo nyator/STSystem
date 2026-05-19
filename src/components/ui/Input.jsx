@@ -9,7 +9,7 @@ import {
 } from "react-icons/lu";
 
 export const baseInputClasses =
-  "w-full p-2 text-gray-900 font-medium text-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 h-10 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors duration-200 dark:text-gray-100 placeholder:text-gray-400";
+  "w-full p-2 text-gray-900 font-medium text-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 h-9 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors duration-200 dark:text-gray-100 placeholder:text-gray-400";
 
 function SearchInput({ register, formfields, ...props }) {
   return (

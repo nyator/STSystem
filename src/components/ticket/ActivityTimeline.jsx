@@ -20,7 +20,7 @@ function ActivityTimeline({ activity = [], emptyText = "No activity yet" }) {
     return <p className="text-xs text-gray-400 p-2">{emptyText}</p>;
   }
 
-  // Define reversed list here so it's accessible for index checks
+  // Define reversed list here so it't accessible for index checks
   const reversedActivity = [...activity].reverse();
 
   return (

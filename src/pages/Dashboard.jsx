@@ -15,22 +15,22 @@ import { ROLES } from "../utils/AuthUtil";
 
 const dashboardViewByRole = {
   [ROLES.ADMIN]: {
-    title: "Ticket Queue",
+    title: "Recent Tickets",
     emptyTitle: "No tickets right now",
     emptyHint: "New customer requests will appear here.",
-    statuses: ["open"],
+    statuses: null,
   },
   [ROLES.ASSIGNEE]: {
-    title: "My Work Queue",
+    title: "Recent Assigned Tickets",
     emptyTitle: "No assigned work right now",
     emptyHint: "Assigned and reopened tickets will appear here.",
     statuses: ["assigned", "in-progress", "reopened"],
   },
   [ROLES.CLIENT]: {
-    title: "My Recent Requests",
+    title: "Recent Requests",
     emptyTitle: "No requests yet",
     emptyHint: "Create a ticket to start tracking support progress.",
-    statuses: ["open", "assigned", "in-progress", "resolved", "reopened"],
+    statuses: null,
   },
 };
 
@@ -39,13 +39,21 @@ function Dashboard() {
   const { user } = useAuth();
   const dashboardView =
     dashboardViewByRole[user?.role] || dashboardViewByRole[ROLES.CLIENT];
-  const filteredData = tickets.filter((t) =>
-    dashboardView.statuses.includes((t.status || "").toLowerCase()),
-  );
+  const filteredData = tickets
+    .filter((t) =>
+      dashboardView.statuses
+        ? dashboardView.statuses.includes((t.status || "").toLowerCase())
+        : true,
+    )
+    .toSorted(
+      (a, b) =>
+        new Date(b.createdAt || 0).getTime() -
+        new Date(a.createdAt || 0).getTime(),
+    );
 
   // Pagination logic
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 4;
   const totalItems = filteredData.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
   const paginatedData = filteredData.slice(
@@ -76,13 +84,14 @@ function Dashboard() {
         {/* <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'> */}
         <div className="mr-1">
           <div className="m-1 flex min-h-[calc(100vh-5.5rem)] w-full flex-col items-start space-y-2 p-3 md:p-4">
-            <Banner />
+            {/* <Banner /> */}
             <Cards />
-            <div className="flex flex-col sm:flex-col justify-around w-full mt-1 gap-5 ">
-              <div className="hidden h-fit items-center justify-start rounded-lg border border-gray-200 bg-white py-3 shadow-sm shadow-gray-200/50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none md:flex">
-                <div className="w-3/6 flex justify-center items-center  pb-10">
+            <div className="flex flex-col sm:flex-col justify-around w-full mt-1 gap-5">
+              <div className="hidden h-fit items-center justify-between rounded-lg border border-gray-200 bg-white py-3 shadow-sm shadow-gray-200/50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none md:flex">
+                <div className="w-3/6 flex justify-center items-center">
                   <Chart />
                 </div>
+                <div className="h-56 w-px shrink-0 self-center bg-gray-200 dark:bg-gray-800" />
                 <div className="w-3/6 flex justify-center ">
                   <Chart2 />
                 </div>
@@ -101,13 +110,11 @@ function Dashboard() {
                     title={dashboardView.title}
                     columns={[
                       { key: "id", title: "ID" },
-                      { key: "title", title: "Title" },
-                      // { key: 'description', title: 'Description' },
-                      // { key: 'customer', title: 'Customer' },
-                      
+                      { key: "ticket", title: "Ticket" },
+                      { key: "requester", title: "Requester" },
                       { key: "priority", title: "Priority" },
                       { key: "status", title: "Status" },
-                      { key: "createdAt", title: "Created At" },
+                      { key: "createdAt", title: "Created" },
                     ]}
                     data={paginatedData.map((t) => {
                       const fmt = (s) => {
@@ -119,18 +126,34 @@ function Dashboard() {
                       };
                       return {
                         id: t.id,
-                        title: t.title,
-                        customer: t.customerEmail || "",
-                        // description: t.description || '',
+                        ticket: (
+                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                            {t.title}
+                          </p>
+                        ),
+                        requester: (
+                          <div className="min-w-36">
+                            <p className="truncate text-xs font-medium text-gray-700 dark:text-gray-200">
+                              {t.customerName || t.company || "Customer"}
+                            </p>
+                            <p className="truncate text-[11px] text-gray-400">
+                              {t.customerEmail || "No email"}
+                            </p>
+                          </div>
+                        ),
                         priority: (
                           <PriorityBadge priority={fmt(t.priority) || "low"} />
                         ),
                         status: (
                           <StatusBadge status={fmt(t.status) || "open"} />
                         ),
-                        createdAt: t.createdAt
-                          ? new Date(t.createdAt).toGMTString().slice(0, -13)
-                          : "",
+                        createdAt: (
+                          <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                            {t.createdAt
+                              ? new Date(t.createdAt).toDateString()
+                              : "-"}
+                          </span>
+                        ),
                       };
                     })}
                     currentPage={currentPage}

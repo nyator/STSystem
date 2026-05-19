@@ -26,7 +26,7 @@ const Chart = () => {
 
   return (
     <div className="h-64 w-full p-3">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="90%" height="100%">
         <BarChart
           data={chartData}
           margin={{ top: 20, right: 10, left: -20, bottom: 0 }}

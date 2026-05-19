@@ -152,7 +152,7 @@ function MemberDrawer({ member, tickets = [], onClose }) {
                     key={ticket.id}
                     className="rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-800 dark:bg-gray-900"
                   >
-                    <div className="mb-2 flex items-start justify-between gap-2">
+                    <div className="mb-2 flex items-center justify-between gap-2">
                       <div className="min-w-0">
                         <p className="text-[10px] font-semibold text-gray-400">
                           {ticket.id}
@@ -162,13 +162,13 @@ function MemberDrawer({ member, tickets = [], onClose }) {
                         </p>
                       </div>
                       <PriorityBadge priority={ticket.priority} />
-                    </div>
                     <StatusBadge
                       status={String(ticket.status || "open").replace(
                         /-/g,
                         " ",
                       )}
                     />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -180,7 +180,7 @@ function MemberDrawer({ member, tickets = [], onClose }) {
   );
 }
 
-export default function MemberGroup() {
+export default function MemberGroup({ toolbarAction }) {
   const { data = [], isLoading } = useMembers();
   const { data: tickets = [] } = useTickets();
   const [currentPage, setCurrentPage] = useState(1);
@@ -272,19 +272,6 @@ export default function MemberGroup() {
   const selectedMember = enrichedMembers.find(
     (member) => member.id === drawerMemberId,
   );
-  const mostLoaded = enrichedMembers.reduce(
-    (top, member) =>
-      member.ticketsAssigned > (top?.ticketsAssigned || 0) ? member : top,
-    null,
-  );
-  const activeAssigned = enrichedMembers.reduce(
-    (sum, member) => sum + member.ticketsAssigned,
-    0,
-  );
-  const availableMembers = enrichedMembers.filter(
-    (member) => member.ticketsAssigned === 0,
-  ).length;
-
   const handlePrev = () => setCurrentPage((prev) => Math.max(1, prev - 1));
   const handleNext = () =>
     setCurrentPage((prev) => Math.min(totalPages, prev + 1));
@@ -297,61 +284,42 @@ export default function MemberGroup() {
   return (
     <div className="flex w-full gap-3">
       <div className="min-w-0 flex-1 space-y-4">
-        <div className="grid w-full grid-cols-2 gap-3 xl:grid-cols-4">
-          <TeamStat label="Total Members" value={enrichedMembers.length} />
-          <TeamStat
-            label="Active Assignments"
-            value={activeAssigned}
-            tone="bg-amber-50 text-amber-600"
-          />
-          <TeamStat
-            label="Available Members"
-            value={availableMembers}
-            tone="bg-emerald-50 text-emerald-600"
-          />
-          <TeamStat
-            label="Most Loaded"
-            value={
-              mostLoaded
-                ? `${mostLoaded.firstName} (${mostLoaded.ticketsAssigned})`
-                : "-"
-            }
-            tone="bg-violet-50 text-violet-600"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2 py-2 dark:border-gray-800 dark:bg-gray-900 md:flex-row md:items-center">
-          <div className="relative min-w-0 flex-1">
-            <LuSearch
-              size={15}
-              className="absolute left-3 top-3 text-gray-400"
-            />
-            <input
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-                setCurrentPage(1);
-              }}
-              placeholder="Search name, email, or team"
-              // className="h-10 w-sm max-w-xs rounded-md border border-gray-200 bg-white pl-9 pr-3 text-xs font-medium text-gray-900 outline-none transition-colors focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:ring-blue-500/20"
-              className={`${baseInputClasses} pl-9`}
-              type="search"
-            />
+        <div className="flex flex-col gap-2 dark:border-gray-800 dark:bg-gray-900 md:flex-row md:items-center justify-between">
+          <div className="flex items-center gap-2 w-full md:w-auto">
+            {toolbarAction}
+            <div className="relative min-w-0 flex-1">
+              <LuSearch
+                size={15}
+                className="absolute left-3 top-3 text-gray-400"
+              />
+              <input
+                value={search}
+                onChange={(event) => {
+                  setSearch(event.target.value);
+                  setCurrentPage(1);
+                }}
+                placeholder="Search name, email, or team"
+                className={`${baseInputClasses} pl-9`}
+                type="search"
+              />
+            </div>
           </div>
-          <OptionButton
-            title="Team"
-            options={teamOptions}
-            selected={teamFilter}
-            isOpen={openFilter === "team"}
-            setIsOpen={(open) => setOpenFilter(open ? "team" : null)}
-          />
-          <OptionButton
-            title="Workload"
-            options={workloadOptions}
-            selected={workloadFilter}
-            isOpen={openFilter === "workload"}
-            setIsOpen={(open) => setOpenFilter(open ? "workload" : null)}
-          />
+          <div className="flex gap-2 items-center justify-start">
+            <OptionButton
+              title="Team"
+              options={teamOptions}
+              selected={teamFilter}
+              isOpen={openFilter === "team"}
+              setIsOpen={(open) => setOpenFilter(open ? "team" : null)}
+            />
+            <OptionButton
+              title="Workload"
+              options={workloadOptions}
+              selected={workloadFilter}
+              isOpen={openFilter === "workload"}
+              setIsOpen={(open) => setOpenFilter(open ? "workload" : null)}
+            />
+          </div>{" "}
         </div>
 
         {isLoading ? (

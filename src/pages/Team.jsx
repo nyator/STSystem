@@ -92,11 +92,14 @@ function Team() {
 
       <div>
         <div className="m-1 flex min-h-[calc(100vh-5.5rem)] w-[calc(100%-0.5rem)] flex-col items-start space-y-3 rounded-lg border border-gray-200 bg-white p-4 shadow-sm shadow-gray-200/60 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none">
-          <Button variant="primary" onClick={() => setOpenModal(true)}>
-            <LuUserRoundPlus size={15} />
-            Add Member
-          </Button>
-          <MemeberGroup />
+          <MemeberGroup
+            toolbarAction={
+              <Button variant="primary" onClick={() => setOpenModal(true)}>
+                <LuUserRoundPlus size={15} />
+                <span className="hidden sm:inline">Add Member</span>
+              </Button>
+            }
+          />
 
         </div>
       </div>
