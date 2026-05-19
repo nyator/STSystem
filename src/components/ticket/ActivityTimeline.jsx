@@ -24,7 +24,7 @@ function ActivityTimeline({ activity = [], emptyText = "No activity yet" }) {
   const reversedActivity = [...activity].reverse();
 
   return (
-    <div className="mt-2 flex flex-col">
+    <div className="mt-2 flex flex-col  max-h-32 overflow-y-auto">
       {reversedActivity.map((event, index) => {
         const Icon = iconByType[event.type] || LuCircleDot;
         const isLast = index === reversedActivity.length - 1;
@@ -36,13 +36,13 @@ function ActivityTimeline({ activity = [], emptyText = "No activity yet" }) {
           >
             {!isLast && (
               <span
-                className="absolute left-5 top-6.5 h-[calc(100%-14px)] w-px bg-gray-300 dark:bg-gray-700"
+                className="absolute left-5 top-6.5 h-[calc(100%-14px)] w-[0.5px] bg-gray-300 dark:bg-gray-700"
                 aria-hidden="true"
               />
             )}
 
-            <div className="relative z-10 mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-gray-50 text-gray-500 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-400">
-              <Icon size={12} strokeWidth={2.5} />
+            <div className="relative z-10 mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-gray-50 text-gray-400 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-400">
+              <Icon size={10} strokeWidth={2.5} />
             </div>
 
             {/* Content Area */}

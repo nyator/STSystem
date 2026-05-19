@@ -138,34 +138,34 @@ function Ticket() {
     }, [searchedTickets, filters])
 
 
-    const exportTickets = () => {
-        const headers = ["ID", "Title", "Customer", "Company", "Category", "Priority", "Status", "Assigned To", "Created At", "Due At"]
-        const rows = ticketsToDisplay.map((ticket) => {
-            const member = members?.find((m) => m.id === ticket.assignedTo)
-            return [
-                ticket.id,
-                ticket.title,
-                ticket.customerName || ticket.customerEmail || "",
-                ticket.company || "",
-                ticket.category || "general",
-                ticket.priority,
-                ticket.status,
-                member ? `${member.firstName} ${member.lastName}` : "Unassigned",
-                ticket.createdAt || "",
-                ticket.dueAt || "",
-            ]
-        })
-        const csv = [headers, ...rows]
-            .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
-            .join("\n")
-        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" })
-        const url = URL.createObjectURL(blob)
-        const link = document.createElement("a")
-        link.href = url
-        link.download = "tickets.csv"
-        link.click()
-        URL.revokeObjectURL(url)
-    }
+    // const exportTickets = () => {
+    //     const headers = ["ID", "Title", "Customer", "Company", "Category", "Priority", "Status", "Assigned To", "Created At", "Due At"]
+    //     const rows = ticketsToDisplay.map((ticket) => {
+    //         const member = members?.find((m) => m.id === ticket.assignedTo)
+    //         return [
+    //             ticket.id,
+    //             ticket.title,
+    //             ticket.customerName || ticket.customerEmail || "",
+    //             ticket.company || "",
+    //             ticket.category || "general",
+    //             ticket.priority,
+    //             ticket.status,
+    //             member ? `${member.firstName} ${member.lastName}` : "Unassigned",
+    //             ticket.createdAt || "",
+    //             ticket.dueAt || "",
+    //         ]
+    //     })
+    //     const csv = [headers, ...rows]
+    //         .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+    //         .join("\n")
+    //     const blob = new Blob([csv], { type: "text/csv;charset=utf-8" })
+    //     const url = URL.createObjectURL(blob)
+    //     const link = document.createElement("a")
+    //     link.href = url
+    //     link.download = "tickets.csv"
+    //     link.click()
+    //     URL.revokeObjectURL(url)
+    // }
 
     return (
         <div>
@@ -184,10 +184,10 @@ function Ticket() {
                         <TicketSearch onResults={setSearchedTickets} />
                         {/* <DatePicker /> */}
                         <div className='flex items-center gap-2'>
-                            <Button variant="default" onClick={exportTickets}>
+                            {/* <Button variant="default" onClick={exportTickets}>
                                 <LuDownload size={15} />
                                 <span className="hidden lg:inline">Export</span>
-                            </Button>
+                            </Button> */}
                             <Button variant="default" onClick={() => setViewMode((mode) => mode === "table" ? "kanban" : "table")}>
                                 {viewMode === "table" ? <LuKanban size={15} /> : <LuTable2 size={15} />}
                                 <span className="hidden lg:inline">{viewMode === "table" ? "Kanban" : "Table"}</span>
@@ -252,7 +252,7 @@ function Ticket() {
                                 // { key: 'category', title: 'Category' },
                                 { key: 'priority', title: 'Priority' },
                                 { key: 'status', title: 'Status' },
-                                { key: 'stl', title: 'Status' },
+                                // { key: 'sta', title: 'Status' },
                                 { key: 'assignedTo', title: 'Assigned To' },
                             ]}
                             data={

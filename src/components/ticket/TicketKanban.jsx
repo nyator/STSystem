@@ -34,7 +34,7 @@ function TicketKanban({ tickets = [], members = [], onSelectTicket }) {
                                     <article
                                         key={ticket.id}
                                         onClick={() => onSelectTicket?.(ticket.id)}
-                                        className="cursor-pointer rounded-lg border border-gray-200 bg-white p-3 shadow-sm shadow-gray-200/50 transition-colors hover:border-gray-300 hover:bg-gray-50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none dark:hover:border-gray-700 dark:hover:bg-gray-800"
+                                        className="cursor-pointer rounded-lg border border-gray-200 bg-white/50 p-3 shadow-sm shadow-gray-200/50 transition-colors hover:border-gray-200 hover:bg-white dark:border-gray-800 dark:bg-gray-900 dark:shadow-none dark:hover:border-gray-700 dark:hover:bg-gray-800"
                                     >
                                         <div className="mb-2 flex items-start justify-between gap-2">
                                             <div className="min-w-0">

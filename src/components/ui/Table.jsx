@@ -20,25 +20,18 @@ function Table({
         ? Object.keys(data[0]).map((key) => ({ key, title: key }))
         : [];
 
+  // FIXED: Adjusted z-index strategies for proper overlapping hierarchy
   const stickyHeaderClass =
-    "sticky left-0 z-0 bg-gray-50 dark:bg-gray-800 rounded-tl-lg";
+    "sticky left-0 z-30 bg-gray-50 dark:bg-gray-800 rounded-tl-lg";
   const stickyClass =
-    "sticky left-0 z-0 bg-white dark:bg-gray-900 group-hover:bg-gray-50 dark:group-hover:bg-gray-800 text-nowrap transition-all duration-100 ease-in";
+    "sticky left-0 z-10 bg-white dark:bg-gray-900 group-hover:bg-gray-50 dark:group-hover:bg-gray-800 text-nowrap transition-all duration-100 ease-in";
   const stickyEndHeaderClass =
-    "sticky right-0 z-0 bg-gray-50 dark:bg-gray-800 rounded-tr-lg";
+    "sticky right-0 z-30 bg-gray-50 dark:bg-gray-800 rounded-tr-lg";
   const stickyEndClass =
-    "sticky right-0 bg-white dark:bg-gray-900 group-hover:bg-gray-50 dark:group-hover:bg-gray-800 text-nowrap transition-all duration-100 ease-in";
+    "sticky right-0 z-10 bg-white dark:bg-gray-900 group-hover:bg-gray-50 dark:group-hover:bg-gray-800 text-nowrap transition-all duration-100 ease-in";
 
   return (
     <>
-      {/* Shared edit modal — driven by selectedRowId */}
-      {/* <EditTicketModal
-          ticketId={selectedRowId}
-          onClose={() => setSelectedRowId(null)}
-      /> */}
-
-      {/* <TicketDrawer /> */}
-
       <div className="flex-col flex items-center w-full">
         {title && (
           <h1 className="mb-3 text-lg font-semibold text-gray-950 dark:text-white">
@@ -53,7 +46,8 @@ function Table({
             }`}
           >
             <table className="w-full border-collapse">
-              <thead className="border-b z-5 border-gray-200 bg-gray-50 text-[11px] font-semibold uppercase tracking-wide text-gray-500 text-nowrap sticky top-0 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-400">
+              {/* FIXED: Changed z-0 to z-20 so the top-sticky row clears the scrolling body content */}
+              <thead className="border-b z-20 border-gray-200 bg-gray-50 text-[11px] font-semibold uppercase tracking-wide text-gray-500 text-nowrap sticky top-0 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-400">
                 <tr className="w-full">
                   {cols.map((col, index) => (
                     <th

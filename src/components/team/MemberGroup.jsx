@@ -15,6 +15,8 @@ import StatusBadge from "../ui/StatusBadge";
 import PriorityBadge from "../ui/PriorityBadge";
 import { OptionButton } from "../ui/Button";
 
+import { baseInputClasses } from "../ui/Input";
+
 const ITEMS_PER_PAGE = 10;
 
 const workloadMeta = (count = 0) => {
@@ -46,11 +48,11 @@ function TeamStat({ label, value, tone = "bg-blue-50 text-blue-600" }) {
       >
         <LuBriefcaseBusiness size={16} />
       </div>
-      <div className="flex items-center gap-1 rounded-md py-1">
-        <p className="text-lg font-medium text-gray-950 dark:text-white">
+      <div className="flex flex-col items-start rounded-md leading-2.5">
+        <p className="text-md font-medium text-gray-950 dark:text-white">
           {value}
         </p>
-        <p className="mt-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+        <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
           {label}
         </p>
       </div>
@@ -331,7 +333,8 @@ export default function MemberGroup() {
                 setCurrentPage(1);
               }}
               placeholder="Search name, email, or team"
-              className="h-10 w-sm max-w-xs rounded-md border border-gray-200 bg-white pl-9 pr-3 text-xs font-medium text-gray-900 outline-none transition-colors focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:ring-blue-500/20"
+              // className="h-10 w-sm max-w-xs rounded-md border border-gray-200 bg-white pl-9 pr-3 text-xs font-medium text-gray-900 outline-none transition-colors focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:focus:ring-blue-500/20"
+              className={`${baseInputClasses} pl-9`}
               type="search"
             />
           </div>
@@ -385,7 +388,7 @@ export default function MemberGroup() {
                     alt={`${member.firstName}`}
                     className="h-7 w-7 rounded-md object-cover"
                   />
-                  <span className="font-medium">
+                  <span className="font-medium truncate text-gray-900 dark:text-white">
                     {member.firstName} {member.lastName}
                   </span>
                 </div>
@@ -404,7 +407,7 @@ export default function MemberGroup() {
               ),
               actions: (
                 <div
-                  className="flex justify-end"
+                  className="flex justify-start w-fit"
                   onClick={(event) => event.stopPropagation()}
                 >
                   {member.ticketsAssigned === 0 ? (
@@ -417,7 +420,7 @@ export default function MemberGroup() {
                     </button>
                   ) : (
                     <span className="text-xs text-gray-400">
-                      Cannot delete: {member.ticketsAssigned} active
+                      {member.ticketsAssigned} active
                     </span>
                   )}
                   {showModal && selectedMemberId === member.id && (

@@ -30,7 +30,7 @@ function Header({ icon, title, description }) {
         <div className="flex items-center gap-2">
           <div className="flex gap-2">
             <ThemeToggle2 />
-            <NotificationCenter />
+            {/* <NotificationCenter /> */}
           </div>
 
           {isAuthenticated && (
