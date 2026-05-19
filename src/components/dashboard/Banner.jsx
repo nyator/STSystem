@@ -2,7 +2,14 @@ import { useState } from "react";
 import Button, { OptionButton } from "../ui/Button";
 import { canCreateTicket, ROLES } from "../../utils/AuthUtil";
 import { useAuth } from "../../Hooks/useAuth";
-import { LuPlus, LuMail, LuBuilding2, LuUserRound, LuTags, LuCalendarClock } from "react-icons/lu";
+import {
+  LuPlus,
+  LuMail,
+  LuBuilding2,
+  LuUserRound,
+  LuTags,
+  LuCalendarClock,
+} from "react-icons/lu";
 
 import { DevTool } from "@hookform/devtools";
 import { useForm } from "react-hook-form";
@@ -27,7 +34,7 @@ function Banner() {
       eyebrow: "Admin Overview",
       title: "Support operations",
       description:
-        "Triage new requests, monitor SLA risk, and keep the support queue moving.",
+        "Triage new requests, monitor queue, and keep the support queue moving.",
     },
     [ROLES.ASSIGNEE]: {
       eyebrow: "Assignee Workspace",
@@ -78,7 +85,13 @@ function Banner() {
   const onSubmit = (data) => {
     // console.log({ ...data, priority: selectedPriority })
     createTicket(
-      { ...data, priority: selectedPriority, category: selectedCategory, createdBy: user.id, actor: user },
+      {
+        ...data,
+        priority: selectedPriority,
+        category: selectedCategory,
+        createdBy: user.id,
+        actor: user,
+      },
       {
         onSuccess: () => {
           toast.success("Tickets Created!");
@@ -166,14 +179,24 @@ function Banner() {
             <FormInput
               name="customerName"
               placeholder="Customer name"
-              icon={<LuUserRound className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />}
+              icon={
+                <LuUserRound
+                  className="absolute left-3 top-3 text-gray-700 dark:text-gray-400"
+                  size={15}
+                />
+              }
               register={register}
               formfields={{}}
             />
             <FormInput
               name="company"
               placeholder="Company"
-              icon={<LuBuilding2 className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />}
+              icon={
+                <LuBuilding2
+                  className="absolute left-3 top-3 text-gray-700 dark:text-gray-400"
+                  size={15}
+                />
+              }
               register={register}
               formfields={{}}
             />
@@ -204,7 +227,7 @@ function Banner() {
             formfields={{ required: "Description is required" }}
             error={errors.description}
           />
-           <div className="flex space-x-2">
+          <div className="flex space-x-2">
             <OptionButton
               title="Priority"
               options={priorityOptions}
@@ -237,12 +260,16 @@ function Banner() {
               name="dueAt"
               type="datetime-local"
               placeholder="Due date"
-              icon={<LuCalendarClock className="absolute left-3 top-3 text-gray-700 dark:text-gray-400" size={15} />}
+              icon={
+                <LuCalendarClock
+                  className="absolute left-3 top-3 text-gray-700 dark:text-gray-400"
+                  size={15}
+                />
+              }
               register={register}
               formfields={{}}
             />
           </div>
-         
         </form>
       </TicketModal>
     </div>

@@ -17,7 +17,7 @@ function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, s
     }
 
     return (
-        <div className="relative" ref={ref}>
+        <div className={`relative ${isOpen ? "z-50" : "z-0"}`} ref={ref}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 onMouseDown={(e) => e.stopPropagation()}
@@ -31,7 +31,7 @@ function FilterButton({ title, icon, isOpen, setIsOpen, filterGroups, filters, s
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 top-full z-20 mt-2 w-44 rounded-lg border border-gray-200 bg-white p-2 shadow-xl shadow-gray-200/80 max-h-96 overflow-y-auto dark:border-gray-700 dark:bg-gray-800 dark:shadow-none" onMouseDown={(e) => e.stopPropagation()}>
+                <div className="absolute right-0 top-full z-50 mt-2 max-h-96 w-52 overflow-y-auto rounded-lg border border-gray-200 bg-white p-2 shadow-xl shadow-gray-200/80 dark:border-gray-700 dark:bg-gray-800 dark:shadow-none" onMouseDown={(e) => e.stopPropagation()}>
                     {hasActiveFilters && (
                         <button
                             onClick={() => { clearFilters(); setIsOpen(false); }}

@@ -15,7 +15,7 @@ import { ROLES } from "../utils/AuthUtil";
 
 const dashboardViewByRole = {
   [ROLES.ADMIN]: {
-    title: "Queue",
+    title: "Ticket Queue",
     emptyTitle: "No tickets right now",
     emptyHint: "New customer requests will appear here.",
     statuses: ["open"],

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   LuCheck,
   LuMessageSquarePlus,
@@ -37,6 +38,38 @@ import {
   canUpdatePriority,
 } from "../../utils/AuthUtil";
 
+function useSmallScreenPortal(isOpen) {
+  const [shouldPortal, setShouldPortal] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen || typeof window === "undefined") {
+      setShouldPortal(false);
+      return;
+    }
+
+    const mediaQuery = window.matchMedia("(max-width: 1279px)");
+    const handleChange = () => setShouldPortal(mediaQuery.matches);
+
+    handleChange();
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!shouldPortal) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [shouldPortal]);
+
+  return shouldPortal;
+}
+
 function TicketDrawer({ ticketId, onClose }) {
   const { ticket } = useTicket(ticketId);
   const { updateTicket, isLoading: isSubmitting } = useEditTicket();
@@ -47,6 +80,7 @@ function TicketDrawer({ ticketId, onClose }) {
   const [showAssigneePicker, setShowAssigneePicker] = useState(false);
   const [selectedAssignee, setSelectedAssignee] = useState(null);
   const [assigneeSearch, setAssigneeSearch] = useState("");
+  const shouldPortal = useSmallScreenPortal(Boolean(ticketId));
 
   // Handle the comment submission logic
   const onSubmit = (data) => {
@@ -174,15 +208,15 @@ function TicketDrawer({ ticketId, onClose }) {
     setShowAssigneePicker(false);
   };
 
-  return (
+  const drawer = (
     <>
       <button
         type="button"
-        className="fixed inset-0 z-30 bg-gray-950/40 backdrop-blur-[1px] xl:hidden"
+        className="fixed inset-0 z-[70] bg-gray-950/40 backdrop-blur-[1px] xl:hidden"
         aria-label="Close ticket drawer backdrop"
         onClick={onClose}
       />
-      <aside className="fixed bottom-2 right-2 top-2 z-40 flex w-[min(92vw,24rem)] shrink-0 flex-col rounded-lg border border-gray-200 bg-white px-3 py-4 shadow-2xl shadow-gray-950/20 dark:border-gray-800 dark:bg-gray-900 xl:static xl:z-auto xl:h-[calc(100vh-5.5rem)] xl:w-88 xl:shadow-sm xl:shadow-gray-200/60 dark:xl:shadow-none">
+      <aside className="fixed bottom-2 right-2 top-2 z-[80] flex w-[min(92vw,24rem)] shrink-0 flex-col rounded-lg border border-gray-200 bg-white px-3 py-4 shadow-2xl shadow-gray-950/20 dark:border-gray-800 dark:bg-gray-900 xl:static xl:z-auto xl:h-[calc(100vh-5.5rem)] xl:w-88 xl:shadow-sm xl:shadow-gray-200/60 dark:xl:shadow-none">
         <div className="mb-3 flex items-start justify-between gap-3 border-b border-gray-100 pb-3 dark:border-gray-700">
           <div className="min-w-0">
             <p className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase text-gray-400">
@@ -446,6 +480,8 @@ function TicketDrawer({ ticketId, onClose }) {
       </aside>
     </>
   );
+
+  return shouldPortal ? createPortal(drawer, document.body) : drawer;
 }
 
 export default TicketDrawer;

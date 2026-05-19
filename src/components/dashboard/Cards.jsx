@@ -39,11 +39,11 @@ const Cards = () => {
             value: slaRiskCount,
             colors: "bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-300"
         },
-        {
-            id: 8, label: "Avg Resolution",
-            value: averageResolutionHours ? `${averageResolutionHours}h` : "-",
-            colors: "bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-300"
-        },
+        // {
+        //     id: 8, label: "Avg Resolution",
+        //     value: averageResolutionHours ? `${averageResolutionHours}h` : "-",
+        //     colors: "bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-300"
+        // },
     ]
 
     const adminCards = [

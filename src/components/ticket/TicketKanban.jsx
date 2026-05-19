@@ -11,11 +11,11 @@ const KANBAN_COLUMNS = [
 
 function TicketKanban({ tickets = [], members = [], onSelectTicket }) {
     return (
-        <div className="grid h-[calc(100vh-237px)] w-full grid-cols-1 gap-3 overflow-auto pb-2 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid h-[calc(100vh-197px)] w-full grid-cols-1 gap-3 overflow-auto pb-2 md:grid-cols-2 xl:grid-cols-4">
             {KANBAN_COLUMNS.map((column) => {
                 const columnTickets = tickets.filter((ticket) => ticket.status === column.status)
                 return (
-                    <section key={column.status} className="flex min-h-0 h-45 flex-col rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-950/50">
+                    <section key={column.status} className="flex min-h-0 h-54 flex-col rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-950/50">
                         <div className="flex items-center justify-between border-b border-gray-200 px-3 py-2 dark:border-gray-800">
                             <div className="flex items-center gap-2">
                                 <StatusBadge status={column.status.replace(/-/g, " ")} />
@@ -26,7 +26,7 @@ function TicketKanban({ tickets = [], members = [], onSelectTicket }) {
 
                         <div className="flex-1 space-y-2 overflow-y-auto p-2">
                             {columnTickets.length === 0 ? (
-                                <p className="py-6 text-center text-xs text-gray-400">No tickets</p>
+                                <p className="py-16 text-center text-xs text-gray-400">No tickets</p>
                             ) : columnTickets.map((ticket) => {
                                 const member = members.find((item) => item.id === ticket.assignedTo)
                                 const slaState = getTicketSlaState(ticket)
