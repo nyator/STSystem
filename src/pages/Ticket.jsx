@@ -261,13 +261,15 @@ function Ticket() {
           <div className="sticky top-5 z-40 mb-4 flex w-full flex-col gap-3 border-b border-gray-100 bg-white py-4 dark:border-gray-800 dark:bg-gray-900 md:flex-row md:items-center md:justify-between">
             <div className="flex w-full flex-col gap-2 sm:flex-row md:max-w-xl">
               {canCreateTicket(user) && (
-                <Button
-                  variant="primary"
-                  onClick={() => setOpenNewTicket(true)}
-                >
-                  <LuPlus size={15} />
-                  <span>Add Ticket</span>
-                </Button>
+                <div className="hidden md:block">
+                  <Button
+                    variant="primary"
+                    onClick={() => setOpenNewTicket(true)}
+                  >
+                    <LuPlus size={15} />
+                    <span>Add Ticket</span>
+                  </Button>
+                </div>
               )}
               <TicketSearch onResults={setSearchedTickets} />
             </div>
@@ -446,6 +448,17 @@ function Ticket() {
           onClose={() => setSelectedTicketId(null)}
         />
       </div>
+
+      {canCreateTicket(user) && (
+        <button
+          type="button"
+          onClick={() => setOpenNewTicket(true)}
+          className="fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg shadow-blue-500/30 transition-transform active:scale-95 dark:bg-blue-500 md:hidden"
+          aria-label="Add ticket"
+        >
+          <LuPlus size={20} />
+        </button>
+      )}
 
       <TicketModal
         size="sm"

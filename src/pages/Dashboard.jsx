@@ -84,7 +84,7 @@ function Dashboard() {
 
       <div>
         {/* <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'> */}
-        <div className="mr-1">
+        <div className="mr-1 bg-white/70">
           <div className="m-1 flex min-h-[calc(100vh-5.5rem)] w-full flex-col items-start space-y-2 p-3 md:p-4">
             {/* <Banner /> */}
             <Cards />

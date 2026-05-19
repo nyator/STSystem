@@ -41,7 +41,7 @@ const Chart3 = () => {
     return (
         <div className="h-64 w-full px-3">
             <div className="flex items-center justify-around gap-2 text-sm">
-                <h3 className="text-sm font-semibold text-gray-700 dark:text-white">Staff Capacity</h3>
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-white">Team Capacity</h3>
                 <span className="rounded-full bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300">
                     {stats.activePercent}% Active
                 </span>
@@ -63,14 +63,14 @@ const Chart3 = () => {
                                 <Cell key={entry.name} fill={entry.color} stroke="none" />
                             ))}
                         </Pie>
-                        <Tooltip
+                        {/* <Tooltip
                             formatter={tooltipFormatter}
                             contentStyle={{
                                 borderRadius: '8px',
                                 border: '1px solid #e5e7eb',
                                 boxShadow: '0 8px 20px rgba(15,23,42,0.08)',
                             }}
-                        />
+                        /> */}
                     </PieChart>
                 </ResponsiveContainer>
 
