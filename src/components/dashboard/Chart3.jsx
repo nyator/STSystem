@@ -1,91 +1,88 @@
-import React, { useMemo } from 'react';
-import { RadialBarChart, RadialBar, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import { useMemo } from 'react';
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import useMembers from '../../Hooks/Team/useMembers';
+import useTickets from '../../Hooks/Tickets/useTickets';
 
 const Chart3 = () => {
     const { data: members = [] } = useMembers();
+    const { data: tickets = [] } = useTickets();
 
-    // 1. Memoize counts to optimize performance
-    const counts = useMemo(() => {
-        const active = members.length;
+    const stats = useMemo(() => {
+        const assignedMemberIds = new Set(
+            tickets.filter((ticket) => ticket.assignedTo).map((ticket) => ticket.assignedTo),
+        );
+        const active = members.filter((member) => assignedMemberIds.has(member.id)).length;
+        const available = Math.max(0, members.length - active);
+
         return {
+            active,
+            available,
             total: members.length,
-            active: active,
-            percentage: members.length > 0 ? (active / members.length) * 100 : 0,
+            activePercent: members.length ? Math.round((active / members.length) * 100) : 0,
         };
-    }, [members]);
+    }, [members, tickets]);
 
-    const chartData = [
-        {
-            name: 'Active Staff',
-            value: counts.active,
-            fill: '#6d83c4', // The active progress color
+    const chartData = useMemo(() => {
+        if (stats.total === 0) {
+            return [{ name: 'No Staff', value: 1, color: '#e5e7eb' }];
         }
-    ];
+
+        return [
+            { name: 'Active Staff', value: stats.active, color: '#4f46e5' },
+            { name: 'Available Staff', value: stats.available, color: '#65a30d' },
+        ];
+    }, [stats]);
+
+    const tooltipFormatter = (value, name) => {
+        if (stats.total === 0) return ['0', name];
+        return [value, name];
+    };
 
     return (
-        <div className="w-75 h-55 border border-[#e5e7eb] dark:border-gray-700 rounded-2xl p-3.75 bg-white dark:bg-gray-800">
-
-            {/* Minimal Title/Header */}
-            <div className="mb-2.5 flex justify-between items-center">
-                <h3 className="text-sm font-semibold text-[#374151] dark:text-white">Staff Status</h3>
-                <span className="text-xs text-green-500 bg-green-100 dark:bg-green-900 dark:text-green-300 px-2 py-0.5 rounded-full font-medium">
-                    {counts.percentage.toFixed(0)}% Active
+        <div className="h-64 w-full px-3">
+            <div className="flex items-center justify-around gap-2 text-sm">
+                <h3 className="text-sm font-semibold text-gray-700 dark:text-white">Staff Capacity</h3>
+                <span className="rounded-full bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300">
+                    {stats.activePercent}% Active
                 </span>
             </div>
 
-            <div style={{ position: 'relative', width: '100%', height: '160px' }}>
+            <div className="relative h-49">
                 <ResponsiveContainer width="100%" height="100%">
-                    {/* Switch PieChart for RadialBarChart */}
-                    <RadialBarChart
-                        cx="50%"
-                        cy="50%"
-                        innerRadius="75%"
-                        outerRadius="100%"
-                        barSize={12} // Thickness of the track
-                        data={chartData}
-                        startAngle={90} // Progress bar starts at 12 o'clock
-                        endAngle={-270} // and goes clockwise a full 360 degrees
-                    >
-                        {/* Define the 'track' (The light gray inactive background) */}
-                        <PolarAngleAxis
-                            type="number"
-                            domain={[0, counts.total]} // Total count is 100% of the circle
-                            angleAxisId={0}
-                            tick={false}
-                        />
-
-                        {/* Define the progress (Active count overlay) */}
-                        <RadialBar
-                            minAngle={15}
-                            background={{ fill: '#e5e7eb' }} // Standard slate-200 for 'inactive/empty' track
-                            clockWise
+                    <PieChart>
+                        <Pie
+                            data={chartData}
+                            cx="50%"
+                            cy="50%"
+                            innerRadius={58}
+                            outerRadius={86}
+                            paddingAngle={4}
                             dataKey="value"
-                            cornerRadius={10} // Perfectly rounded ends
+                        >
+                            {chartData.map((entry) => (
+                                <Cell key={entry.name} fill={entry.color} stroke="none" />
+                            ))}
+                        </Pie>
+                        <Tooltip
+                            formatter={tooltipFormatter}
+                            contentStyle={{
+                                borderRadius: '8px',
+                                border: '1px solid #e5e7eb',
+                                boxShadow: '0 8px 20px rgba(15,23,42,0.08)',
+                            }}
                         />
-
-                    </RadialBarChart>
+                    </PieChart>
                 </ResponsiveContainer>
 
-                {/* Central Labels, positioned precisely inside the RadialBar */}
-                <div style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    textAlign: 'center',
-                    pointerEvents: 'none',
-                    fontFamily: 'sans-serif'
-                }}>
-                    {/* Focus on the active number */}
-                    <div className='text-[36px] font-bold text-[#1f2637] dark:text-white leading-10'>
-                        {counts.active}
-                    </div>
-                    {/* Total as a subtitle label */}
-                    <div className='text-xs text-[#9ca3af] dark:text-gray-300 uppercase mt-1'>
-                        OF {counts.total} TOTAL
-                    </div>
+                <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+                    <span className="text-2xl font-semibold text-gray-950 dark:text-white">{stats.total}</span>
+                    <span className="block text-xs text-gray-500">Members</span>
                 </div>
+            </div>
+
+            <div className="mt-1 flex justify-center gap-4 text-xs font-medium text-gray-500 dark:text-gray-400">
+                <span>Active {stats.active}</span>
+                <span>Available {stats.available}</span>
             </div>
         </div>
     );

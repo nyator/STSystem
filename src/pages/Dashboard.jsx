@@ -5,6 +5,7 @@ import Cards from "../components/dashboard/Cards";
 import Table from "../components/ui/Table";
 import Chart from "../components/dashboard/Chart";
 import Chart2 from "../components/dashboard/Chart2";
+import Chart3 from "../components/dashboard/Chart3";
 import useTickets from "../Hooks/Tickets/useTickets";
 
 import PriorityBadge from "../components/ui/PriorityBadge";
@@ -37,6 +38,7 @@ const dashboardViewByRole = {
 function Dashboard() {
   const { data: tickets = [] } = useTickets();
   const { user } = useAuth();
+  const isAdmin = user?.role === ROLES.ADMIN;
   const dashboardView =
     dashboardViewByRole[user?.role] || dashboardViewByRole[ROLES.CLIENT];
   const filteredData = tickets
@@ -66,7 +68,7 @@ function Dashboard() {
 
   return (
     <div>
-      <div className="sticky top-0 z-10 w-full border-b border-gray-200 bg-[#f6f7f9]/95 p-4 backdrop-blur dark:border-gray-800 dark:bg-[#0f141b]/95">
+      <div className="sticky top-0 z-10 w-full border-b border-gray-200 bg-white p-4 backdrop-blur dark:border-gray-800 dark:bg-[#0f141b]/95">
         <Header
           icon={<LuLayoutDashboard size={16} className="inline" />}
           title="Dashboard"
@@ -88,13 +90,23 @@ function Dashboard() {
             <Cards />
             <div className="flex flex-col sm:flex-col justify-around w-full mt-1 gap-5">
               <div className="hidden h-fit items-center justify-between rounded-lg border border-gray-200 bg-white py-3 shadow-sm shadow-gray-200/50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none md:flex">
-                <div className="w-3/6 flex justify-center items-center">
+                <div className="flex flex-1 justify-center items-center">
                   <Chart />
                 </div>
                 <div className="h-56 w-px shrink-0 self-center bg-gray-200 dark:bg-gray-800" />
-                <div className="w-3/6 flex justify-center ">
-                  <Chart2 />
-                </div>
+                {!isAdmin && (
+                  <div className="flex flex-1 justify-center">
+                    <Chart2 />
+                  </div>
+                )}
+                {isAdmin && (
+                  <>
+                    <div className="h-56 w-px shrink-0 self-center bg-gray-200 dark:bg-gray-800" />
+                    <div className="flex flex-1 justify-center">
+                      <Chart3 />
+                    </div>
+                  </>
+                )}
               </div>
               <div className="w-full relative">
                 {filteredData.length === 0 ? (
@@ -127,7 +139,7 @@ function Dashboard() {
                       return {
                         id: t.id,
                         ticket: (
-                          <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                          <p className="truncate font-medium text-gray-900 dark:text-white">
                             {t.title}
                           </p>
                         ),

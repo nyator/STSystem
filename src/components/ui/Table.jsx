@@ -34,7 +34,7 @@ function Table({
     <>
       <div className="flex-col flex items-start w-full">
         {title && (
-          <h1 className="pl-2 text-lg font-medium text-gray-950 dark:text-white">
+          <h1 className="pl-2 text-xl font-semibold text-gray-950 dark:text-white sm:text-lg sm:font-medium">
             {title}
           </h1>
         )}
@@ -47,12 +47,12 @@ function Table({
           >
             <table className="w-full border-collapse">
               {/* FIXED: Changed z-0 to z-20 so the top-sticky row clears the scrolling body content */}
-              <thead className="border-b z-20 border-gray-200 bg-gray-50 text-[11px] font-semibold uppercase tracking-wide text-gray-500 text-nowrap sticky top-0 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-400">
+              <thead className="border-b z-20 border-gray-200 bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500 text-nowrap sticky top-0 dark:border-gray-800 dark:bg-gray-800 dark:text-gray-400 sm:text-[11px]">
                 <tr className="w-full">
                   {cols.map((col, index) => (
                     <th
                       key={col.key}
-                      className={`text-left py-3 px-3 ${
+                      className={`text-left px-4 py-3.5 sm:px-3 sm:py-3 ${
                         index === 0 ? stickyHeaderClass : ""
                       } ${index === cols.length - 1 ? stickyEndHeaderClass : ""}`}
                     >
@@ -83,7 +83,7 @@ function Table({
                       {cols.map((col, index) => (
                         <td
                           key={col.key}
-                          className={`text-left px-3 py-2.5 text-gray-700 dark:text-gray-300 ${
+                          className={`text-left px-4 py-4 text-sm text-gray-700 dark:text-gray-300 sm:px-3 sm:py-2.5 sm:text-xs ${
                             index === 0 ? stickyClass : ""
                           } ${index === cols.length - 1 ? stickyEndClass : ""}`}
                           onClick={

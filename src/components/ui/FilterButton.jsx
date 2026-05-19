@@ -37,7 +37,7 @@ function FilterButton({
           <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-blue-500 ring-2 ring-white dark:ring-gray-800"></span>
         )}
         {icon}
-        <span className="hidden lg:block font-medium">{title}</span>
+        <span className="font-medium">{title}</span>
       </button>
 
       {isOpen && (

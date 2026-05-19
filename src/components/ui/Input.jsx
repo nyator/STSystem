@@ -9,7 +9,7 @@ import {
 } from "react-icons/lu";
 
 export const baseInputClasses =
-  "w-full p-2 text-gray-900 font-medium text-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 h-9 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors duration-200 dark:text-gray-100 placeholder:text-gray-400";
+  "w-full p-2.5 text-gray-900 font-medium text-sm sm:text-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 h-11 sm:h-9 rounded-xl focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors duration-200 dark:text-gray-100 placeholder:text-gray-400";
 
 function SearchInput({ register, formfields, ...props }) {
   return (
@@ -22,7 +22,7 @@ function SearchInput({ register, formfields, ...props }) {
         {...props}
       />
       <LuSearch
-        className="absolute left-3 top-3 text-gray-400 dark:text-gray-400"
+        className="absolute left-3 top-2.5 text-gray-400 dark:text-gray-400"
         size={15}
       />
     </div>
@@ -76,7 +76,7 @@ function FormInput({
         {...register(name, formfields)}
         placeholder={placeholder}
         type={resolvedType}
-        className={`pl-8 ${isPassword ? "pr-8" : ""} ${baseInputClasses} ${error ? "border-red-400 bg-red-50 focus:ring-red-100 dark:bg-red-500/10" : ""} ${readOnly ? "cursor-not-allowed bg-gray-50 dark:bg-gray-800" : ""}`}
+        className={`pl-8 text-sm ${isPassword ? "pr-8" : ""} ${baseInputClasses} ${error ? "border-red-600 bg-red-50 focus:ring-red-100 dark:bg-red-500/10" : ""} ${readOnly ? "cursor-not-allowed bg-gray-50 dark:bg-gray-800" : ""}`}
         {...props}
         {...(readOnly && { readOnly })}
       />
@@ -121,12 +121,12 @@ function FormTextArea({
       <textarea
         {...register(name, formfields)}
         placeholder={placeholder}
-        className={`${error ? "border-red-400 bg-red-50 focus:ring-red-100 dark:bg-red-500/10" : ""} w-full p-2 pl-8 text-gray-900 font-medium text-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 min-h-20 max-h-42 rounded-md focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors duration-200 dark:text-gray-100 placeholder:text-gray-400 ${readOnly ? "cursor-not-allowed bg-gray-50 dark:bg-gray-800" : ""}`}
+        className={`${error ? "border-red-400 bg-red-50 focus:ring-red-100 dark:bg-red-500/10" : ""} w-full p-2.5 pl-8 text-gray-900 font-medium text-sm sm:text-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 min-h-24 sm:min-h-20 max-h-42 rounded-md focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors duration-200 dark:text-gray-100 placeholder:text-gray-400 ${readOnly ? "cursor-not-allowed bg-gray-50 dark:bg-gray-800" : ""}`}
         {...props}
         {...(readOnly && { readOnly })}
       />
       <LuTextCursorInput
-        className="absolute left-3 top-3 text-gray-700 dark:text-gray-400"
+        className="absolute left-3 top-2.5 text-gray-700 dark:text-gray-400"
         size={15}
       />
     </div>
@@ -147,7 +147,7 @@ function FormCommentArea({
       <textarea
         {...register(name, formfields)}
         placeholder={placeholder}
-        className={`w-full p-2 pl-8 rounded-md min-h-9 h-9 text-xs text-gray-800 dark:text-gray-100 border border-dashed border-gray-300 dark:border-gray-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors ${error ? "border-red-400 bg-red-50 dark:bg-red-500/10" : "bg-white dark:bg-gray-900"} max-h-42 ${readOnly ? "cursor-not-allowed" : ""}`}
+        className={`w-full p-2.5 pl-8 rounded-md min-h-11 sm:min-h-9 h-11 sm:h-9 text-sm sm:text-xs text-gray-800 dark:text-gray-100 border border-dashed border-gray-300 dark:border-gray-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-500/20 transition-colors ${error ? "border-red-400 bg-red-50 dark:bg-red-500/10" : "bg-white dark:bg-gray-900"} max-h-42 ${readOnly ? "cursor-not-allowed" : ""}`}
         {...props}
         {...(readOnly && { readOnly })}
       />

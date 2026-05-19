@@ -248,7 +248,7 @@ function Ticket() {
 
   return (
     <div>
-      <div className="sticky top-0 z-10 w-full border-b border-gray-200 bg-[#f6f7f9]/95 p-4 backdrop-blur dark:border-gray-800 dark:bg-[#0f141b]/95">
+      <div className="sticky top-0 z-10 w-full border-b border-gray-200 bg-white p-4 backdrop-blur dark:border-gray-800 dark:bg-[#0f141b]/95">
         <Header
           icon={<LuTicket size={16} className="inline" />}
           title="Tickets"
@@ -257,22 +257,22 @@ function Ticket() {
       </div>
 
       <div className="flex min-h-[calc(100vh-5.5rem)] m-1 gap-1">
-        <div className="flex h-[calc(100vh-5.5rem)] w-full flex-col items-start rounded-lg border border-gray-200 bg-white px-4 shadow-sm shadow-gray-200/60 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none">
-          <div className="sticky top-5 z-40 mb-4 flex w-full items-center justify-between gap-2 border-b border-gray-100 bg-white py-4 dark:border-gray-800 dark:bg-gray-900">
-            <div className="flex gap-2 ">
+        <div className="flex h-[calc(100vh-5.5rem)] w-full flex-col items-start rounded-lg border border-gray-200 bg-white px-3 shadow-sm shadow-gray-200/60 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none sm:px-4">
+          <div className="sticky top-5 z-40 mb-4 flex w-full flex-col gap-3 border-b border-gray-100 bg-white py-4 dark:border-gray-800 dark:bg-gray-900 md:flex-row md:items-center md:justify-between">
+            <div className="flex w-full flex-col gap-2 sm:flex-row md:max-w-xl">
               {canCreateTicket(user) && (
                 <Button
                   variant="primary"
                   onClick={() => setOpenNewTicket(true)}
                 >
                   <LuPlus size={15} />
-                  <span className="hidden lg:inline">Add Ticket</span>
+                  <span>Add Ticket</span>
                 </Button>
               )}
               <TicketSearch onResults={setSearchedTickets} />
             </div>
             {/* <DatePicker /> */}
-            <div className="flex items-center gap-2">
+            <div className="flex w-full items-center md:justify-end gap-2">
               {/* <Button variant="default" onClick={exportTickets}>
                                 <LuDownload size={15} />
                                 <span className="hidden lg:inline">Export</span>
@@ -288,7 +288,7 @@ function Ticket() {
                 ) : (
                   <LuTable2 size={15} />
                 )}
-                <span className="hidden lg:inline">
+                <span className="inline">
                   {viewMode === "table" ? "Kanban" : "Table"}
                 </span>
               </Button>
@@ -380,7 +380,7 @@ function Ticket() {
                 return {
                   id: t.id,
                   title: (
-                    <p className="truncate text-sm font-meduim text-gray-900 dark:text-white">
+                    <p className="truncate font-meduim text-gray-900 dark:text-white">
                       {t.title}
                     </p>
                   ),

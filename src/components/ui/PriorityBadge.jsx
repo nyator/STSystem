@@ -6,7 +6,7 @@ function PriorityBadge({ priority = "Low" }) {
         high: "bg-red-50 text-red-700 ring-red-200 dark:bg-red-500/10 dark:text-red-300 dark:ring-red-500/20",
     }
 
-    const baseClass = "min-w-16 rounded-full px-2.5 py-1 font-semibold flex items-center justify-center text-[11px] ring-1"
+    const baseClass = "min-w-16 rounded-full px-3 py-1.5 sm:px-2.5 sm:py-1 font-semibold flex items-center justify-center text-xs sm:text-[11px] ring-1"
     const classes = varaintColors[priority] ?? "gray";
 
     return (

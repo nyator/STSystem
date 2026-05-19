@@ -11,7 +11,7 @@
 body {
   background-color: #f6f7f9;
   color: #111827;
-  font-size: small;
+  font-size: 15px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }

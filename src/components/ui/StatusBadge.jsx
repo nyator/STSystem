@@ -12,7 +12,7 @@ function StatusBadge({ status = "open" }) {
     const formatLabel = (s) =>
         s.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
 
-    const baseClass = "min-w-16 px-2.5 py-1 rounded-full font-semibold flex items-center justify-center text-[11px] text-nowrap ring-1"
+    const baseClass = "min-w-16 px-3 py-1.5 sm:px-2.5 sm:py-1 rounded-full font-semibold flex items-center justify-center text-xs sm:text-[11px] text-nowrap ring-1"
     const colorClass = variantColors[status] ?? "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
 
     return (
