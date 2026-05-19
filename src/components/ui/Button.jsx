@@ -1,5 +1,5 @@
-import { useRef, useEffect } from "react";
-import { LuChevronDown, LuCheck } from "react-icons/lu";
+import { useEffect, useRef, useState } from "react";
+import { LuChevronDown } from "react-icons/lu";
 import {
   baseClasses,
   variantClasses,
@@ -37,6 +37,37 @@ function OptionButton({
   disabled,
 }) {
   const ref = useRef();
+  const [menuPlacement, setMenuPlacement] = useState("down");
+
+  const getBoundaryRect = () => {
+    let parent = ref.current?.parentElement;
+
+    while (parent && parent !== document.body) {
+      const { overflowY, overflow } = window.getComputedStyle(parent);
+      const clipsY = /(auto|scroll|hidden)/.test(`${overflowY} ${overflow}`);
+
+      if (clipsY) return parent.getBoundingClientRect();
+      parent = parent.parentElement;
+    }
+
+    return {
+      top: 0,
+      bottom: window.innerHeight,
+    };
+  };
+
+  const updateMenuPlacement = () => {
+    if (!ref.current) return;
+
+    const triggerRect = ref.current.getBoundingClientRect();
+    const boundaryRect = getBoundaryRect();
+    const menuHeight = Math.min(options.length * 36, 240);
+    const roomBelow = boundaryRect.bottom - triggerRect.bottom;
+    const roomAbove = triggerRect.top - boundaryRect.top;
+    const shouldOpenUp = roomBelow < menuHeight && roomAbove > roomBelow;
+
+    setMenuPlacement(shouldOpenUp ? "up" : "down");
+  };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -48,6 +79,8 @@ function OptionButton({
 
   const selectedOption = options.find((opt) => opt.value === selected);
   const displayText = selectedOption ? selectedOption.label : selected;
+  const placementClass =
+    menuPlacement === "up" ? "bottom-full mb-1" : "top-full mt-1";
 
   return (
     <div
@@ -57,7 +90,10 @@ function OptionButton({
     >
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (!isOpen) updateMenuPlacement();
+          setIsOpen(!isOpen);
+        }}
         disabled={disabled}
         className={`${disabled ? "active:scale-[1]" : ""} ${optionBaseClasses} ${isOpen ? "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200" : "hover:bg-gray-200 dark:hover:bg-gray-700"}`}
       >
@@ -76,7 +112,9 @@ function OptionButton({
       </button>
 
       {isOpen && (
-        <div className="z-50 absolute top-full mt-1 left-0 w-full min-w-24 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg">
+        <div
+          className={`absolute left-0 z-50 max-h-60 w-full min-w-24 overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800 ${placementClass}`}
+        >
           {options.map((opt) => (
             <button
               key={opt.value}
