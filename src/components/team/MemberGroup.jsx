@@ -304,7 +304,7 @@ export default function MemberGroup({ toolbarAction }) {
               />
             </div>
           </div>
-          <div className="flex items-center justify-start gap-2 overflow-x-auto pb-1 md:overflow-visible md:pb-0">
+          <div className="flex flex-wrap items-center justify-start gap-2 overflow-visible pb-1 md:pb-0">
             <OptionButton
               title="Team"
               options={teamOptions}

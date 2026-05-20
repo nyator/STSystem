@@ -1,12 +1,11 @@
 import { ThemeToggle2 } from "../ui/ThemeToggles";
 import { useAuth } from "../../Hooks/useAuth";
-import NotificationCenter from "../ui/NotificationCenter";
-import { LuPanelLeftClose, LuPanelLeftOpen } from "react-icons/lu";
+import { LuPanelLeftOpen } from "react-icons/lu";
 import { useSidebar } from "../../context/sidebarContext";
 
 function Header({ icon, title, description }) {
   const { user, isAuthenticated } = useAuth();
-  const { isSidebarOpen, toggleSidebar } = useSidebar();
+  const { toggleSidebar } = useSidebar();
 
   return (
     <div>
@@ -17,11 +16,11 @@ function Header({ icon, title, description }) {
               <div className="w-fit rounded-md bg-blue-50 p-1.5 text-blue-600 ring-1 ring-blue-100 dark:bg-blue-500/10 dark:text-blue-300 dark:ring-blue-500/20">
                 {icon}
               </div>
-              <h1 className="truncate text-xl font-semibold text-gray-950 dark:text-white">
+              <h1 className="truncate text-xl font-semibold leading-tight text-gray-950 dark:text-white">
                 {title}
               </h1>
             </div>
-            <p className="hidden text-xs text-gray-500 dark:text-gray-400 sm:block">
+            <p className="hidden text-xs font-medium text-gray-500 dark:text-gray-400 sm:block">
               {description}
             </p>
           </div>
@@ -40,10 +39,10 @@ function Header({ icon, title, description }) {
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[11px] font-semibold text-gray-700 dark:text-gray-200">
+                <p className="truncate text-xs font-semibold text-gray-700 dark:text-gray-200">
                   {user.name}
                 </p>
-                <p className="text-[7px] text-gray-400 uppercase dark:text-gray-500">
+                <p className="text-[10px] font-medium uppercase text-gray-400 dark:text-gray-500">
                   {user.role}
                 </p>
               </div>

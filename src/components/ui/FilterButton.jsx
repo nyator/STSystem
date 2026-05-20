@@ -31,7 +31,7 @@ function FilterButton({
       <button
         onClick={() => setIsOpen(!isOpen)}
         onMouseDown={(e) => e.stopPropagation()}
-        className={`flex h-9 items-center gap-1 rounded-xl border border-gray-200 bg-white px-3 text-xs font-medium text-gray-700 shadow-sm shadow-gray-200/40 transition-all duration-200 hover:bg-gray-50 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:shadow-none dark:hover:bg-gray-700`}
+        className="flex h-9 items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 text-sm font-medium text-gray-700 shadow-sm shadow-gray-200/40 transition-all duration-200 hover:bg-gray-50 focus:outline-none dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:shadow-none dark:hover:bg-gray-700 sm:h-9 sm:text-xs"
       >
         {hasActiveFilters && (
           <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-blue-500 ring-2 ring-white dark:ring-gray-800"></span>

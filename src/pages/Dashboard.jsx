@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { LuLayoutDashboard, LuTicket } from "react-icons/lu";
 import Header from "../components/dashboard/Header";
 import Cards from "../components/dashboard/Cards";
@@ -53,18 +52,7 @@ function Dashboard() {
         new Date(a.createdAt || 0).getTime(),
     );
 
-  // Pagination logic
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4;
-  const totalItems = filteredData.length;
-  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
-  const paginatedData = filteredData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
-  const handlePrev = () => setCurrentPage((prev) => Math.max(1, prev - 1));
-  const handleNext = () =>
-    setCurrentPage((prev) => Math.min(totalPages, prev + 1));
+  const recentTickets = filteredData.slice(0, 3);
 
   return (
     <div>
@@ -84,12 +72,12 @@ function Dashboard() {
 
       <div>
         {/* <div className='flex flex-col items-start bg-white dark:bg-gray-800 p-4 w-[calc(100%-1rem)] lg:min-h-[calc(100vh-6rem)] m-2 rounded-2xl'> */}
-        <div className="mr-1 bg-white/70">
+        <div className="mr-1 bg-white dark:bg-gray-900 p-1 md:p-4 w-[calc(100%-0.5rem)] lg:min-h-[calc(100vh-5.5rem)] m-1 rounded-lg border border-gray-200 shadow-sm shadow-gray-200/50 dark:border-gray-800 dark:shadow-none">
           <div className="m-1 flex min-h-[calc(100vh-5.5rem)] w-full flex-col items-start space-y-2 p-3 md:p-4">
             {/* <Banner /> */}
             <Cards />
             <div className="flex flex-col sm:flex-col justify-around w-full mt-1 gap-5">
-              <div className="hidden h-fit items-center justify-between rounded-lg border border-gray-200 bg-white py-3 shadow-sm shadow-gray-200/50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none md:flex">
+              <div className="hidden h-fit items-center justify-between rounded-lg border border-gray-200 bg-white py-3 shadow-sm shadow-gray-200/50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none sm:flex">
                 <div className="flex flex-1 justify-center items-center">
                   <Chart />
                 </div>
@@ -128,7 +116,7 @@ function Dashboard() {
                       { key: "status", title: "Status" },
                       { key: "createdAt", title: "Created" },
                     ]}
-                    data={paginatedData.map((t) => {
+                    data={recentTickets.map((t) => {
                       const fmt = (s) => {
                         if (!s) return "";
                         const replaced = String(s).replace(/-/g, " ");
@@ -168,11 +156,11 @@ function Dashboard() {
                         ),
                       };
                     })}
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    totalItems={totalItems}
-                    onPrev={handlePrev}
-                    onNext={handleNext}
+                    currentPage={1}
+                    totalPages={1}
+                    totalItems={recentTickets.length}
+                    onPrev={() => {}}
+                    onNext={() => {}}
                     itemLabel="Tickets"
                     height="sm"
                   />
