@@ -1,4 +1,5 @@
 import Pagination from "./Pagination";
+import TableCards from "./TableCards";
 
 function Table({
   columns,
@@ -19,6 +20,8 @@ function Table({
       : data.length
         ? Object.keys(data[0]).map((key) => ({ key, title: key }))
         : [];
+  const getCellValue = (col, row, idx) =>
+    col.render ? col.render(row, idx, data.length) : (row[col.key] ?? "");
 
   // FIXED: Adjusted z-index strategies for proper overlapping hierarchy
   const stickyHeaderClass =
@@ -41,7 +44,7 @@ function Table({
 
         <div className="flex w-full max-h-screen flex-col items-center overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm shadow-gray-200/50 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none">
           <div
-            className={`w-full relative overflow-x-auto ${
+            className={`hidden w-full relative overflow-x-auto md:block ${
               height === "sm" ? "" : "h-[calc(100vh-237px)]"
             }`}
           >
@@ -92,9 +95,7 @@ function Table({
                               : undefined
                           }
                         >
-                          {col.render
-                            ? col.render(row, idx, data.length)
-                            : (row[col.key] ?? "")}
+                          {getCellValue(col, row, idx)}
                         </td>
                       ))}
                     </tr>
@@ -103,7 +104,15 @@ function Table({
               </tbody>
             </table>
           </div>
+
         </div>
+          <TableCards
+            columns={cols}
+            data={data}
+            height={height}
+            onRowClick={onRowClick}
+            getCellValue={getCellValue}
+          />
 
         <Pagination
           currentPage={currentPage}

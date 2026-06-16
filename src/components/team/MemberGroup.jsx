@@ -341,8 +341,8 @@ export default function MemberGroup({ toolbarAction }) {
             onRowClick={setDrawerMemberId}
             columns={[
               // { key: "id", title: "ID" },
-              { key: "name", title: "Name" },
-              { key: "email", title: "Email" },
+              { key: "name", title: "Name", mobilePrimary: true },
+              { key: "email", title: "Email", mobile: false },
               { key: "team", title: "Team" },
               { key: "workload", title: "Workload" },
               { key: "actions", title: "" },

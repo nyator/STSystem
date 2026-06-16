@@ -47,7 +47,7 @@ function useSmallScreenPortal(isOpen) {
       return;
     }
 
-    const mediaQuery = window.matchMedia("(max-width: 1279px)");
+    const mediaQuery = window.matchMedia("(max-width: 579px)"); // initial value was 1279px
     const handleChange = () => setShouldPortal(mediaQuery.matches);
 
     handleChange();
@@ -207,7 +207,7 @@ function TicketDrawer({ ticketId, onClose }) {
         aria-label="Close ticket drawer backdrop"
         onClick={onClose}
       />
-      <aside className="fixed bottom-2 right-2 top-2 z-[80] flex w-[min(92vw,24rem)] shrink-0 flex-col rounded-lg border border-gray-200 bg-white px-3 py-4 shadow-2xl shadow-gray-950/20 dark:border-gray-800 dark:bg-gray-900 xl:static xl:z-auto xl:h-[calc(100vh-5.5rem)] xl:w-88 xl:shadow-sm xl:shadow-gray-200/60 dark:xl:shadow-none">
+      <aside className="fixed bottom-2 right-2 top-2 z-80 flex w-[min(92vw,24rem)] shrink-0 flex-col rounded-lg border border-gray-200 bg-white px-3 py-4 shadow-2xl shadow-gray-950/20 dark:border-gray-800 dark:bg-gray-900 xl:static xl:z-auto xl:h-[calc(100vh-5.5rem)] xl:w-88 xl:shadow-sm xl:shadow-gray-200/60 dark:xl:shadow-none">
         <div className="mb-3 flex items-start justify-between gap-3 border-b border-gray-100 pb-3 dark:border-gray-700">
           <div className="min-w-0">
             <p className="mb-1 flex items-center gap-1 text-[10px] font-semibold uppercase text-gray-400">

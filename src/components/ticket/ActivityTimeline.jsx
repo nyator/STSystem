@@ -47,7 +47,7 @@ function ActivityTimeline({ activity = [], emptyText = "No activity yet" }) {
 
             {/* Content Area */}
             <div className="min-w-0 flex-1 pt-0.5">
-              <p className="leading-tight text-gray-600 dark:text-gray-400">
+              <div className="leading-tight text-gray-600 dark:text-gray-400">
                 {event.actor ? (
                   <div className="flex flex-col text-[10px]">
                     <span className="font-medium text-gray-900 dark:text-gray-200">
@@ -62,7 +62,7 @@ function ActivityTimeline({ activity = [], emptyText = "No activity yet" }) {
                 ) : (
                   event.message
                 )}
-              </p>
+              </div>
 
               <p className="text-[10px] text-gray-400 dark:text-gray-500">
                 {event.timeAgo ||

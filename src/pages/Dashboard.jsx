@@ -109,12 +109,12 @@ function Dashboard() {
                   <Table
                     title={dashboardView.title}
                     columns={[
-                      { key: "id", title: "ID" },
-                      { key: "ticket", title: "Ticket" },
-                      { key: "requester", title: "Requester" },
+                      { key: "id", title: "ID", mobile: false },
+                      { key: "ticket", title: "Ticket", mobilePrimary: true },
+                      { key: "requester", title: "Requester", mobile: false },
                       { key: "priority", title: "Priority" },
                       { key: "status", title: "Status" },
-                      { key: "createdAt", title: "Created" },
+                      { key: "createdAt", title: "Created", mobile: false },
                     ]}
                     data={recentTickets.map((t) => {
                       const fmt = (s) => {

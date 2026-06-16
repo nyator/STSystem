@@ -258,7 +258,7 @@ function Ticket() {
 
       <div className="flex min-h-[calc(100vh-5.5rem)] m-1 gap-1">
         <div className="flex h-[calc(100vh-5.5rem)] w-full flex-col items-start rounded-lg border border-gray-200 bg-white px-3 shadow-sm shadow-gray-200/60 dark:border-gray-800 dark:bg-gray-900 dark:shadow-none sm:px-4">
-          <div className="sticky top-5 z-40 mb-4 flex w-full flex-col gap-3 border-b border-gray-100 bg-white py-4 dark:border-gray-800 dark:bg-gray-900 md:flex-row md:items-center md:justify-between">
+          <div className="sticky top-5 z-40 mb-2 flex w-full flex-col gap-3 border-b border-gray-100 bg-white py-4 dark:border-gray-800 dark:bg-gray-900 md:flex-row md:items-center md:justify-between">
             <div className="flex w-full flex-col gap-2 sm:flex-row md:max-w-xl">
               {canCreateTicket(user) && (
                 <div className="hidden md:block">
@@ -362,12 +362,12 @@ function Ticket() {
           ) : (
             <Table
               columns={[
-                { key: "id", title: "ID" },
-                { key: "title", title: "Title" },
+                { key: "id", title: "ID", mobile: false },
+                { key: "title", title: "Title", mobilePrimary: true },
                 { key: "priority", title: "Priority" },
                 { key: "status", title: "Status" },
-                { key: "slaState", title: "SLA" },
-                { key: "assignedTo", title: "Assigned To" },
+                { key: "slaState", title: "SLA", mobile: false },
+                { key: "assignedTo", title: "Assigned To", mobileAside: true },
               ]}
               data={paginatedTickets.map((t) => {
                 const fmt = (s) => {
