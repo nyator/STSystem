@@ -9,50 +9,15 @@ export const ROLES = {
     ASSIGNEE: "assignee",
 }
 
-export const DEFAULT_ASSIGNEE_PASSWORD = "assignee123"
-
-const BASE_USERS = [
-    {
-        id: "CLIENT-001",
-        name: "Client User",
-        email: "client@gmail.com",
-        password: "client123",
-        role: ROLES.CLIENT,
-    },
-    {
-        id: "ADMIN-001",
-        name: "Admin User",
-        email: "admin@gmail.com",
-        password: "admin123",
-        role: ROLES.ADMIN,
-    },
-]
-
-const DEFAULT_TEAM_MEMBER = {
-    id: "USR-001",
-    firstName: "Assignee",
-    lastName: "User",
-    email: "assignee@gmail.com",
-    avatar: "https://i.pravatar.cc/150?img=12",
-    team: "frontend",
-    ticketsAssigned: 0,
-    ticketIDs: [],
-    createdAt: new Date().toString(),
-}
-
 const memberToAssigneeUser = (member, existingUser) => ({
     id: member.id,
     memberId: member.id,
     name: `${member.firstName || ""} ${member.lastName || ""}`.trim() || member.email,
     email: member.email,
-    password: existingUser?.password || member.password || DEFAULT_ASSIGNEE_PASSWORD,
+    password: existingUser?.password || member.password,
     role: ROLES.ASSIGNEE,
 })
 
-export const DEMO_USERS = [
-    ...BASE_USERS,
-    memberToAssigneeUser(DEFAULT_TEAM_MEMBER),
-]
 
 const sessionUser = (user) => {
     return {

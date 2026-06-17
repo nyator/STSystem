@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { editTicket } from "../../utils/TicketUtil"
+import { editTicket } from "../../service/ticketService";
 import toast from 'react-hot-toast'
 
 function useEditTicket() {

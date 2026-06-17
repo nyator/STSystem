@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { updateAssign } from "../../utils/TeamUtil"
+import { updateAssign } from "../../service/teamService"
 
 function useUpdateAssign() {
     const queryClient = useQueryClient()

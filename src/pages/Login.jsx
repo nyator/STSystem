@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, Link } from "react-router-dom";
 import { LuLockKeyhole, LuLogIn, LuMail } from "react-icons/lu";
 import toast from "react-hot-toast";
 import { FormInput } from "../components/ui/Input";
@@ -13,7 +13,7 @@ function Login() {
     register,
     handleSubmit,
     setError,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       email: "",
@@ -21,20 +21,23 @@ function Login() {
     },
   });
 
+  const onSubmit = async (data) => {
+    try {
+      const result = await login(data.email, data.password);
+      if (result?.success) {
+        navigate(location.state?.from?.pathname || "/", { replace: true });
+      } else {
+        toast.error(result?.message || "Login failed");
+      }
+    } catch (error) {
+      setError("password", { type: "manual", message: error.message });
+      toast.error(error?.message || "Login failed");
+    }
+  };
+
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
   }
-
-  const onSubmit = (data) => {
-    try {
-      login(data.email, data.password);
-      toast.success("Logged in");
-      navigate(location.state?.from?.pathname || "/", { replace: true });
-    } catch (error) {
-      setError("password", { type: "manual", message: error.message });
-      toast.error(error.message);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-4">
@@ -86,11 +89,19 @@ function Login() {
 
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition-all duration-300 ease-in-out active:scale-[0.97]"
+            disabled={isSubmitting}
+            className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-50 text-white p-2 rounded-lg transition-all duration-300 ease-in-out active:scale-[0.97]"
           >
-            Login
+            {isSubmitting ? "Logging in..." : "Login"}
             <LuLogIn size={16} />
           </button>
+
+          <p className="text-xs text-center text-gray-500 dark:text-gray-400 mt-4">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-blue-500 hover:underline">
+              Create one
+            </Link>
+          </p>
         </form>
       </div>
     </div>

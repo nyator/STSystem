@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { assignTicket } from "../../utils/TicketUtil";
+import { assignTicket } from "../../service/ticketService";
 import toast from "react-hot-toast";
 
 function useAssignTicket() {

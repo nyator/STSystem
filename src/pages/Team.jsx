@@ -17,7 +17,6 @@ import {
 } from "react-icons/lu";
 import { FormInput } from "../components/ui/Input";
 import MemeberGroup from "../components/team/MemberGroup";
-import { DEFAULT_ASSIGNEE_PASSWORD } from "../utils/AuthUtil";
 import { getLocalStorage, setLocalStorage } from "../Hooks/useLocalStorage";
 
 const DEFAULT_TEAM_OPTIONS = [
@@ -188,7 +187,7 @@ function Team() {
           />
           <FormInput
             name="password"
-            placeholder={`Password (${DEFAULT_ASSIGNEE_PASSWORD})`}
+            placeholder={`Password`}
             type="password"
             icon={
               <LuKeyRound

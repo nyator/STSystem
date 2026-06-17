@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getMembers } from "../../utils/TeamUtil";
+import { getMembers } from "../../service/teamService";
 
 
 function useMembers() {

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { getTickets } from "../../utils/TicketUtil"
+import { getTickets } from "../../service/ticketService"
 import { useAuth } from "../useAuth"
 import { canViewTicket } from "../../utils/AuthUtil"
 

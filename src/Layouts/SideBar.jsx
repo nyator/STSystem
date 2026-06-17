@@ -47,7 +47,7 @@ export default function SideBar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (location.pathname === "/login") {
+  if (location.pathname === "/login" || location.pathname === "/register") {
     return <MainContent />;
   }
 
@@ -61,7 +61,7 @@ export default function SideBar() {
 
   const handleLogout = () => {
     setOpenLogoutConfirm(false);
-    Toast.success("Logged out");
+    // Toast.success("Logged out");
     logout();
     navigate("/login", { replace: true });
   };

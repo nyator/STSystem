@@ -6,10 +6,12 @@ import Settings from '../pages/Settings'
 import Login from '../pages/Login'
 import ProtectedRoute from '../components/auth/ProtectedRoute'
 import { ROLES } from '../utils/AuthUtil'
+import Register from '../pages/Register'
 
 function MainContent() {
     return (
         <Routes>
+            <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/tickets" element={<ProtectedRoute><Ticket /></ProtectedRoute>} />

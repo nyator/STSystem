@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import { useEffect } from 'react'
 import useDebounce from '../../Hooks/Tickets/useDebounce'
 import Input from '../ui/Input'
-import { getTickets } from '../../utils/TicketUtil'
+import { getTickets } from '../../service/ticketService'
 
 function TicketSearch({ onResults }) {
 
@@ -27,7 +27,7 @@ function TicketSearch({ onResults }) {
         } else {
             onResults?.(tickets)
         }
-    }, [debouncedValue, tickets, onResults])
+    }, [debouncedValue, tickets])
 
     return (
         <Input

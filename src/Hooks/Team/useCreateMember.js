@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createMember } from "../../utils/TeamUtil";
+import { createMember } from "../../service/teamService";
 
 function useCreateMember() {
     const queryClient = useQueryClient()
